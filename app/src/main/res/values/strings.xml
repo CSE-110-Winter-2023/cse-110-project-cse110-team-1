@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Social Compass</string>
+    <string name="submit">Submit</string>
+    <string name="add_location">Add Location</string>
 </resources>
