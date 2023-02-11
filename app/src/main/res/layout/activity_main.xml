@@ -34,13 +34,13 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="140dp"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="120dp"
         android:fillViewport="true"
-        app:layout_constraintBottom_toTopOf="@+id/submit_btn"
+        app:layout_constraintBottom_toTopOf="@+id/add_location_btn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -236,7 +236,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 
 
