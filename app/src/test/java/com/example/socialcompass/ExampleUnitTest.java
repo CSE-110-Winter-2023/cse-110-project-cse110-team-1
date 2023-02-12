@@ -14,4 +14,21 @@ public class ExampleUnitTest {
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
     }
+
+
+
+    @Test
+    public void testIsWithinRange() {
+        assertTrue(Utilities.isLongitudeWithinRange("   35N"));
+        assertTrue(Utilities.isLatitudeWithinRange(" 179E"));
+        assertTrue(Utilities.isLongitudeWithinRange("    0N"));
+        assertTrue(Utilities.isLatitudeWithinRange("       0E"));
+        assertFalse(Utilities.isLongitudeWithinRange("91N"));
+        assertFalse(Utilities.isLatitudeWithinRange("181E"));
+        assertFalse(Utilities.isLongitudeWithinRange("35X"));
+        assertFalse(Utilities.isLongitudeWithinRange("abc"));
+        assertFalse(Utilities.isLongitudeWithinRange(""));
+    }
+
+
 }
