@@ -1,10 +1,14 @@
 package com.example.socialcompass;
 
+import static androidx.constraintlayout.widget.ConstraintLayoutStates.TAG;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
 import android.os.Bundle;
+import android.os.Debug;
+import android.util.Log;
 import android.util.Pair;
 import android.widget.ImageView;
 
@@ -36,13 +40,13 @@ public class compass_activity extends AppCompatActivity {
         float gpsLong = (float) -117.23676356032297;
         float addressLat = (float) 32.859057060490336;
         float addressLong = (float) -117.24266799416866;
-        float angle1 = getAngle( gpsLat,  gpsLong, addressLat,  addressLong);
+        float angle1 = getAngle( 1,  1, 2,  2);
 
         ConstraintLayout constraintLayout = findViewById(R.id.compass_layout);
         ConstraintSet constraintSet = new ConstraintSet();
         constraintSet.clone(constraintLayout);
         constraintSet.constrainCircle(R.id.node_1, R.id.compass_img, 462, angle1);
-        constraintSet.constrainCircle(R.id.label_1, R.id.compass_img, 440, angle1);
+        constraintSet.constrainCircle(R.id.label_1, R.id.compass_img, 330, angle1);
         constraintSet.applyTo(constraintLayout);
 
     }

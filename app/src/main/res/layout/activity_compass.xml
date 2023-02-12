@@ -118,8 +118,8 @@
 
         <TextView
             android:id="@+id/label_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
             android:text="Parent's House"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
