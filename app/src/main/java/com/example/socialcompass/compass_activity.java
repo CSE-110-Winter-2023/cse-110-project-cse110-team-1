@@ -64,8 +64,6 @@ public class compass_activity extends AppCompatActivity {
         constraintSet.constrainCircle(R.id.label_1, R.id.compass_img, 330, angle1);
 
 
-        float angle2 = getAngle( gpsLat,  gpsLong, (float) 32.87550191021879,  (float) -117.2329838492025);
-        constraintSet.constrainCircle(R.id.node_2, R.id.compass_img, 462, angle2);
 
         constraintSet.applyTo(constraintLayout);
 
