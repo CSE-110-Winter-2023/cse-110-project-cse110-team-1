@@ -19,13 +19,13 @@ public class ExampleUnitTest {
 
     @Test
     public void testIsWithinRange() {
-        assertTrue(Utilities.isLongitudeWithinRange("   35N"));
-        assertTrue(Utilities.isLatitudeWithinRange(" 179E"));
-        assertTrue(Utilities.isLongitudeWithinRange("    0N"));
-        assertTrue(Utilities.isLatitudeWithinRange("       0E"));
-        assertFalse(Utilities.isLongitudeWithinRange("91N"));
-        assertFalse(Utilities.isLatitudeWithinRange("181E"));
-        assertFalse(Utilities.isLongitudeWithinRange("35X"));
+        assertTrue(Utilities.isLongitudeWithinRange("   35"));
+        assertTrue(Utilities.isLatitudeWithinRange(" 180"));
+        assertTrue(Utilities.isLongitudeWithinRange("    0"));
+        assertTrue(Utilities.isLatitudeWithinRange("       0"));
+        assertFalse(Utilities.isLongitudeWithinRange("91"));
+        assertFalse(Utilities.isLatitudeWithinRange("181"));
+        assertFalse(Utilities.isLongitudeWithinRange("35e"));
         assertFalse(Utilities.isLongitudeWithinRange("abc"));
         assertFalse(Utilities.isLongitudeWithinRange(""));
     }

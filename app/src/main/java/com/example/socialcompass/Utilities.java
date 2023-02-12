@@ -25,20 +25,17 @@ public class Utilities {
     }
 
     public static boolean isLongitudeWithinRange(String input) {
+
         input = input.trim();
-        if (input.length() < 2) {
+        if (input.length() < 1 || input.length()>20) {
             return false;
         }
-        char direction = input.charAt(input.length() - 1);
-        String numberString = input.substring(0, input.length() - 1);
 
         try {
-            int number = Integer.parseInt(numberString);
-
-            if (direction == 'N' || direction == 'S') {
-                return number >= 0 && number <= 90;
-            }
-            else {
+            double number = Double.parseDouble(input);
+            if (number >= -90 && number <= 90) {
+                return true;
+            } else {
                 return false;
             }
         } catch (NumberFormatException e) {
@@ -47,19 +44,15 @@ public class Utilities {
     }
     public static boolean isLatitudeWithinRange(String input) {
         input = input.trim();
-        if (input.length() < 2 || input.length()>4) {
+        if (input.length() < 1 || input.length()>20) {
             return false;
         }
-        char direction = input.charAt(input.length() - 1);
-        String numberString = input.substring(0, input.length() - 1);
 
         try {
-            int number = Integer.parseInt(numberString);
-
-            if (direction == 'E' || direction == 'W') {
-                return number >= 0 && number <= 180;
-            }
-            else {
+            double number = Double.parseDouble(input);
+            if (number >= -180 && number <= 180) {
+                return true;
+            } else {
                 return false;
             }
         } catch (NumberFormatException e) {
