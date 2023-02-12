@@ -75,8 +75,8 @@
             app:srcCompat="@drawable/address_node" />
         <ImageView
             android:id="@+id/node_2"
-            android:layout_width="23dp"
-            android:layout_height="23dp"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
