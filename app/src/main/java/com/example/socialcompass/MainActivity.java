@@ -20,15 +20,24 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        /*
+        * TODO: keep track of what view should be displayed/hide
+        *  (and) display data that we already have on those fields
+        * This can be determine by checking which data we have available
+        * */
+
     }
 
     public void onAddLocationClick(View view) {
+        /*
+        * TODO: display additional form for user to fill in
+        * Each form has 3 input fields: label, longitude and latitude
+        * Store these data in storage
+        *  */
         ScrollView parentLayout = findViewById(R.id.scroll_view);
-
-
-
     }
-    public void submitButtonClick(View view) {
+
+    public void onSubmitButtonClick(View view) {
 
         TextView labelView_0 = findViewById(R.id.label_0);
         String labelStr_0 = labelView_0.getText().toString().trim();
@@ -36,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         String longitudeStr_0 = longitudeView_0.getText().toString().trim();
         TextView latitudeView_0 = findViewById(R.id.latitude_0);
         String latitudeStr_0 = latitudeView_0.getText().toString().trim();
+
         if (Utilities.isValidAll(labelStr_0,longitudeStr_0,latitudeStr_0)) {
             SharedPreferences preferences = getPreferences(MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
