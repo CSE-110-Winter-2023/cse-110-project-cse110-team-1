@@ -143,14 +143,12 @@ public class MainActivity extends AppCompatActivity {
 
             //Intent intent = new Intent(this, CompassActivity.class);
             //link to new page
+            Intent intent = new Intent(this, compass_activity.class);
+            startActivity(intent);
         }
         else {
             Utilities.showAlert(this,
                     "Input is not Valid, Data not saved");
         }
-    }
-    public void OnLaunchCompass(View view) {
-        Intent intent = new Intent(this, compass_activity.class);
-        startActivity(intent);
     }
 }
