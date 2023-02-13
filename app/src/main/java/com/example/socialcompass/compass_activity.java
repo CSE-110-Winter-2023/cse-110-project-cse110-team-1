@@ -23,7 +23,7 @@ public class compass_activity extends AppCompatActivity {
 
 
 
-    float getAngle(float gpsLat, float gpsLong,float addressLat, float addressLong){
+    public static float getAngle(float gpsLat, float gpsLong,float addressLat, float addressLong){
         float lenA = Math.abs(addressLong-gpsLong);
         float lenB = Math.abs(addressLat - gpsLat);
 
