@@ -6,11 +6,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Debug;
 import android.util.Log;
 import android.util.Pair;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class compass_activity extends AppCompatActivity {
 
@@ -18,50 +21,54 @@ public class compass_activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass);
-        setAngle();
+        setNode();
     }
 
 
 
-    public static float getAngle(float gpsLat, float gpsLong,float addressLat, float addressLong){
-        float lenA = Math.abs(addressLong-gpsLong);
-        float lenB = Math.abs(addressLat - gpsLat);
 
-        double angle_rad =  Math.atan2(lenB,lenA);
 
-        double angle_deg =  angle_rad*180.0/Math.PI;
-        float degree = (float) angle_deg;
-
-        if(gpsLat<=addressLat && gpsLong<=addressLong){
-            // first quadrant
-            degree = 90-degree;
-        }else if(gpsLat<=addressLat && gpsLong>=addressLong){
-            // second quadrant
-            degree = degree+270;
-        }else if(gpsLat>=addressLat && gpsLong>=addressLong){
-            // third quadrant
-            degree = 270-degree;
-        }else if(gpsLat>=addressLat && gpsLong<=addressLong){
-            // forth quadrant
-            degree = degree+90;
-        }
-
-        return degree;
-    }
-
-    void setAngle(){
+    void setNode(){
         // if there is only one location,
         float gpsLat = (float) 32.88074495280559;
         float gpsLong = (float) -117.23403456410483;
-        float addressLat = (float) 32.87774383077887;
-        float addressLong = (float)  -117.23034561391084;
-        float angle1 = getAngle( gpsLat,  gpsLong, addressLat,  addressLong);
+
+        SharedPreferences preferences = getSharedPreferences("MS1_PREFS", Context.MODE_PRIVATE);
+        String label_0 = preferences.getString("label_0","Label");
+        float longitude_0 = Float.parseFloat(preferences.getString("longitude_0","0"));
+        float latitude_0 = Float.parseFloat(preferences.getString("latitude_0","0"));
+        String label_1 = preferences.getString("label_1","Label");
+        float longitude_1 = Float.parseFloat( preferences.getString("longitude_1","0"));
+        float latitude_1 =  Float.parseFloat(preferences.getString("latitude_1","0"));
+        String label_2 = preferences.getString("label_2","Label");
+        float longitude_2 =  Float.parseFloat(preferences.getString("longitude_2","0"));
+        float latitude_2 =  Float.parseFloat(preferences.getString("latitude_2","0"));
+
+
+        float angle0 = Utilities.getAngle( gpsLat,  gpsLong, latitude_0,  longitude_0);
+        float angle1 = Utilities.getAngle( gpsLat,  gpsLong, latitude_1,  longitude_1);
+        float angle2 = Utilities.getAngle( gpsLat,  gpsLong, latitude_2,  longitude_2);
+
+
+
+        TextView nodeLabel_0 = findViewById(R.id.label_1);
+        nodeLabel_0.setText(label_0);
+        TextView nodeLabel_1 = findViewById(R.id.label_2);
+        nodeLabel_1.setText(label_1);
+        TextView nodeLabel_2 = findViewById(R.id.label_3);
+        nodeLabel_2.setText(label_2);
+
 
         ConstraintLayout constraintLayout = findViewById(R.id.compass_layout);
         ConstraintSet constraintSet = new ConstraintSet();
         constraintSet.clone(constraintLayout);
-        constraintSet.constrainCircle(R.id.node_1, R.id.compass_img, 462, angle1);
-        constraintSet.constrainCircle(R.id.label_1, R.id.compass_img, 330, angle1);
+        constraintSet.constrainCircle(R.id.node_1, R.id.compass_img, 462, angle0);
+        constraintSet.constrainCircle(R.id.label_1, R.id.compass_img, 330, angle0);
+        constraintSet.constrainCircle(R.id.node_2, R.id.compass_img, 462, angle1);
+        constraintSet.constrainCircle(R.id.label_2, R.id.compass_img, 330, angle1);
+        constraintSet.constrainCircle(R.id.node_3, R.id.compass_img, 462, angle2);
+        constraintSet.constrainCircle(R.id.label_3, R.id.compass_img, 330, angle2);
+
 
 
 

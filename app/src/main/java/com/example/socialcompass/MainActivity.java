@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         * */
         View groupView_1 = findViewById(R.id.input_group_1);
         View groupView_2 = findViewById(R.id.input_group_2);
-        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences("MS1_PREFS", Context.MODE_PRIVATE);
         String label_0 = preferences.getString("label_0","Label");
         String longitude_0 = preferences.getString("longitude_0","Longitude");
         String latitude_0 = preferences.getString("latitude_0","Latitude");
@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         longitudeView_0.setText(longitude_0);
         TextView latitudeView_0 = findViewById(R.id.latitude_0);
         latitudeView_0.setText(latitude_0);
+
 
         String label_1 = preferences.getString("label_1","Label");
         String longitude_1 = preferences.getString("longitude_1","Longitude");
@@ -124,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
                 && Utilities.isValidAll(labelStr_1,longitudeStr_1,latitudeStr_1)
                 && Utilities.isValidAll(labelStr_2,longitudeStr_2,latitudeStr_2)) {
 
-            SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+            SharedPreferences preferences = getSharedPreferences("MS1_PREFS", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
 
             editor.putString("label_0",labelStr_0);
