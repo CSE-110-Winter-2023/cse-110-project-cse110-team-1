@@ -17,21 +17,27 @@ import android.widget.TextView;
 
 public class compass_activity extends AppCompatActivity {
 
+    private GPSLocationHandler locationService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        locationService = new GPSLocationHandler(this);
+
         setContentView(R.layout.activity_compass);
-        setNode();
+        setNode(null);
+
+        locationService.getLocation().observe(this, this::setNode);
     }
 
 
 
 
 
-    void setNode(){
+    void setNode(Pair<Double,Double> loc){
         // if there is only one location,
-        float gpsLat = (float) 32.88074495280559;
-        float gpsLong = (float) -117.23403456410483;
+        float gpsLat = loc != null ? loc.first.floatValue() : 32.88074495280559f;
+        float gpsLong = loc != null ? loc.second.floatValue() : -117.23403456410483f;
 
         SharedPreferences preferences = getSharedPreferences("MS1_PREFS", Context.MODE_PRIVATE);
         String label_0 = preferences.getString("label_0","Label");
