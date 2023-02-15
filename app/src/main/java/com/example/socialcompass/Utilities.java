@@ -67,4 +67,31 @@ public class Utilities {
         }
         return false;
     }
+
+
+    public static float getAngle(float gpsLat, float gpsLong,float addressLat, float addressLong){
+        float lenA = Math.abs(addressLong-gpsLong);
+        float lenB = Math.abs(addressLat - gpsLat);
+
+        double angle_rad =  Math.atan2(lenB,lenA);
+
+        double angle_deg =  angle_rad*180.0/Math.PI;
+        float degree = (float) angle_deg;
+
+        if(gpsLat<=addressLat && gpsLong<=addressLong){
+            // first quadrant
+            degree = 90-degree;
+        }else if(gpsLat<=addressLat && gpsLong>=addressLong){
+            // second quadrant
+            degree = degree+270;
+        }else if(gpsLat>=addressLat && gpsLong>=addressLong){
+            // third quadrant
+            degree = 270-degree;
+        }else if(gpsLat>=addressLat && gpsLong<=addressLong){
+            // forth quadrant
+            degree = degree+90;
+        }
+
+        return degree;
+    }
 }

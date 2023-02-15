@@ -82,7 +82,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
 
-            android:visibility="invisible"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintCircle="@id/compass_img"
             app:layout_constraintCircleAngle="180"
@@ -102,7 +102,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:visibility="invisible"
+            android:visibility="visible"
 
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintCircle="@id/compass_img"
@@ -121,6 +121,49 @@
             android:layout_width="60dp"
             android:layout_height="40dp"
             android:text="Parent's House"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintCircle="@id/compass_img"
+            app:layout_constraintCircleAngle="150"
+            app:layout_constraintCircleRadius="150dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.746"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
+            app:layout_constraintVertical_bias="0.23" />
+
+        <TextView
+            android:id="@+id/label_2"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:text="friend's House"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintCircle="@id/compass_img"
+            app:layout_constraintCircleAngle="150"
+            app:layout_constraintCircleRadius="150dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.746"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
+            app:layout_constraintVertical_bias="0.23" />
+        <TextView
+            android:id="@+id/label_3"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:text="my House"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
