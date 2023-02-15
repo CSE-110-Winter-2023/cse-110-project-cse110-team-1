@@ -2,10 +2,13 @@ package com.example.socialcompass;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.Layout;
@@ -70,7 +73,10 @@ public class MainActivity extends AppCompatActivity {
             latitudeView_2.setText(latitude_2);
         }
 
-
+        if(!Utilities.checkForLocationPermissions(this)) {
+            ActivityCompat.requestPermissions(this, new String[]
+                    {Manifest.permission.ACCESS_FINE_LOCATION}, 200);
+        }
     }
 
     public void onAddLocationClick(View view) {

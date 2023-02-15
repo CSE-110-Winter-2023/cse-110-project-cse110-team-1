@@ -1,7 +1,11 @@
 package com.example.socialcompass;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.pm.PackageManager;
+
+import androidx.core.app.ActivityCompat;
 
 //import java.util.Optional;
 
@@ -93,5 +97,12 @@ public class Utilities {
         }
 
         return degree;
+    }
+
+    public static boolean checkForLocationPermissions(Activity a) {
+        return ActivityCompat.checkSelfPermission(a, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(a, Manifest.permission.ACCESS_COARSE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED;
     }
 }
