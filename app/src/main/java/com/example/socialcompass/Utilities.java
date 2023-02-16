@@ -31,13 +31,13 @@ public class Utilities {
     public static boolean isLongitudeWithinRange(String input) {
 
         input = input.trim();
-        if (input.length() < 1 || input.length()>20) {
+        if (input.length() < 1 || input.length()>25) {
             return false;
         }
 
         try {
             double number = Double.parseDouble(input);
-            if (number >= -90 && number <= 90) {
+            if (number >= -180 && number <= 180) {
                 return true;
             } else {
                 return false;
@@ -48,13 +48,13 @@ public class Utilities {
     }
     public static boolean isLatitudeWithinRange(String input) {
         input = input.trim();
-        if (input.length() < 1 || input.length()>20) {
+        if (input.length() < 1 || input.length()>25) {
             return false;
         }
 
         try {
             double number = Double.parseDouble(input);
-            if (number >= -180 && number <= 180) {
+            if (number >= -90 && number <= 90) {
                 return true;
             } else {
                 return false;
