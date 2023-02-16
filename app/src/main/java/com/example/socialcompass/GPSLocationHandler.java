@@ -38,4 +38,8 @@ public class GPSLocationHandler implements LocationListener {
         }
         this.currentLocation.postValue(new Pair<Double,Double>(0D,0D));
     }
+
+
+
+
 }

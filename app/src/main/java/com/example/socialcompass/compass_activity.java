@@ -84,7 +84,7 @@ public class compass_activity extends AppCompatActivity {
     void setRotation(float rotation){
         float degrees = (float) Math.toDegrees(rotation);
         ConstraintLayout constraintLayout = findViewById(R.id.compass_layout);
-        constraintLayout.setRotation(degrees);
+        constraintLayout.setRotation(-1 * degrees);
 
     }
 
