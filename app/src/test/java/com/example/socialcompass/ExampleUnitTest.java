@@ -17,14 +17,15 @@ public class ExampleUnitTest {
 
     @Test
     public void testIsWithinRange() {
-        assertTrue(Utilities.isLongitudeWithinRange("   35"));
-        assertTrue(Utilities.isLatitudeWithinRange(" 180"));
+        assertTrue(Utilities.isLongitudeWithinRange("   90"));
+        assertTrue(Utilities.isLatitudeWithinRange(" -90"));
         assertTrue(Utilities.isLongitudeWithinRange("    0"));
         assertTrue(Utilities.isLatitudeWithinRange("       0"));
-        assertFalse(Utilities.isLongitudeWithinRange("91"));
-        assertFalse(Utilities.isLatitudeWithinRange("181"));
+        assertFalse(Utilities.isLongitudeWithinRange("181"));
+        assertFalse(Utilities.isLatitudeWithinRange("-91"));
         assertFalse(Utilities.isLongitudeWithinRange("35e"));
         assertFalse(Utilities.isLongitudeWithinRange("abc"));
         assertFalse(Utilities.isLongitudeWithinRange(""));
     }
+
 }
