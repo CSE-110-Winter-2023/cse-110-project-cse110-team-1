@@ -18,16 +18,19 @@ import android.widget.TextView;
 public class compass_activity extends AppCompatActivity {
 
     private GPSLocationHandler locationService;
+    private OrientationService orientationService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         locationService = new GPSLocationHandler(this);
+        orientationService = new OrientationService(this);
 
         setContentView(R.layout.activity_compass);
         setNode(null);
 
         locationService.getLocation().observe(this, this::setNode);
+        orientationService.getOrientation().observe(this,this::setRotation);
     }
 
 
@@ -74,11 +77,14 @@ public class compass_activity extends AppCompatActivity {
         constraintSet.constrainCircle(R.id.label_2, R.id.compass_img, 330, angle1);
         constraintSet.constrainCircle(R.id.node_3, R.id.compass_img, 462, angle2);
         constraintSet.constrainCircle(R.id.label_3, R.id.compass_img, 330, angle2);
-
-
-
-
         constraintSet.applyTo(constraintLayout);
+
+    }
+
+    void setRotation(float rotation){
+        float degrees = (float) Math.toDegrees(rotation);
+        ConstraintLayout constraintLayout = findViewById(R.id.compass_layout);
+        constraintLayout.setRotation(degrees);
 
     }
 
