@@ -15,6 +15,9 @@ public class ExampleUnitTest {
         assertEquals(4, 2 + 2);
     }
 
+    /**
+     * Test Utilities function
+    * */
     @Test
     public void testIsWithinRange() {
         assertTrue(Utilities.isLongitudeWithinRange("   90"));
