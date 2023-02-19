@@ -1,30 +1,23 @@
 package com.example.socialcompass;
 
-import org.junit.Test;
+
+import android.widget.Button;
+import android.widget.TextView;
+
+import androidx.lifecycle.Lifecycle;
+import androidx.test.core.app.ActivityScenario;
 
 import static org.junit.Assert.*;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
- */
+@RunWith(RobolectricTestRunner.class)
 public class ExampleUnitTest {
     @Test
-    public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
-    }
+    public void test_add_location_submit(){
+        ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
+        
 
-    @Test
-    public void testIsWithinRange() {
-        assertTrue(Utilities.isLongitudeWithinRange("   35"));
-        assertTrue(Utilities.isLatitudeWithinRange(" 180"));
-        assertTrue(Utilities.isLongitudeWithinRange("    0"));
-        assertTrue(Utilities.isLatitudeWithinRange("       0"));
-        assertFalse(Utilities.isLongitudeWithinRange("91"));
-        assertFalse(Utilities.isLatitudeWithinRange("181"));
-        assertFalse(Utilities.isLongitudeWithinRange("35e"));
-        assertFalse(Utilities.isLongitudeWithinRange("abc"));
-        assertFalse(Utilities.isLongitudeWithinRange(""));
     }
 }

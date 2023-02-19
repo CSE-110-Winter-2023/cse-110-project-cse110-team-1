@@ -22,8 +22,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         /*
-        * TODO: keep track of what view should be displayed/hide
-        *  (and) display data that we already have on those fields
         * This can be determine by checking which data we have available
         * */
         View groupView_1 = findViewById(R.id.input_group_1);
@@ -93,9 +91,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onSubmitButtonClick(View view) {
-        View groupView_1 = findViewById(R.id.input_group_1);
-        View groupView_2 = findViewById(R.id.input_group_2);
-
         //Get all label's text store in strings
         TextView labelView_0 = findViewById(R.id.label_0);
         String labelStr_0 = labelView_0.getText().toString().trim();
@@ -139,9 +134,6 @@ public class MainActivity extends AppCompatActivity {
             editor.putString("latitude_2",latitudeStr_2);
             editor.apply();
             Utilities.showAlert(this,"data Saved");
-
-            //Intent intent = new Intent(this, CompassActivity.class);
-            //link to new page
         }
         else {
             Utilities.showAlert(this,
