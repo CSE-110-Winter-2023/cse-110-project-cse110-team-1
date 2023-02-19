@@ -17,17 +17,12 @@ import android.widget.TextView;
 
 public class compass_activity extends AppCompatActivity {
 
-    private GPSLocationHandler locationService;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        locationService = new GPSLocationHandler(this);
 
         setContentView(R.layout.activity_compass);
         setNode(null);
-
-        locationService.getLocation().observe(this, this::setNode);
     }
 
 
