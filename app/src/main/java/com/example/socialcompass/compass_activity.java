@@ -26,30 +26,26 @@ public class compass_activity extends AppCompatActivity {
     }
 
 
-
-
-
-    void setNode(Pair<Double,Double> loc){
+    void setNode(Pair<Double, Double> loc) {
         // if there is only one location,
         float gpsLat = loc != null ? loc.first.floatValue() : 32.88074495280559f;
         float gpsLong = loc != null ? loc.second.floatValue() : -117.23403456410483f;
 
         SharedPreferences preferences = getSharedPreferences("MS1_PREFS", Context.MODE_PRIVATE);
-        String label_0 = preferences.getString("label_0","Label");
-        float longitude_0 = Float.parseFloat(preferences.getString("longitude_0","0"));
-        float latitude_0 = Float.parseFloat(preferences.getString("latitude_0","0"));
-        String label_1 = preferences.getString("label_1","Label");
-        float longitude_1 = Float.parseFloat( preferences.getString("longitude_1","0"));
-        float latitude_1 =  Float.parseFloat(preferences.getString("latitude_1","0"));
-        String label_2 = preferences.getString("label_2","Label");
-        float longitude_2 =  Float.parseFloat(preferences.getString("longitude_2","0"));
-        float latitude_2 =  Float.parseFloat(preferences.getString("latitude_2","0"));
+        String label_0 = preferences.getString("label_0", "Label");
+        float longitude_0 = Float.parseFloat(preferences.getString("longitude_0", "0"));
+        float latitude_0 = Float.parseFloat(preferences.getString("latitude_0", "0"));
+        String label_1 = preferences.getString("label_1", "Label");
+        float longitude_1 = Float.parseFloat(preferences.getString("longitude_1", "0"));
+        float latitude_1 = Float.parseFloat(preferences.getString("latitude_1", "0"));
+        String label_2 = preferences.getString("label_2", "Label");
+        float longitude_2 = Float.parseFloat(preferences.getString("longitude_2", "0"));
+        float latitude_2 = Float.parseFloat(preferences.getString("latitude_2", "0"));
 
 
-        float angle0 = Utilities.getAngle( gpsLat,  gpsLong, latitude_0,  longitude_0);
-        float angle1 = Utilities.getAngle( gpsLat,  gpsLong, latitude_1,  longitude_1);
-        float angle2 = Utilities.getAngle( gpsLat,  gpsLong, latitude_2,  longitude_2);
-
+        float angle0 = Utilities.getAngle(gpsLat, gpsLong, latitude_0, longitude_0);
+        float angle1 = Utilities.getAngle(gpsLat, gpsLong, latitude_1, longitude_1);
+        float angle2 = Utilities.getAngle(gpsLat, gpsLong, latitude_2, longitude_2);
 
 
         TextView nodeLabel_0 = findViewById(R.id.label_1);
@@ -71,17 +67,9 @@ public class compass_activity extends AppCompatActivity {
         constraintSet.constrainCircle(R.id.label_3, R.id.compass_img, 330, angle2);
 
 
-
-
         constraintSet.applyTo(constraintLayout);
 
     }
-
-
-
-
-
-
 
 
 }

@@ -26,8 +26,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         /*
-        * TODO: keep track of what view should be displayed/hide
-        *  (and) display data that we already have on those fields
         * This can be determine by checking which data we have available
         * */
         View groupView_1 = findViewById(R.id.input_group_1);
@@ -73,19 +71,13 @@ public class MainActivity extends AppCompatActivity {
             latitudeView_2.setText(latitude_2);
         }
 
-        if(!Utilities.checkForLocationPermissions(this)) {
-            ActivityCompat.requestPermissions(this, new String[]
-                    {Manifest.permission.ACCESS_FINE_LOCATION}, 200);
-        }
     }
 
     public void onAddLocationClick(View view) {
         /*
-        * TODO: display additional form for user to fill in
         * Each form has 3 input fields: label, longitude and latitude
         * Store these data in storage
-        *  */
-        //ScrollView parentLayout = findViewById(R.id.scroll_view);
+        * */
         View groupView_1 = findViewById(R.id.input_group_1);
         View groupView_2 = findViewById(R.id.input_group_2);
         if (groupView_1.getVisibility() == View.GONE) {
@@ -101,8 +93,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onSubmitButtonClick(View view) {
-        View groupView_1 = findViewById(R.id.input_group_1);
-        View groupView_2 = findViewById(R.id.input_group_2);
 
         //Get all label's text store in strings
         TextView labelView_0 = findViewById(R.id.label_0);
@@ -146,9 +136,8 @@ public class MainActivity extends AppCompatActivity {
             editor.putString("longitude_2",longitudeStr_2);
             editor.putString("latitude_2",latitudeStr_2);
             editor.apply();
-            Utilities.showAlert(this,"data Saved");
+            Utilities.showAlert(this,"Data Saved");
 
-            //Intent intent = new Intent(this, CompassActivity.class);
             //link to new page
             Intent intent = new Intent(this, compass_activity.class);
             startActivity(intent);
