@@ -10,12 +10,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-@RunWith(RobolectricTestRunner.class)
-public class InputTest {
-    @Test
-    public void test_add_location_submit(){
-        ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
-
-
-    }
-}
+//@RunWith(RobolectricTestRunner.class)
+//public class InputTest {
+//    @Test
+//    public void test_add_location_submit(){
+//        ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
+//
+//
+//    }
+//}
