@@ -1,7 +1,11 @@
 package com.example.socialcompass;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.pm.PackageManager;
+
+import androidx.core.app.ActivityCompat;
 
 //import java.util.Optional;
 
@@ -27,13 +31,13 @@ public class Utilities {
     public static boolean isLongitudeWithinRange(String input) {
 
         input = input.trim();
-        if (input.length() < 1 || input.length()>20) {
+        if (input.length() < 1 || input.length()>25) {
             return false;
         }
 
         try {
             double number = Double.parseDouble(input);
-            if (number >= -90 && number <= 90) {
+            if (number >= -180 && number <= 180) {
                 return true;
             } else {
                 return false;
@@ -44,13 +48,13 @@ public class Utilities {
     }
     public static boolean isLatitudeWithinRange(String input) {
         input = input.trim();
-        if (input.length() < 1 || input.length()>20) {
+        if (input.length() < 1 || input.length()>25) {
             return false;
         }
 
         try {
             double number = Double.parseDouble(input);
-            if (number >= -180 && number <= 180) {
+            if (number >= -90 && number <= 90) {
                 return true;
             } else {
                 return false;
@@ -93,5 +97,30 @@ public class Utilities {
         }
 
         return degree;
+    }
+
+    public static boolean checkForLocationPermissions(Activity a) {
+        return ActivityCompat.checkSelfPermission(a, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(a, Manifest.permission.ACCESS_COARSE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED;
+    }
+
+    public static boolean validOrientationValue(String input){
+        input = input.trim();
+        if (input.length() < 1 || input.length()>25) {
+            return false;
+        }
+
+        try {
+            double number = Double.parseDouble(input);
+            if (number <= 359 && number >= 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }

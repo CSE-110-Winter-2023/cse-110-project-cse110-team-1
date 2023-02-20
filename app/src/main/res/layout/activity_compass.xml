@@ -10,17 +10,16 @@
         android:id="@+id/compass_layout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
         android:layout_marginStart="16dp"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="1dp"
-        app:layout_constraintDimensionRatio="1"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:rotation="0">
 
         <ImageView
             android:id="@+id/compass_img"
@@ -32,7 +31,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0"
-            app:srcCompat="@drawable/compass" />
+            app:srcCompat="@drawable/compass"
+            />
 
         <TextView
             android:id="@+id/North_text"
@@ -73,6 +73,7 @@
 
             app:layout_constraintVertical_bias="0.23"
             app:srcCompat="@drawable/address_node" />
+
         <ImageView
             android:id="@+id/node_2"
             android:layout_width="23dp"
@@ -94,6 +95,7 @@
 
             app:layout_constraintVertical_bias="0.23"
             app:srcCompat="@drawable/address_node2" />
+
         <ImageView
             android:id="@+id/node_3"
             android:layout_width="23dp"
@@ -120,11 +122,11 @@
             android:id="@+id/label_1"
             android:layout_width="60dp"
             android:layout_height="40dp"
-            android:text="Parent's House"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
+            android:text="Parent's House"
 
 
             app:layout_constraintBottom_toBottomOf="parent"
@@ -142,11 +144,11 @@
             android:id="@+id/label_2"
             android:layout_width="60dp"
             android:layout_height="40dp"
-            android:text="friend's House"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
+            android:text="friend's House"
 
 
             app:layout_constraintBottom_toBottomOf="parent"
@@ -159,15 +161,16 @@
             app:layout_constraintTop_toTopOf="parent"
 
             app:layout_constraintVertical_bias="0.23" />
+
         <TextView
             android:id="@+id/label_3"
             android:layout_width="60dp"
             android:layout_height="40dp"
-            android:text="my House"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
+            android:text="my House"
 
 
             app:layout_constraintBottom_toBottomOf="parent"

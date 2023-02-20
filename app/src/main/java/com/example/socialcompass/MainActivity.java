@@ -2,10 +2,13 @@ package com.example.socialcompass;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.Layout;
@@ -70,7 +73,10 @@ public class MainActivity extends AppCompatActivity {
             latitudeView_2.setText(latitude_2);
         }
 
-
+        if(!Utilities.checkForLocationPermissions(this)) {
+            ActivityCompat.requestPermissions(this, new String[]
+                    {Manifest.permission.ACCESS_FINE_LOCATION}, 200);
+        }
     }
 
     public void onAddLocationClick(View view) {
@@ -95,8 +101,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onSubmitButtonClick(View view) {
-        View groupView_1 = findViewById(R.id.input_group_1);
-        View groupView_2 = findViewById(R.id.input_group_2);
+
 
         //Get all label's text store in strings
         TextView labelView_0 = findViewById(R.id.label_0);
@@ -151,5 +156,28 @@ public class MainActivity extends AppCompatActivity {
             Utilities.showAlert(this,
                     "Input is not Valid, Data not saved");
         }
+    }
+
+    public void testUIMock(View view){
+        SharedPreferences preferences = getSharedPreferences("MS1_PREFS", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+
+        TextView ui_mock = findViewById(R.id.orientation_ui_mock);
+        String orientationValue = ui_mock.getText().toString().trim();
+
+        if(Utilities.validOrientationValue(orientationValue)){
+            editor.putString("orientation",orientationValue);
+            editor.apply();
+
+            Intent intent = new Intent(this, compass_activity.class);
+            startActivity(intent);
+        }
+        else {
+            Utilities.showAlert(this,
+                    "Orientation is not Valid");
+        }
+
+
+
     }
 }
