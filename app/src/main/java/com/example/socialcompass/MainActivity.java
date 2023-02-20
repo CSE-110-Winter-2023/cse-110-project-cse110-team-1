@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
             groupView_2.setVisibility(View.VISIBLE);
         } else if (groupView_1.getVisibility() == View.VISIBLE
                 && groupView_2.getVisibility() == View.VISIBLE) {
-            Utilities.showAlert(this, "All three fields are visible");
+            Utilities.showAlert(this, "You can only add up to three locations");
         }
     }
 
@@ -114,6 +114,10 @@ public class MainActivity extends AppCompatActivity {
         String latitudeStr_2 = latitudeView_2.getText().toString().trim();
 
         //determine all three group of fields are available and store together
+
+
+
+        //Case where all three locations are visible.
         if (Utilities.isValidAll(labelStr_0, longitudeStr_0, latitudeStr_0)
                 && Utilities.isValidAll(labelStr_1, longitudeStr_1, latitudeStr_1)
                 && Utilities.isValidAll(labelStr_2, longitudeStr_2, latitudeStr_2)) {
@@ -133,6 +137,8 @@ public class MainActivity extends AppCompatActivity {
             editor.putString("longitude_2", longitudeStr_2);
             editor.putString("latitude_2", latitudeStr_2);
             editor.apply();
+            Utilities.showAlert(this, "Data Saved");
+
 
             //Intent intent = new Intent(this, CompassActivity.class);
             //link to new page
