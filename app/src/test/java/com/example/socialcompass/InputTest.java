@@ -1,8 +1,10 @@
 package com.example.socialcompass;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -10,12 +12,11 @@ import android.widget.TextView;
 import androidx.lifecycle.Lifecycle;
 import androidx.test.core.app.ActivityScenario;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowDialog;
+
 
 @RunWith(RobolectricTestRunner.class)
 public class InputTest {
@@ -40,10 +41,10 @@ public class InputTest {
     }
 
     /*
-    * test add new input fields by click on "Add location" button
-    * */
+     * test add new input fields by click on "Add location" button
+     * */
     @Test
-    public void testAddNewInputField(){
+    public void testAddNewInputField() {
         try (ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class)) {
             scenario.moveToState(Lifecycle.State.CREATED);
             scenario.moveToState(Lifecycle.State.STARTED);
@@ -69,8 +70,8 @@ public class InputTest {
     }
 
     /*
-    * test the data stored in sharedPreference
-    * */
+     * test the data stored in sharedPreference
+     * */
     @Test
     public void testSubmitValidValue() {
         try (ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class)) {
@@ -119,17 +120,17 @@ public class InputTest {
 
                 // test the values stored in storage
                 assertEquals("home", preferences.getString("label_0", "Label"));
-                assertEquals("-32.2331558", preferences.getString("longitude_0","Longitude"));
-                assertEquals("36.1651525", preferences.getString("latitude_0","Latitude"));
+                assertEquals("-32.2331558", preferences.getString("longitude_0", "Longitude"));
+                assertEquals("36.1651525", preferences.getString("latitude_0", "Latitude"));
 
                 assertEquals("family", preferences.getString("label_1", "Label"));
-                assertEquals("-65.26465", preferences.getString("longitude_1","Longitude"));
-                assertEquals("-3.235451", preferences.getString("latitude_1","Latitude"));
+                assertEquals("-65.26465", preferences.getString("longitude_1", "Longitude"));
+                assertEquals("-3.235451", preferences.getString("latitude_1", "Latitude"));
 
 
                 assertEquals("friend", preferences.getString("label_2", "Label"));
-                assertEquals("28.316582", preferences.getString("longitude_2","Longitude"));
-                assertEquals("77.46456516", preferences.getString("latitude_2","Latitude"));
+                assertEquals("28.316582", preferences.getString("longitude_2", "Longitude"));
+                assertEquals("77.46456516", preferences.getString("latitude_2", "Latitude"));
 
             });
         }
@@ -185,7 +186,6 @@ public class InputTest {
                 dialog.dismiss();
 
 
-
                 // SECOND TEST: write without label value
                 label0.setText("home");
                 long0.setText("-32.2331558");
@@ -208,8 +208,6 @@ public class InputTest {
                 tv = dialog.findViewById(android.R.id.message);
                 assertEquals("Input is not Valid, Data not saved",
                         tv.getText());
-
-
 
 
                 // THIRD TEST: write without location value
@@ -239,5 +237,5 @@ public class InputTest {
     }
 
 
-
 }
+

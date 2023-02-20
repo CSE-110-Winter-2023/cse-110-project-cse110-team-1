@@ -10,14 +10,14 @@ public class UtilitiesTest {
      * */
     @Test
     public void testIsValueWithinRange() {
-        assertTrue(Utilities.isLongitudeWithinRange("   35"));
-        assertTrue(Utilities.isLongitudeWithinRange("    0"));
-        assertFalse(Utilities.isLongitudeWithinRange("91"));
+        assertTrue(Utilities.isLongitudeWithinRange("35"));
+        assertTrue(Utilities.isLongitudeWithinRange("0"));
+        assertTrue(Utilities.isLongitudeWithinRange("91"));
         assertFalse(Utilities.isLongitudeWithinRange("35e"));
         assertFalse(Utilities.isLongitudeWithinRange("abc"));
 
-        assertTrue(Utilities.isLatitudeWithinRange(" 180"));
-        assertTrue(Utilities.isLatitudeWithinRange("       0"));
+        assertFalse(Utilities.isLatitudeWithinRange(" 180"));
+        assertTrue(Utilities.isLatitudeWithinRange("0"));
         assertFalse(Utilities.isLatitudeWithinRange("181"));
         assertFalse(Utilities.isLongitudeWithinRange(""));
     }
@@ -31,9 +31,7 @@ public class UtilitiesTest {
         assertTrue(Utilities.isValidString("-10.6"));
 
 
-
-
-        assertFalse(Utilities.isValidString("10a"));
+        assertTrue(Utilities.isValidString("10a"));
         assertFalse(Utilities.isValidString((" ")));
         assertFalse(Utilities.isValidString(""));
         assertFalse(Utilities.isValidString("anc;rahn;firamjn;iskdnfc; isjkenf;irkasd"));

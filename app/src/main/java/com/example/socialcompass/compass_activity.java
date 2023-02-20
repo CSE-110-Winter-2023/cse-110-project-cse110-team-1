@@ -29,8 +29,22 @@ public class compass_activity extends AppCompatActivity {
         setContentView(R.layout.activity_compass);
         setNode(null);
 
+
+        SharedPreferences preferences = getSharedPreferences("MS1_PREFS", Context.MODE_PRIVATE);
+        String ui_orientation = preferences.getString("orientation",null);
+        if(ui_orientation != null || ui_orientation != ""){
+            setUiMockOrientation(Float.parseFloat(ui_orientation));
+        }
+        else{
+            orientationService.getOrientation().observe(this,this::setRotation);
+
+        }
+
+
+
+
         locationService.getLocation().observe(this, this::setNode);
-        orientationService.getOrientation().observe(this,this::setRotation);
+
     }
 
 
@@ -85,7 +99,13 @@ public class compass_activity extends AppCompatActivity {
         float degrees = (float) Math.toDegrees(rotation);
         ConstraintLayout constraintLayout = findViewById(R.id.compass_layout);
         constraintLayout.setRotation(-1 * degrees);
+    }
 
+
+    void setUiMockOrientation(float rotation){
+
+        ConstraintLayout constraintLayout = findViewById(R.id.compass_layout);
+        constraintLayout.setRotation(rotation);
     }
 
 

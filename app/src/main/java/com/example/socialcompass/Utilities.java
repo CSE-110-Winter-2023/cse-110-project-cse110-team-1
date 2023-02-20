@@ -16,7 +16,7 @@ public class Utilities {
         alertBuilder
                 .setTitle("Alert")
                 .setMessage(message)
-                .setPositiveButton("OK",(dialog,id) -> {
+                .setPositiveButton("OK", (dialog, id) -> {
                     dialog.cancel();
                 })
                 .setCancelable(true);
@@ -31,7 +31,7 @@ public class Utilities {
     public static boolean isLongitudeWithinRange(String input) {
 
         input = input.trim();
-        if (input.length() < 1 || input.length()>25) {
+        if (input.length() < 1 || input.length() > 25) {
             return false;
         }
 
@@ -46,9 +46,10 @@ public class Utilities {
             return false;
         }
     }
+
     public static boolean isLatitudeWithinRange(String input) {
         input = input.trim();
-        if (input.length() < 1 || input.length()>25) {
+        if (input.length() < 1 || input.length() > 25) {
             return false;
         }
 
@@ -73,27 +74,27 @@ public class Utilities {
     }
 
 
-    public static float getAngle(float gpsLat, float gpsLong,float addressLat, float addressLong){
-        float lenA = Math.abs(addressLong-gpsLong);
+    public static float getAngle(float gpsLat, float gpsLong, float addressLat, float addressLong) {
+        float lenA = Math.abs(addressLong - gpsLong);
         float lenB = Math.abs(addressLat - gpsLat);
 
-        double angle_rad =  Math.atan2(lenB,lenA);
+        double angle_rad = Math.atan2(lenB, lenA);
 
-        double angle_deg =  angle_rad*180.0/Math.PI;
+        double angle_deg = angle_rad * 180.0 / Math.PI;
         float degree = (float) angle_deg;
 
-        if(gpsLat<=addressLat && gpsLong<=addressLong){
+        if (gpsLat <= addressLat && gpsLong <= addressLong) {
             // first quadrant
-            degree = 90-degree;
-        }else if(gpsLat<=addressLat && gpsLong>=addressLong){
+            degree = 90 - degree;
+        } else if (gpsLat <= addressLat && gpsLong >= addressLong) {
             // second quadrant
-            degree = degree+270;
-        }else if(gpsLat>=addressLat && gpsLong>=addressLong){
+            degree = degree + 270;
+        } else if (gpsLat >= addressLat && gpsLong >= addressLong) {
             // third quadrant
-            degree = 270-degree;
-        }else if(gpsLat>=addressLat && gpsLong<=addressLong){
+            degree = 270 - degree;
+        } else if (gpsLat >= addressLat && gpsLong <= addressLong) {
             // forth quadrant
-            degree = degree+90;
+            degree = degree + 90;
         }
 
         return degree;
@@ -104,5 +105,23 @@ public class Utilities {
                 == PackageManager.PERMISSION_GRANTED
                 || ActivityCompat.checkSelfPermission(a, Manifest.permission.ACCESS_COARSE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED;
+    }
+
+    public static boolean validOrientationValue(String input) {
+        input = input.trim();
+        if (input.length() < 1 || input.length() > 25) {
+            return false;
+        }
+
+        try {
+            double number = Double.parseDouble(input);
+            if (number <= 359 && number >= 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }
