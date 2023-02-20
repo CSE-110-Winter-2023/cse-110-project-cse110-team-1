@@ -133,7 +133,6 @@ public class MainActivity extends AppCompatActivity {
             editor.putString("longitude_2", longitudeStr_2);
             editor.putString("latitude_2", latitudeStr_2);
             editor.apply();
-            Utilities.showAlert(this, "data Saved");
 
             //Intent intent = new Intent(this, CompassActivity.class);
             //link to new page
