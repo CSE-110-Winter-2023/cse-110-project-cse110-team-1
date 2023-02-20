@@ -1,22 +1,15 @@
 package com.example.socialcompass;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
-
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.text.Layout;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
-import org.w3c.dom.Text;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -26,16 +19,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         /*
-        * TODO: keep track of what view should be displayed/hide
-        *  (and) display data that we already have on those fields
-        * This can be determine by checking which data we have available
-        * */
+         * This can be determine by checking which data we have available
+         * */
         View groupView_1 = findViewById(R.id.input_group_1);
         View groupView_2 = findViewById(R.id.input_group_2);
         SharedPreferences preferences = getSharedPreferences("MS1_PREFS", Context.MODE_PRIVATE);
-        String label_0 = preferences.getString("label_0","Label");
-        String longitude_0 = preferences.getString("longitude_0","Longitude");
-        String latitude_0 = preferences.getString("latitude_0","Latitude");
+        String label_0 = preferences.getString("label_0", "Label");
+        String longitude_0 = preferences.getString("longitude_0", "Longitude");
+        String latitude_0 = preferences.getString("latitude_0", "Latitude");
 
         TextView labelView_0 = findViewById(R.id.label_0);
         labelView_0.setText(label_0);
@@ -45,12 +36,12 @@ public class MainActivity extends AppCompatActivity {
         latitudeView_0.setText(latitude_0);
 
 
-        String label_1 = preferences.getString("label_1","Label");
-        String longitude_1 = preferences.getString("longitude_1","Longitude");
-        String latitude_1 = preferences.getString("latitude_1","Latitude");
-        String label_2 = preferences.getString("label_2","Label");
-        String longitude_2 = preferences.getString("longitude_2","Longitude");
-        String latitude_2 = preferences.getString("latitude_2","Latitude");
+        String label_1 = preferences.getString("label_1", "Label");
+        String longitude_1 = preferences.getString("longitude_1", "Longitude");
+        String latitude_1 = preferences.getString("latitude_1", "Latitude");
+        String label_2 = preferences.getString("label_2", "Label");
+        String longitude_2 = preferences.getString("longitude_2", "Longitude");
+        String latitude_2 = preferences.getString("latitude_2", "Latitude");
 
         if (!label_1.equals("Label")) {
             groupView_1.setVisibility(View.VISIBLE);
@@ -73,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
             latitudeView_2.setText(latitude_2);
         }
 
-        if(!Utilities.checkForLocationPermissions(this)) {
+        if (!Utilities.checkForLocationPermissions(this)) {
             ActivityCompat.requestPermissions(this, new String[]
                     {Manifest.permission.ACCESS_FINE_LOCATION}, 200);
         }
@@ -81,22 +72,19 @@ public class MainActivity extends AppCompatActivity {
 
     public void onAddLocationClick(View view) {
         /*
-        * TODO: display additional form for user to fill in
-        * Each form has 3 input fields: label, longitude and latitude
-        * Store these data in storage
-        *  */
+         * Each form has 3 input fields: label, longitude and latitude
+         * Store these data in storage
+         *  */
         //ScrollView parentLayout = findViewById(R.id.scroll_view);
         View groupView_1 = findViewById(R.id.input_group_1);
         View groupView_2 = findViewById(R.id.input_group_2);
         if (groupView_1.getVisibility() == View.GONE) {
             groupView_1.setVisibility(View.VISIBLE);
-        }
-        else if (groupView_2.getVisibility() == View.GONE) {
+        } else if (groupView_2.getVisibility() == View.GONE) {
             groupView_2.setVisibility(View.VISIBLE);
-        }
-        else if (groupView_1.getVisibility() == View.VISIBLE
-                && groupView_2.getVisibility() == View.VISIBLE){
-            Utilities.showAlert(this,"All three fields are visible");
+        } else if (groupView_1.getVisibility() == View.VISIBLE
+                && groupView_2.getVisibility() == View.VISIBLE) {
+            Utilities.showAlert(this, "All three fields are visible");
         }
     }
 
@@ -126,57 +114,53 @@ public class MainActivity extends AppCompatActivity {
         String latitudeStr_2 = latitudeView_2.getText().toString().trim();
 
         //determine all three group of fields are available and store together
-        if (Utilities.isValidAll(labelStr_0,longitudeStr_0,latitudeStr_0)
-                && Utilities.isValidAll(labelStr_1,longitudeStr_1,latitudeStr_1)
-                && Utilities.isValidAll(labelStr_2,longitudeStr_2,latitudeStr_2)) {
+        if (Utilities.isValidAll(labelStr_0, longitudeStr_0, latitudeStr_0)
+                && Utilities.isValidAll(labelStr_1, longitudeStr_1, latitudeStr_1)
+                && Utilities.isValidAll(labelStr_2, longitudeStr_2, latitudeStr_2)) {
 
             SharedPreferences preferences = getSharedPreferences("MS1_PREFS", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
 
-            editor.putString("label_0",labelStr_0);
-            editor.putString("longitude_0",longitudeStr_0);
-            editor.putString("latitude_0",latitudeStr_0);
+            editor.putString("label_0", labelStr_0);
+            editor.putString("longitude_0", longitudeStr_0);
+            editor.putString("latitude_0", latitudeStr_0);
 
-            editor.putString("label_1",labelStr_1);
-            editor.putString("longitude_1",longitudeStr_1);
-            editor.putString("latitude_1",latitudeStr_1);
+            editor.putString("label_1", labelStr_1);
+            editor.putString("longitude_1", longitudeStr_1);
+            editor.putString("latitude_1", latitudeStr_1);
 
-            editor.putString("label_2",labelStr_2);
-            editor.putString("longitude_2",longitudeStr_2);
-            editor.putString("latitude_2",latitudeStr_2);
+            editor.putString("label_2", labelStr_2);
+            editor.putString("longitude_2", longitudeStr_2);
+            editor.putString("latitude_2", latitudeStr_2);
             editor.apply();
-            Utilities.showAlert(this,"data Saved");
 
             //Intent intent = new Intent(this, CompassActivity.class);
             //link to new page
             Intent intent = new Intent(this, compass_activity.class);
             startActivity(intent);
-        }
-        else {
+        } else {
             Utilities.showAlert(this,
                     "Input is not Valid, Data not saved");
         }
     }
 
-    public void testUIMock(View view){
+    public void testUIMock(View view) {
         SharedPreferences preferences = getSharedPreferences("MS1_PREFS", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
 
         TextView ui_mock = findViewById(R.id.orientation_ui_mock);
         String orientationValue = ui_mock.getText().toString().trim();
 
-        if(Utilities.validOrientationValue(orientationValue)){
-            editor.putString("orientation",orientationValue);
+        if (Utilities.validOrientationValue(orientationValue)) {
+            editor.putString("orientation", orientationValue);
             editor.apply();
 
             Intent intent = new Intent(this, compass_activity.class);
             startActivity(intent);
-        }
-        else {
+        } else {
             Utilities.showAlert(this,
                     "Orientation is not Valid");
         }
-
 
 
     }
