@@ -109,7 +109,6 @@ public class compass_activity extends AppCompatActivity {
         constraintLayout.setRotation(rotation);
     }
 
-
     @Override
     public void finish() {
         SharedPreferences preferences = getSharedPreferences("MS1_PREFS", Context.MODE_PRIVATE);
@@ -119,4 +118,5 @@ public class compass_activity extends AppCompatActivity {
         }
         super.finish();
     }
+
 }
