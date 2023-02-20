@@ -31,8 +31,9 @@ public class compass_activity extends AppCompatActivity {
 
 
         SharedPreferences preferences = getSharedPreferences("MS1_PREFS", Context.MODE_PRIVATE);
-        String ui_orientation = preferences.getString("orientation",null);
-        if(ui_orientation != null || ui_orientation != ""){
+
+        if(preferences.contains("orientation")){
+            String ui_orientation = preferences.getString("orientation",null);
             setUiMockOrientation(Float.parseFloat(ui_orientation));
         }
         else{
@@ -108,11 +109,14 @@ public class compass_activity extends AppCompatActivity {
         constraintLayout.setRotation(rotation);
     }
 
+    @Override
+    public void finish() {
+        SharedPreferences preferences = getSharedPreferences("MS1_PREFS", Context.MODE_PRIVATE);
+        if(preferences.contains("orientation")){
+            preferences.edit().remove("orientation").commit();
 
-
-
-
-
-
+        }
+        super.finish();
+    }
 
 }

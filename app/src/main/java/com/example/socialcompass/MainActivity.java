@@ -139,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
             editor.apply();
             Utilities.showAlert(this, "Data Saved");
 
+
             //Intent intent = new Intent(this, CompassActivity.class);
             //link to new page
             Intent intent = new Intent(this, compass_activity.class);
