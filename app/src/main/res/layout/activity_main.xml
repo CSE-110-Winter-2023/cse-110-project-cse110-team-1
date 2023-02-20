@@ -51,11 +51,59 @@
             android:layout_height="match_parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ui_mock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:background="#F1F3DA"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <EditText
+                    android:id="@+id/orientation_ui_mock"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginBottom="10dp"
+                    android:inputType="textPersonName"
+                    android:minWidth="100dp"
+                    android:hint="Orientation"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+
+                    app:layout_constraintVertical_bias="1.0" />
+
+                <Button
+                    android:id="@+id/test_ui_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TEST"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:onClick="testUIMock"
+
+                    tools:ignore="MissingConstraints" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/input_group_0"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="100dp"
+                android:layout_marginEnd="10dp"
                 android:background="#F1F3DA"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -70,7 +118,7 @@
                     android:layout_marginEnd="15dp"
                     android:inputType="textPersonName"
                     android:minWidth="100dp"
-                    android:text="Label"
+                    android:hint="Label"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -85,7 +133,7 @@
                     android:ems="10"
                     android:inputType="textPersonName"
                     android:minWidth="100dp"
-                    android:text="Longitude"
+                    android:hint="Longitude"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/label_0" />
@@ -100,7 +148,7 @@
                     android:layout_marginBottom="10dp"
                     android:inputType="textPersonName"
                     android:minWidth="100dp"
-                    android:text="Latitude"
+                    android:hint="Latitude"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
@@ -110,13 +158,12 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/input_group_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="240dp"
+                android:layout_marginTop="340dp"
                 android:layout_marginEnd="10dp"
                 android:background="#F1F3DA"
                 android:visibility="gone"
@@ -134,7 +181,7 @@
                     android:layout_marginEnd="15dp"
                     android:inputType="textPersonName"
                     android:minWidth="100dp"
-                    android:text="Label"
+                    android:hint="Label"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -149,7 +196,7 @@
                     android:ems="10"
                     android:inputType="textPersonName"
                     android:minWidth="100dp"
-                    android:text="Longitude"
+                    android:hint="Longitude"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/label_1" />
@@ -164,7 +211,7 @@
                     android:layout_marginBottom="10dp"
                     android:inputType="textPersonName"
                     android:minWidth="100dp"
-                    android:text="Latitude"
+                    android:hint="Latitude"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
@@ -178,7 +225,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="480dp"
+                android:layout_marginTop="580dp"
                 android:layout_marginEnd="10dp"
                 android:background="#F1F3DA"
                 android:visibility="gone"
@@ -196,7 +243,7 @@
                     android:layout_marginEnd="15dp"
                     android:inputType="textPersonName"
                     android:minWidth="100dp"
-                    android:text="Label"
+                    android:hint="Label"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -211,7 +258,7 @@
                     android:ems="10"
                     android:inputType="textPersonName"
                     android:minWidth="100dp"
-                    android:text="Longitude"
+                    android:hint="Longitude"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/label_2" />
@@ -226,7 +273,7 @@
                     android:layout_marginBottom="10dp"
                     android:inputType="textPersonName"
                     android:minWidth="100dp"
-                    android:text="Latitude"
+                    android:hint="Latitude"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"

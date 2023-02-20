@@ -101,8 +101,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onSubmitButtonClick(View view) {
-        View groupView_1 = findViewById(R.id.input_group_1);
-        View groupView_2 = findViewById(R.id.input_group_2);
+
 
         //Get all label's text store in strings
         TextView labelView_0 = findViewById(R.id.label_0);
@@ -157,5 +156,28 @@ public class MainActivity extends AppCompatActivity {
             Utilities.showAlert(this,
                     "Input is not Valid, Data not saved");
         }
+    }
+
+    public void testUIMock(View view){
+        SharedPreferences preferences = getSharedPreferences("MS1_PREFS", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+
+        TextView ui_mock = findViewById(R.id.orientation_ui_mock);
+        String orientationValue = ui_mock.getText().toString().trim();
+
+        if(Utilities.validOrientationValue(orientationValue)){
+            editor.putString("orientation",orientationValue);
+            editor.apply();
+
+            Intent intent = new Intent(this, compass_activity.class);
+            startActivity(intent);
+        }
+        else {
+            Utilities.showAlert(this,
+                    "Orientation is not Valid");
+        }
+
+
+
     }
 }

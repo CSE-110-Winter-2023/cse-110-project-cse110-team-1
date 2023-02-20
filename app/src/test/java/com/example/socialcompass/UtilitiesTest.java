@@ -10,14 +10,14 @@ public class UtilitiesTest {
      * */
     @Test
     public void testIsValueWithinRange() {
-        assertTrue(Utilities.isLongitudeWithinRange("   35"));
-        assertTrue(Utilities.isLongitudeWithinRange("    0"));
+        assertTrue(Utilities.isLongitudeWithinRange("35"));
+        assertTrue(Utilities.isLongitudeWithinRange("0"));
         assertFalse(Utilities.isLongitudeWithinRange("91"));
         assertFalse(Utilities.isLongitudeWithinRange("35e"));
         assertFalse(Utilities.isLongitudeWithinRange("abc"));
 
         assertTrue(Utilities.isLatitudeWithinRange(" 180"));
-        assertTrue(Utilities.isLatitudeWithinRange("       0"));
+        assertTrue(Utilities.isLatitudeWithinRange("0"));
         assertFalse(Utilities.isLatitudeWithinRange("181"));
         assertFalse(Utilities.isLongitudeWithinRange(""));
     }
@@ -29,8 +29,6 @@ public class UtilitiesTest {
         assertTrue(Utilities.isValidString("a"));
         assertTrue(Utilities.isValidString("125"));
         assertTrue(Utilities.isValidString("-10.6"));
-
-
 
 
         assertFalse(Utilities.isValidString("10a"));

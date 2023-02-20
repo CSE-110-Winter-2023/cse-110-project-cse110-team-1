@@ -105,4 +105,22 @@ public class Utilities {
                 || ActivityCompat.checkSelfPermission(a, Manifest.permission.ACCESS_COARSE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED;
     }
+
+    public static boolean validOrientationValue(String input){
+        input = input.trim();
+        if (input.length() < 1 || input.length()>25) {
+            return false;
+        }
+
+        try {
+            double number = Double.parseDouble(input);
+            if (number <= 359 && number >= 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
 }
