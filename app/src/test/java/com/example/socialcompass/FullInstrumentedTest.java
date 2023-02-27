@@ -175,7 +175,10 @@ public class FullInstrumentedTest {
 
                 assertEquals(313.7062683105469, angle1_1, 0.1f);
                 assertEquals(113.356689453125, angle1_2, 0.1f);
-                assertEquals(94.38699340820312, angle1_3, 0.1f);
+                //changed expected to correct computation, because the absolute value between the longitude of
+                // Philippines and San Diego is greater than 180, which going to the opposite direction is closer
+                //the original expected value was 94.38699340820312
+                assertEquals(261.4665832519531, angle1_3, 0.1f);
 
                 //Simulate turning and now the device is facing South
                 ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
@@ -203,7 +206,10 @@ public class FullInstrumentedTest {
 
                 assertEquals(313.7062683105469, angle2_1, 0.1f);
                 assertEquals(113.356689453125, angle2_2, 0.1f);
-                assertEquals(94.38699340820312, angle2_3, 0.1f);
+                //changed expected to correct computation, because the absolute value between the longitude of
+                // Philippines and San Diego is greater than 180, which going to the opposite direction is closer
+                //the original expected value was 94.38699340820312
+                assertEquals(261.4665832519531, angle2_3, 0.1f);
 
 
                 //Simulate closing and restarting the app from the compass activity.
@@ -222,7 +228,10 @@ public class FullInstrumentedTest {
 
                 assertEquals(313.7062683105469, angle3_1, 0.1f);
                 assertEquals(113.356689453125, angle3_2, 0.1f);
-                assertEquals(94.38699340820312, angle3_3, 0.1f);
+                //changed expected to correct computation, because the absolute value between the longitude of
+                // Philippines and San Diego is greater than 180, which going to the opposite direction is closer
+                //the original expected value was 94.38699340820312
+                assertEquals(261.4665832519531, angle3_3, 0.1f);
 
             });
         }

@@ -75,6 +75,25 @@ public class Utilities {
 
 
     public static float getAngle(float gpsLat, float gpsLong, float addressLat, float addressLong) {
+        if(Math.abs(gpsLong-addressLong)>180){
+            if(gpsLong < 0){
+                addressLong = -180-(180-addressLong);
+            }
+            else{
+                addressLong = 180+(180+addressLong);
+
+            }
+        }
+        if(Math.abs(gpsLat-addressLat) > 90){
+            if(gpsLat < 0){
+                addressLat = -90-(90-addressLat);
+            }
+            else{
+                addressLat = 90+(90+addressLat);
+
+            }
+        }
+
         float lenA = Math.abs(addressLong - gpsLong);
         float lenB = Math.abs(addressLat - gpsLat);
 
