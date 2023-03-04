@@ -7,6 +7,8 @@ import android.content.pm.PackageManager;
 
 import androidx.core.app.ActivityCompat;
 
+import java.util.UUID;
+
 //import java.util.Optional;
 
 public class Utilities {
@@ -143,4 +145,10 @@ public class Utilities {
             return false;
         }
     }
+
+    public static String generatePrivateId() {
+        String uniqueID = UUID.randomUUID().toString();
+        return uniqueID;
+    }
+
 }
