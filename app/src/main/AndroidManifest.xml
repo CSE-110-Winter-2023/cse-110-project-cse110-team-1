@@ -15,6 +15,12 @@
         android:theme="@style/Theme.SocialCompass"
         tools:targetApi="31">
         <activity
+            android:name=".FriendListItem"
+            android:exported="false" />
+        <activity
+            android:name=".activity.FriendListActivity"
+            android:exported="false" />
+        <activity
             android:name=".compass_activity"
             android:exported="false">
             <meta-data
@@ -22,7 +28,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
