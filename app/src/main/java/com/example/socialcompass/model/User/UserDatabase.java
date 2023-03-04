@@ -1,4 +1,4 @@
-package com.example.socialcompass.model;
+package com.example.socialcompass.model.User;
 
 
 import android.content.Context;
@@ -23,7 +23,7 @@ public abstract class UserDatabase extends RoomDatabase {
 
 
     private static UserDatabase make(Context context) {
-        return Room.databaseBuilder(context, UserDatabase.class, "social_compass.db")
+        return Room.databaseBuilder(context, UserDatabase.class, "user_private_info.db")
                 .allowMainThreadQueries()
                 .build();
     }
