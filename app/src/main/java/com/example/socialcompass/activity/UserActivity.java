@@ -31,6 +31,7 @@ public class UserActivity extends AppCompatActivity {
         if(userName != null){
             EditText input_name = this.findViewById(R.id.my_input_name);
             input_name.setText(userName);
+            input_name.setFocusable(false);
 
         }
 

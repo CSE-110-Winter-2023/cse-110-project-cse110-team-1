@@ -56,4 +56,7 @@ public abstract class FriendDatabase extends RoomDatabase {
         }
         singleton = testDatabase;
     }
+
+
+
 }

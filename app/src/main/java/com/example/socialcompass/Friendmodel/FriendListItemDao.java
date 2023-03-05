@@ -36,6 +36,8 @@ public interface FriendListItemDao {
     List<Long> insertAll(List<FriendListItem> LocationListItem);
 
 
+    @Query("SELECT EXISTS(SELECT 1 FROM friends_list_items WHERE publicCode = :publicCode)")
+    public abstract boolean exists(String publicCode);
 
 
 }
