@@ -37,7 +37,7 @@ public interface FriendListItemDao {
     int getOrderForAppend();
 
     @Insert
-    List<Long> insertAll(List<FriendListItem> LocationListItem);
+    List<Long> insertAll(List<FriendListItem> friendListItem);
 
     @VisibleForTesting
     @Query("SELECT * FROM friends_list_items WHERE publicCode = :publicCode")
