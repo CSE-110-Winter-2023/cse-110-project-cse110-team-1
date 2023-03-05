@@ -1,4 +1,4 @@
-package com.example.socialcompass.model;
+package com.example.socialcompass.FriendViewModel;
 
 import android.app.Application;
 import android.content.Context;
@@ -6,6 +6,10 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+
+import com.example.socialcompass.Friendmodel.FriendDatabase;
+import com.example.socialcompass.Friendmodel.FriendListItem;
+import com.example.socialcompass.Friendmodel.FriendListItemDao;
 
 import java.util.List;
 

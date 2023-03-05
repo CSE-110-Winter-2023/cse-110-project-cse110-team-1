@@ -1,4 +1,4 @@
-package com.example.socialcompass.model;
+package com.example.socialcompass.Friendview;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,10 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.socialcompass.R;
+import com.example.socialcompass.Friendmodel.FriendListItem;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.ViewHolder> {
