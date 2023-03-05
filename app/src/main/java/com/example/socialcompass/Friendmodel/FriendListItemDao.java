@@ -26,7 +26,7 @@ public interface FriendListItemDao {
     @Delete
     int delete(FriendListItem friendListItem);
 
-    @Query("SELECT * FROM `friends_list_items` ORDER BY `public_code`")
+    @Query("SELECT * FROM `friends_list_items` ORDER BY `order`")
     LiveData<List<FriendListItem>> getAllLive();
 
     @Query("SELECT `order` +1  FROM `friends_list_items` ORDER BY `order` DESC LIMIT 1")
