@@ -8,7 +8,7 @@
 //import androidx.test.ext.junit.runners.AndroidJUnit4;
 //
 //
-//import com.example.socialcompass.model.Friend.Friend;
+//import com.example.socialcompass.Friendmodel.Friend;
 //import com.example.socialcompass.model.User.User;
 //import com.example.socialcompass.model.User.UserDao;
 //import com.example.socialcompass.model.User.UserDatabase;

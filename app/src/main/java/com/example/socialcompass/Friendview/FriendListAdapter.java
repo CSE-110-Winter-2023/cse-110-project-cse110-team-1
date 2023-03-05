@@ -9,23 +9,24 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.socialcompass.R;
-import com.example.socialcompass.Friendmodel.FriendListItem;
+import com.example.socialcompass.Friendmodel.Friend;
+import com.example.socialcompass.Friendmodel.Friend;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
 public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.ViewHolder> {
-    private List<FriendListItem> friendListItems = Collections.emptyList();
-    private static Consumer<FriendListItem> onDeleteClicked;
+    private List<Friend> friendListItems = Collections.emptyList();
+    private static Consumer<Friend> onDeleteClicked;
 
-    public void setFriendListItems(List<FriendListItem> newFriendListItems){
+    public void setFriendListItems(List<Friend> newFriendListItems){
         this.friendListItems.clear();
         this.friendListItems = newFriendListItems;
         notifyDataSetChanged();
     }
 
-    public void setOnDeleteClickedHandler(Consumer<FriendListItem> onDeleteClicked){
+    public void setOnDeleteClickedHandler(Consumer<Friend> onDeleteClicked){
         this.onDeleteClicked = onDeleteClicked;
     }
 
@@ -48,14 +49,16 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
         return friendListItems.size();
     }
 
-    public long getItemId(int position){
-        return friendListItems.get(position).id;
-    }
+//    public long getItemId(int position){
+//        return friendListItems.get(positionsition).id;
+//    }
+
+
     public static class ViewHolder extends RecyclerView.ViewHolder{
         private final TextView label;
         private final TextView publicCode;
 
-        private FriendListItem friendListItem;
+        private Friend friendListItem;
         private final TextView deleteView;
 
         public ViewHolder(@NonNull View itemView) {
@@ -71,9 +74,9 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
 
 
         }
-        public FriendListItem getTodoItem(){return friendListItem;}
+        public Friend getTodoItem(){return friendListItem;}
 
-        public void setFriendItem(FriendListItem friendListItem){
+        public void setFriendItem(Friend friendListItem){
             this.friendListItem = friendListItem;
             this.label.setText(friendListItem.label);
             this.publicCode.setText(friendListItem.publicCode);

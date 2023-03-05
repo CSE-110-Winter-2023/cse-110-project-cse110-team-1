@@ -7,25 +7,25 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.example.socialcompass.Friendmodel.FriendDao;
+import com.example.socialcompass.Friendmodel.Friend;
 import com.example.socialcompass.Friendmodel.FriendDatabase;
-import com.example.socialcompass.Friendmodel.FriendListItem;
-import com.example.socialcompass.Friendmodel.FriendListItemDao;
 
 import java.util.List;
 
 public class FriendListViewModel extends AndroidViewModel {
-    private LiveData<List<FriendListItem>> friendListItems;
-    private final FriendListItemDao friendListItemDao;
+    private LiveData<List<Friend>> friendListItems;
+    private final FriendDao friendListItemDao;
 
 
     public FriendListViewModel(@NonNull Application application) {
         super(application);
         Context context = getApplication().getApplicationContext();
-        FriendDatabase db = FriendDatabase.getSingleton(context);
-        friendListItemDao = db.friendListItemDao();
+        FriendDatabase db = FriendDatabase.provide(context);
+        friendListItemDao = db.getDao();
     }
 
-    public LiveData<List<FriendListItem>> getFriendListItems(){
+    public LiveData<List<Friend>> getFriendListItems(){
         if(friendListItems == null){
             loadFriends();
         }
@@ -38,11 +38,11 @@ public class FriendListViewModel extends AndroidViewModel {
 
     public void createFriend(String public_code){
         int endOfListOrder = friendListItemDao.getOrderForAppend();
-        FriendListItem newItem = new FriendListItem("default name",public_code,"231","312",endOfListOrder);
-        friendListItemDao.insert( newItem);
+        Friend newItem = new Friend(public_code,"default name",12,13,endOfListOrder);
+        friendListItemDao.upsert( newItem);
     }
 
-    public void toggleDelete(FriendListItem friendListItem){
+    public void toggleDelete(Friend friendListItem){
         friendListItemDao.delete(friendListItem);
     }
 

@@ -1,20 +1,27 @@
-package com.example.socialcompass.model.Friend;
+package com.example.socialcompass.Friendmodel;
+
+import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
+import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.lang.reflect.Type;
 import java.time.Instant;
-
-import kotlin.jvm.Transient;
+import java.util.Collections;
+import java.util.List;
 
 
 class TimestampAdapter extends TypeAdapter<Long> {
@@ -31,18 +38,13 @@ class TimestampAdapter extends TypeAdapter<Long> {
     }
 }
 
-@Entity(tableName = "friends", ignoredColumns = {"private_code"})
+@Entity(tableName = "friends")
 public class Friend {
     /** The public code of the user. Used as the primary key for shared notes (even on the cloud). */
     @PrimaryKey
-    @SerializedName("public_code")
+    @SerializedName("publicCode")
     @NonNull
-    public String public_code;
-
-    /** The private code of the user. */
-    @SerializedName("private_code")
-    @NonNull
-    public String private_code;
+    public String publicCode;
 
     /** The label of the user. */
     @SerializedName("label")
@@ -59,10 +61,12 @@ public class Friend {
     @NonNull
     public float longitude;
 
-    @JsonAdapter(com.example.socialcompass.model.Friend.TimestampAdapter.class)
+    public int order;
+
+    @JsonAdapter(TimestampAdapter.class)
     @SerializedName(value = "created_at", alternate = "createdAt")
     public long createdAt;
-    @JsonAdapter(com.example.socialcompass.model.Friend.TimestampAdapter.class)
+    @JsonAdapter(TimestampAdapter.class)
     @SerializedName(value = "updated_at", alternate = "updatedAt")
     public long updatedAt = 0;
 
@@ -70,18 +74,28 @@ public class Friend {
     public Friend() {}
 
     /** General constructor for a note. */
-    public Friend(@NonNull String public_code,  String private_code, @NonNull String label
-            , @NonNull float latitude, @NonNull float longitude) {
-        this.public_code = public_code;
-        this.private_code = private_code;
+    public Friend(@NonNull String publicCode, @NonNull String label, @NonNull float latitude, @NonNull float longitude, int order) {
+        this.publicCode = publicCode;
         this.label = label;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.createdAt = createdAt;
-        this.updatedAt = 0;
+        this.order = order;
     }
 
 
+    public static List<Friend> loadJSON(Context context, String path){
+        try{
+            InputStream input = context.getAssets().open(path);
+            Reader reader = new InputStreamReader(input);
+            Gson gson = new Gson();
+            Type type = new TypeToken<List<Friend>>(){}.getType();
+            return gson.fromJson(reader,type);
+
+        }catch (IOException e){
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
+    }
 
     public static Friend fromJSON(String json) {
         return new Gson().fromJson(json, Friend.class);
