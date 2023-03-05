@@ -14,7 +14,7 @@ public interface FriendListItemDao {
     @Insert
     Long insert(FriendListItem friendListItem);
 
-    @Query("SELECT * FROM friends_list_items WHERE public_code = :public_code")
+    @Query("SELECT * FROM friends_list_items WHERE publicCode = :public_code")
     public abstract LiveData<FriendListItem> get(String public_code);
 
     @Query("SELECT * FROM `friends_list_items` ORDER BY `order`")

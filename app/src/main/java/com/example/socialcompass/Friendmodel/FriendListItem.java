@@ -21,7 +21,7 @@ import java.util.List;
 public class FriendListItem {
     @PrimaryKey(autoGenerate = true)
     public long id;
-    public String public_code;
+    public String publicCode;
     @NonNull
     public String label;
     @NonNull
@@ -30,11 +30,11 @@ public class FriendListItem {
     public String longitude;
     public int order;
 
-    public FriendListItem(@NonNull String label, @NonNull String public_code, @NonNull String latitude,@NonNull String longitude, int order) {
+    public FriendListItem(@NonNull String label, @NonNull String publicCode, @NonNull String latitude, @NonNull String longitude, int order) {
         this.label = label;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.public_code = public_code;
+        this.publicCode = publicCode;
         this.order = order;
     }
 
@@ -55,7 +55,7 @@ public class FriendListItem {
     @Override
     public String toString() {
         return "FriendListItem{" +
-                "public_code='" + public_code + '\'' +
+                "public_code='" + publicCode + '\'' +
                 ", label='" + label + '\'' +
                 ", latitude='" + latitude + '\'' +
                 ", longitude='" + longitude + '\'' +

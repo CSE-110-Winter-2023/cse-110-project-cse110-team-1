@@ -40,7 +40,7 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.setTodoItem(friendListItems.get(position));
+        holder.setFriendItem(friendListItems.get(position));
     }
 
     @Override
@@ -73,10 +73,10 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
         }
         public FriendListItem getTodoItem(){return friendListItem;}
 
-        public void setTodoItem(FriendListItem friendListItem){
+        public void setFriendItem(FriendListItem friendListItem){
             this.friendListItem = friendListItem;
             this.label.setText(friendListItem.label);
-            this.publicCode.setText(friendListItem.public_code);
+            this.publicCode.setText(friendListItem.publicCode);
         }
 
 

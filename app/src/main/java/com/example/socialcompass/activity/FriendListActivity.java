@@ -44,7 +44,7 @@ public class FriendListActivity extends AppCompatActivity {
 
         //get the input user name from user activity
         // Get the text from the intent
-        String text = getIntent().getStringExtra("input_name");
+        String text = getIntent().getStringExtra("inputName");
         myName = this.findViewById(R.id.my_name_from_friendlist);
         myName.setText(text);
     }
