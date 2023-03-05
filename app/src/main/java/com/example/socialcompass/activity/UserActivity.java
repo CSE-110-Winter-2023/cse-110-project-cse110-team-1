@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.socialcompass.R;
-import com.example.socialcompass.Utilities;
+import com.example.socialcompass.utility.Utilities;
 
 public class UserActivity extends AppCompatActivity {
     Button saveUserNameButton;
