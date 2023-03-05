@@ -1,17 +1,15 @@
 package com.example.socialcompass.model;
 import static org.junit.Assert.assertNotEquals;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.room.Room;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 
-import com.example.socialcompass.model.Friend.Friend;
-import com.example.socialcompass.model.Friend.FriendDao;
-import com.example.socialcompass.model.Friend.FriendDatabase;
+import com.example.socialcompass.Friendmodel.Friend;
+import com.example.socialcompass.Friendmodel.FriendDao;
+import com.example.socialcompass.Friendmodel.FriendDatabase;
 
 import junit.framework.TestCase;
 
@@ -43,10 +41,9 @@ public class FriendDatabaseTest extends TestCase {
 
     @Test
     public void testExist()  {
-        Friend testFriend1 = new Friend("7830", "858-135-2467",
-                "nini", 32, -124);
-        Friend testFriend2 = new Friend("7831", "858-135-2468",
-                "nini2", 32, 124);
+        Friend testFriend1 = new Friend("7830",  "nini", 32, -124,12);
+        Friend testFriend2 = new Friend("7831",
+                "nini2", 32, 124,13);
 
         //Insert the user into the database
         friend_dao.upsert(testFriend1);
@@ -62,10 +59,10 @@ public class FriendDatabaseTest extends TestCase {
 
     @Test
     public void testGet(){
-        Friend testFriend1 = new Friend("7830", "858-135-2467",
-                "nini", 32, -124);
-        Friend testFriend2 = new Friend("7831", "858-135-2468",
-                "nini2", 32, 124);
+        Friend testFriend1 = new Friend("7830",
+                "nini", 32, -124,12);
+        Friend testFriend2 = new Friend("7831",
+                "nini2", 32, 124,22);
 
         //Insert the friend into the database
         friend_dao.upsert(testFriend1);
@@ -86,7 +83,7 @@ public class FriendDatabaseTest extends TestCase {
         String friendJsonEl2 = actualFriendJson.split(",")[1];
         String friendJsonEl3 = actualFriendJson.split(",")[2];
         String friendJsonEl4 = actualFriendJson.split(",")[3];
-        assertEquals("{\"public_code\":\"7830\"", friendJsonEl1);
+        assertEquals("{\"publicCode\":\"7830\"", friendJsonEl1);
         assertEquals("\"label\":\"nini\"", friendJsonEl2);
         assertEquals("\"latitude\":32.0", friendJsonEl3);
         assertEquals("\"longitude\":-124.0", friendJsonEl4);
