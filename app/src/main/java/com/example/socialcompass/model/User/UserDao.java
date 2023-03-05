@@ -1,5 +1,6 @@
-package com.example.socialcompass.model;
+package com.example.socialcompass.model.User;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -21,9 +22,13 @@ public abstract class UserDao {
     @Query("SELECT * FROM users WHERE public_code = :public_code")
     public abstract LiveData<User> get(String public_code);
 
-//    @Query("SELECT * FROM users ORDER BY public_code")
-//    public abstract LiveData<List<User>> getAll();
+    @Query("SELECT * FROM users ORDER BY public_code")
+    public abstract LiveData<List<User>> getAll();
 
     @Query("DELETE FROM users WHERE private_code = :private_code")
     public abstract int delete(String private_code);
+
+    @VisibleForTesting
+    @Query("SELECT * FROM users WHERE public_code = :public_code")
+    public abstract User userGet(String public_code);
 }

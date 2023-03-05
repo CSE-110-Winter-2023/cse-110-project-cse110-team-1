@@ -1,4 +1,4 @@
-package com.example.socialcompass.model;
+package com.example.socialcompass.model.User;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
@@ -57,6 +57,11 @@ public class User {
     @NonNull
     public float longitude;
 
+
+    @JsonAdapter(com.example.socialcompass.model.User.TimestampAdapter.class)
+    @SerializedName(value = "created_at", alternate = "createdAt")
+    public long createdAt;
+
     @JsonAdapter(TimestampAdapter.class)
     @SerializedName(value = "updated_at", alternate = "updatedAt")
     public long updatedAt = 0;
@@ -69,11 +74,13 @@ public class User {
         this.label = label;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.createdAt = createdAt;
         this.updatedAt = 0;
     }
 
     @Ignore
-    public User(@NonNull String public_code, @NonNull String private_code, @NonNull String content, long updatedAt) {
+    public User( String public_code, String private_code, @NonNull String label
+            , @NonNull float latitude, @NonNull float longitude, long updatedAt) {
         this.public_code = public_code;
         this.private_code = private_code;
         this.label = label;

@@ -2,25 +2,23 @@ package com.example.socialcompass.model;
 
 import static org.junit.Assert.assertNotEquals;
 
-import android.content.Context;
-
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.room.Room;
-import androidx.test.InstrumentationRegistry;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+
+import com.example.socialcompass.model.Friend.Friend;
+import com.example.socialcompass.model.User.User;
+import com.example.socialcompass.model.User.UserDao;
+import com.example.socialcompass.model.User.UserDatabase;
 
 import junit.framework.TestCase;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
-import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
 public class UserDatabaseTest extends TestCase {
@@ -85,10 +83,22 @@ public class UserDatabaseTest extends TestCase {
         //Insert the user into the database
         dao.upsert(testUser1);
         dao.upsert(testUser2);
-        assertTrue(dao.exists("7830"));
+
+        // retrieve live data for the use in repository
         LiveData<User>  liveRetreivedUser = dao.get("7830");
+        // test livedata is not null
         assertNotNull(liveRetreivedUser);
+
+        // retrieve user object to test specific information
+        User retreivedUser = dao.userGet("7830");
+        assertNotNull(retreivedUser);
+        assertEquals(testUser1.public_code, retreivedUser.public_code);
+        assertEquals(testUser1.private_code, retreivedUser.private_code);
+        assertEquals(testUser1.label, retreivedUser.label);
+        assertEquals(testUser1.longitude, retreivedUser.longitude);
+        assertEquals(testUser1.latitude, retreivedUser.latitude);
     }
+
 
     @Test
     public void testDelete() {
@@ -100,10 +110,15 @@ public class UserDatabaseTest extends TestCase {
         //Insert the user into the database
         dao.upsert(testUser1);
         dao.upsert(testUser2);
+
+        // check they exists
         assertTrue(dao.exists("7830"));
         assertTrue(dao.exists("7831"));
 
+        // perform deletion
         dao.delete("858-135-2467");
+
+        // check if public code 7830 no longer exists, but public code 7831 still exists
         assertFalse(dao.exists("7830"));
         assertTrue(dao.exists("7831"));
     }
