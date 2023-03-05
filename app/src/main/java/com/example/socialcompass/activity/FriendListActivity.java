@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.socialcompass.R;
 import com.example.socialcompass.Friendview.FriendListAdapter;
@@ -20,6 +21,7 @@ public class FriendListActivity extends AppCompatActivity {
     FriendListViewModel viewModel;
     private EditText newFriendPublicCode;
     private Button addFriendButton;
+    TextView myName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +41,12 @@ public class FriendListActivity extends AppCompatActivity {
         this.newFriendPublicCode = this.findViewById(R.id.new_friend_public_code);
         this.addFriendButton = this.findViewById(R.id.add_friend_btn);
         addFriendButton.setOnClickListener(this::onAddFriendClicked);
+
+        //get the input user name from user activity
+        // Get the text from the intent
+        String text = getIntent().getStringExtra("input_name");
+        myName = this.findViewById(R.id.my_name_from_friendlist);
+        myName.setText(text);
     }
 
     private void onAddFriendClicked(View view) {

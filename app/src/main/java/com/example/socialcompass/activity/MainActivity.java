@@ -13,6 +13,8 @@ import androidx.core.app.ActivityCompat;
 
 import com.example.socialcompass.R;
 import com.example.socialcompass.Utilities;
+import com.example.socialcompass.activity.FriendListActivity;
+import com.example.socialcompass.activity.UserActivity;
 import com.example.socialcompass.compass_activity;
 
 
@@ -23,9 +25,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent intent = new Intent(this,UserActivity.class);
+        Intent intent = new Intent(this, UserActivity.class);
         startActivity(intent);
-//        Intent intent = new Intent(this, UserActivity.class);
+
+
+
+
+
+//        Intent intent = new Intent(this, FriendListActivity.class);
 //        startActivity(intent);
         /*
          * This can be determine by checking which data we have available

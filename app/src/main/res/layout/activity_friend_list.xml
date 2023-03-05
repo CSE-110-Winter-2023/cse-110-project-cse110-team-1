@@ -12,7 +12,7 @@
         android:layout_height="50dp">
 
         <TextView
-            android:id="@+id/my_name"
+            android:id="@+id/my_name_from_friendlist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
@@ -31,7 +31,7 @@
             android:text="1123342"
             android:textSize="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/my_name"
+            app:layout_constraintStart_toEndOf="@+id/my_name_from_friendlist"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
