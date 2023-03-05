@@ -1,4 +1,4 @@
-package com.example.socialcompass.activity;
+package com.example.socialcompass;
 
 import android.Manifest;
 import android.content.Context;
@@ -11,11 +11,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import com.example.socialcompass.R;
-import com.example.socialcompass.Utilities;
-import com.example.socialcompass.activity.FriendListActivity;
-import com.example.socialcompass.activity.UserActivity;
-import com.example.socialcompass.compass_activity;
+import com.example.socialcompass.utility.Utilities;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -24,23 +20,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        Intent intent = new Intent(this, UserActivity.class);
-        startActivity(intent);
-
-
-
-
-
-
-
-
-
-
-
-
-//        Intent intent = new Intent(this, FriendListActivity.class);
-//        startActivity(intent);
         /*
          * This can be determine by checking which data we have available
          * */
@@ -163,6 +142,8 @@ public class MainActivity extends AppCompatActivity {
             Utilities.showAlert(this, "Data Saved");
 
 
+            //Intent intent = new Intent(this, CompassActivity.class);
+            //link to new page
             Intent intent = new Intent(this, compass_activity.class);
             startActivity(intent);
         } else {
