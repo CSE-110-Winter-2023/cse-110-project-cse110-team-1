@@ -2,7 +2,9 @@ package com.example.socialcompass.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,13 +20,33 @@ public class UserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
+
+
         this.saveUserNameButton = this.findViewById(R.id.save_user_name_btn);
         saveUserNameButton.setOnClickListener(this::onSaveUserNameClicked);
+
+        //get user information: name and block EditText
+        SharedPreferences preferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        String userName = preferences.getString("name", null);
+        if(userName != null){
+            EditText input_name = this.findViewById(R.id.my_input_name);
+            input_name.setText(userName);
+            input_name.setFocusable(false);
+        }
+
+
+
     }
 
     private void onSaveUserNameClicked(View view) {
         EditText input_name = this.findViewById(R.id.my_input_name);
-        input_name.setFocusable(false);
+
+        //store user information: name
+        SharedPreferences preferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("name", input_name.getText().toString());
+        editor.apply();
+
 
         Intent intent = new Intent(this, FriendListActivity.class);
         intent.putExtra("input_name", input_name.getText().toString());

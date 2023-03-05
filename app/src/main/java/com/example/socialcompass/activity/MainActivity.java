@@ -32,6 +32,13 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+
+
+
+
+
+
 //        Intent intent = new Intent(this, FriendListActivity.class);
 //        startActivity(intent);
         /*
@@ -156,10 +163,6 @@ public class MainActivity extends AppCompatActivity {
             Utilities.showAlert(this, "Data Saved");
 
 
-            //Intent intent = new Intent(this, CompassActivity.class);
-            //link to new page
-
-            //Gilen comment out this line
             Intent intent = new Intent(this, compass_activity.class);
             startActivity(intent);
         } else {
