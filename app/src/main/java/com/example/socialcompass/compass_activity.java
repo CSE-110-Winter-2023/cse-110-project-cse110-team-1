@@ -1,7 +1,5 @@
 package com.example.socialcompass;
 
-import static androidx.constraintlayout.widget.ConstraintLayoutStates.TAG;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
@@ -9,11 +7,10 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Debug;
-import android.util.Log;
 import android.util.Pair;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.socialcompass.Utilities.Utilities;
 
 public class compass_activity extends AppCompatActivity {
 
