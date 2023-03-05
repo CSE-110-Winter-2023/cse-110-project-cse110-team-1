@@ -70,4 +70,12 @@ public class FriendListItem {
                 ", order=" + order +
                 '}';
     }
+
+    public static FriendListItem fromJSON(String json) {
+        return new Gson().fromJson(json, FriendListItem.class);
+    }
+
+    public String toJSON() {
+        return new Gson().toJson(this);
+    }
 }
