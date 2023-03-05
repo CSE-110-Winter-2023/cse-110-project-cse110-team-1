@@ -1,4 +1,4 @@
 [
-  {"label":"Melissa","public_code":"1231","latitude": "12382", "longitude":"322", "order": 1},
-  {"label":"Ana","public_code":"1231","latitude": "92810", "longitude":"00", "order": 2}
+  {"label":"Melissa","public_code":"1231","latitude": 13, "longitude":312, "order": 1},
+  {"label":"Ana","public_code":"1231","latitude": 312, "longitude":31, "order": 2}
 ]

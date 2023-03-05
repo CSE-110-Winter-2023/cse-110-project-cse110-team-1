@@ -7,6 +7,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
@@ -19,14 +20,22 @@ import java.util.List;
 
 @Entity(tableName = "friends_list_items")
 public class FriendListItem {
-    @PrimaryKey(autoGenerate = true)
+
     public long id;
+    @PrimaryKey
+    @SerializedName("public_code")
+    @NonNull
     public String publicCode;
+
+    @SerializedName("label")
     @NonNull
     public String label;
+    @SerializedName("latitude")
     @NonNull
     public String latitude;
 
+    @SerializedName("longitude")
+    @NonNull
     public String longitude;
     public int order;
 
@@ -62,4 +71,13 @@ public class FriendListItem {
                 ", order=" + order +
                 '}';
     }
+
+    public static FriendListItem fromJSON(String json) {
+        return new Gson().fromJson(json, FriendListItem.class);
+    }
+
+    public String toJSON() {
+        return new Gson().toJson(this);
+    }
+
 }

@@ -50,7 +50,7 @@ public abstract class FriendDatabase extends RoomDatabase {
     }
 
     @VisibleForTesting
-    public static void injectTestDatabse(FriendDatabase testDatabase){
+    public static void inject(FriendDatabase testDatabase){
         if(singleton != null){
             singleton.close();
         }
