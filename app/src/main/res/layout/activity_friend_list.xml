@@ -16,8 +16,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:text="Gilen Wu Hou"
+            android:hint="MY NAME"
             android:textSize="20dp"
+            android:inputType="textPersonName"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -40,7 +41,6 @@
         android:layout_width="414dp"
         android:layout_height="584dp"
 
-        app:layout_constraintBottom_toTopOf="@+id/new_friend_public_code"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
 
@@ -61,7 +61,7 @@
         android:layout_height="50dp"
         android:layout_marginStart="50dp"
         android:layout_marginBottom="35dp"
-        android:hint="Enter UID"
+        android:hint="Enter friend's UID"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

@@ -6,4 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".activity.UserActivity">
 
+    <Button
+        android:id="@+id/save_user_name_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SAVE"
+        tools:layout_editor_absoluteX="153dp"
+        tools:layout_editor_absoluteY="462dp" />
+
+    <EditText
+        android:id="@+id/my_name_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Enter your name"
+        tools:layout_editor_absoluteX="100dp"
+        tools:layout_editor_absoluteY="312dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

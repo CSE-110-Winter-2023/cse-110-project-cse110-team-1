@@ -23,8 +23,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent intent = new Intent(this, FriendListActivity.class);
+        Intent intent = new Intent(this,UserActivity.class);
         startActivity(intent);
+//        Intent intent = new Intent(this, UserActivity.class);
+//        startActivity(intent);
         /*
          * This can be determine by checking which data we have available
          * */

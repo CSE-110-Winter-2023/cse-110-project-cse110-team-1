@@ -2,7 +2,11 @@ package com.example.socialcompass.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+
 import android.os.Bundle;
+
+import com.example.socialcompass.R;
+
 
 public class UserActivity extends AppCompatActivity {
 
@@ -11,4 +15,5 @@ public class UserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
     }
+
 }
