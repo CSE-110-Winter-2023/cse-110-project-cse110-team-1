@@ -1,5 +1,6 @@
 package com.example.socialcompass.Friendmodel;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -14,8 +15,11 @@ public interface FriendListItemDao {
     @Insert
     Long insert(FriendListItem friendListItem);
 
-    @Query("SELECT * FROM friends_list_items WHERE publicCode = :public_code")
-    public abstract LiveData<FriendListItem> get(String public_code);
+    @Query("SELECT EXISTS(SELECT 1 FROM friends_list_items WHERE publicCode = :publicCode)")
+    public abstract boolean exists(String publicCode);
+
+    @Query("SELECT * FROM friends_list_items WHERE publicCode = :publicCode")
+    public abstract LiveData<FriendListItem> get(String publicCode);
 
     @Query("SELECT * FROM `friends_list_items` ORDER BY `order`")
     List<FriendListItem> getAll();
@@ -35,9 +39,9 @@ public interface FriendListItemDao {
     @Insert
     List<Long> insertAll(List<FriendListItem> LocationListItem);
 
-
-    @Query("SELECT EXISTS(SELECT 1 FROM friends_list_items WHERE publicCode = :publicCode)")
-    public abstract boolean exists(String publicCode);
+    @VisibleForTesting
+    @Query("SELECT * FROM friends_list_items WHERE publicCode = :publicCode")
+    public abstract FriendListItem friendGet(String publicCode);
 
 
 }
