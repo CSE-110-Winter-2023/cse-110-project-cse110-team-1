@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-import com.example.socialcompass.Utilities.Utilities;
+import com.example.socialcompass.utility.Utilities;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import com.example.socialcompass.Utilities.Utilities;
+import com.example.socialcompass.utility.Utilities;
 
 
 public class MainActivity extends AppCompatActivity {

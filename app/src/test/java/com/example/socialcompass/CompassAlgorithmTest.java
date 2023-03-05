@@ -3,7 +3,7 @@ package com.example.socialcompass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import com.example.socialcompass.Utilities.Utilities;
+import com.example.socialcompass.utility.Utilities;
 
 public class CompassAlgorithmTest {
     private static final float MAX_DELTA = 0.5f; // maximum floating-point deviation from expected answer

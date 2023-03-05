@@ -1,4 +1,4 @@
-package com.example.socialcompass.Utilities;
+package com.example.socialcompass.utility;
 
 import android.Manifest;
 import android.app.Activity;

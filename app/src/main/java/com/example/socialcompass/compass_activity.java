@@ -10,7 +10,7 @@ import android.os.Bundle;
 import android.util.Pair;
 import android.widget.TextView;
 
-import com.example.socialcompass.Utilities.Utilities;
+import com.example.socialcompass.utility.Utilities;
 
 public class compass_activity extends AppCompatActivity {
 
