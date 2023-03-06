@@ -3,8 +3,11 @@ package com.example.socialcompass.model;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
+
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.example.socialcompass.model.api.API;
 import com.example.socialcompass.model.friend.Friend;
@@ -14,6 +17,7 @@ import junit.framework.TestCase;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Helper class
@@ -24,19 +28,19 @@ class ExecuteShellCommand {
         try {
             // set permission to the file to executable
             File file = new File(filePath);
-            file.setExecutable(true);
-            // execute the file
-            Process process = Runtime.getRuntime().exec(filePath);
-            // print the result
-            BufferedReader read = new BufferedReader(new InputStreamReader(
-                    process.getInputStream()));
-            try {
+            boolean result = file.setExecutable(true);
+            // if the file can be set as executable
+            if(result){
+                // execute the file
+                Process process = Runtime.getRuntime().exec(filePath);
+                // print the result
+                BufferedReader read = new BufferedReader(new InputStreamReader(
+                        process.getInputStream())
+                );
                 process.waitFor();
-            } catch (InterruptedException e) {
-                System.out.println(e.getMessage());
-            }
-            while (read.ready()) {
-                System.out.println(read.readLine());
+                while (read.ready()) {
+                    System.out.println(read.readLine());
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -44,6 +48,7 @@ class ExecuteShellCommand {
     }
 }
 
+@RunWith(AndroidJUnit4.class)
 public class APITest extends TestCase {
     private API api;
     private String privateCode;
@@ -61,7 +66,7 @@ public class APITest extends TestCase {
     }
 
     @After
-    public void dismantle(){
+    public void dismantle() {
         // remove the test friend from server
         String script = "./src/test/java/com/example/socialcompass/model/delete_script";
         ExecuteShellCommand.executeCommand(script);
@@ -71,6 +76,26 @@ public class APITest extends TestCase {
     @Test
     public void testGetFriend() {
         Friend friend = api.getFriend(testFriend.publicCode);
-//        assertEquals(testFriend.publicCode, friend.publicCode);
+        assertEquals(testFriend.publicCode, friend.publicCode);
+        assertEquals(testFriend.label, friend.label);
+        assertEquals(testFriend.latitude, friend.latitude);
+        assertEquals(testFriend.longitude, friend.longitude);
+    }
+
+    @Test
+    public void testPutUser() throws InterruptedException {
+        testFriend.longitude = (float)-69.424242;
+        testFriend.latitude = (float)24.242424;
+
+        api.putUser(testFriend, privateCode);
+        // because putUser run asynchronously, need to wait for the action to finish
+        TimeUnit.SECONDS.sleep(3);
+
+        Friend friend = api.getFriend(testFriend.publicCode);
+
+        assertEquals(testFriend.publicCode, friend.publicCode);
+        assertEquals(testFriend.label, friend.label);
+        assertEquals(testFriend.latitude, friend.latitude);
+        assertEquals(testFriend.longitude, friend.longitude);
     }
 }

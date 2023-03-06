@@ -43,12 +43,12 @@ public class API {
                 .method("GET", null)
                 .build();
 
+
         try (var response = client.newCall(request).execute()) {
             assert response.body() != null;
             if (response.isSuccessful()) {
                 var body = response.body().string();
-                Friend responseNote = Friend.fromJSON(body);
-                return responseNote;
+                return Friend.fromJSON(body);
             } else {
                 return null;
             }
@@ -65,6 +65,11 @@ public class API {
         String publicCode = user.publicCode.replace(" ", "%20");
         MediaType JSON = MediaType.get("application/json; charset=utf-8");
         JsonObject reqContent = new JsonObject();
+
+        reqContent.addProperty("private_code", privateCode);
+        reqContent.addProperty("label", user.label);
+        reqContent.addProperty("latitude", user.latitude);
+        reqContent.addProperty("longitude", user.longitude);
 
 
         var request = new Request.Builder()

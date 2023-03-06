@@ -32,7 +32,7 @@ class TimestampAdapter extends TypeAdapter<Long> {
 public class Friend {
     /** The public code of the user. Used as the primary key for shared notes (even on the cloud). */
     @PrimaryKey
-    @SerializedName("publicCode")
+    @SerializedName("public_code")
     @NonNull
     public String publicCode;
 
