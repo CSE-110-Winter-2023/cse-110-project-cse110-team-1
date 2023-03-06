@@ -1,4 +1,4 @@
-package com.example.socialcompass.Friendmodel;
+package com.example.socialcompass.model.friend;
 
 import android.content.Context;
 

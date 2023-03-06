@@ -1,4 +1,4 @@
-package com.example.socialcompass;
+package com.example.socialcompass.utility;
 
 import org.junit.Test;
 

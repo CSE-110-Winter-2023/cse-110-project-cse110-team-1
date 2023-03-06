@@ -1,4 +1,4 @@
-package com.example.socialcompass;
+package com.example.socialcompass.old;
 
 import android.app.Activity;
 import android.content.Context;

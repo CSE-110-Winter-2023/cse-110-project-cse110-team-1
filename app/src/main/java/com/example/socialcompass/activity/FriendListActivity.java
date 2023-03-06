@@ -11,9 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.socialcompass.FriendViewModel.FriendListViewModel;
+import com.example.socialcompass.viewmodel.FriendListViewModel;
 import com.example.socialcompass.R;
-import com.example.socialcompass.Friendview.FriendListAdapter;
+import com.example.socialcompass.view.FriendListAdapter;
 
 public class FriendListActivity extends AppCompatActivity {
 

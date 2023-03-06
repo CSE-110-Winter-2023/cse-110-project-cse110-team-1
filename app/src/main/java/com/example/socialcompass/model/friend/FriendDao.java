@@ -1,4 +1,4 @@
-package com.example.socialcompass.Friendmodel;
+package com.example.socialcompass.model.friend;
 
 
 import androidx.annotation.VisibleForTesting;
@@ -10,7 +10,7 @@ import androidx.room.Query;
 import androidx.room.Upsert;
 
 
-import com.example.socialcompass.Friendmodel.Friend;
+import com.example.socialcompass.model.friend.Friend;
 
 import java.util.List;
 @Dao

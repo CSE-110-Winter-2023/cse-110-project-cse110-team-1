@@ -1,4 +1,4 @@
-package com.example.socialcompass;
+package com.example.socialcompass.old;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Pair;
 import android.widget.TextView;
 
+import com.example.socialcompass.R;
 import com.example.socialcompass.utility.Utilities;
 
 public class compass_activity extends AppCompatActivity {

@@ -11,7 +11,7 @@
 //import androidx.test.core.app.ActivityScenario;
 //import androidx.test.core.app.ApplicationProvider;
 //
-//import com.example.socialcompass.Friendmodel.FriendDatabase;
+//import com.example.socialcompass.model.friend.FriendDatabase;
 //import com.example.socialcompass.Friendmodel.FriendListItem;
 //import com.example.socialcompass.Friendmodel.FriendListItemDao;
 //import com.example.socialcompass.activity.FriendListActivity;

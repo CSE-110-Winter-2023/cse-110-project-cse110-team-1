@@ -21,7 +21,7 @@
             android:name=".activity.FriendListActivity"
             android:exported="false" />
         <activity
-            android:name=".compass_activity"
+            android:name=".old.compass_activity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

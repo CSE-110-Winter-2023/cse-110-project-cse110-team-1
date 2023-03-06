@@ -7,9 +7,9 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 
-import com.example.socialcompass.Friendmodel.Friend;
-import com.example.socialcompass.Friendmodel.FriendDao;
-import com.example.socialcompass.Friendmodel.FriendDatabase;
+import com.example.socialcompass.model.friend.Friend;
+import com.example.socialcompass.model.friend.FriendDao;
+import com.example.socialcompass.model.friend.FriendDatabase;
 
 import junit.framework.TestCase;
 
@@ -21,22 +21,22 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 public class FriendDatabaseTest extends TestCase {
 
-    private FriendDao friend_dao;
-    private FriendDatabase friend_db;
+    private FriendDao friendDao;
+    private FriendDatabase friendDb;
 
     @Before
     public void initDb() {
         var context2 = ApplicationProvider.getApplicationContext();
-        friend_db = Room.inMemoryDatabaseBuilder(context2, FriendDatabase.class)
+        friendDb = Room.inMemoryDatabaseBuilder(context2, FriendDatabase.class)
                 .allowMainThreadQueries().build();
         // indirectly test getDao function
-        friend_dao = friend_db.getDao();
+        friendDao = friendDb.getDao();
     }
 
     @After
     public void closeDb() {
 
-        friend_db.close();
+        friendDb.close();
     }
 
     @Test
@@ -46,15 +46,15 @@ public class FriendDatabaseTest extends TestCase {
                 "nini2", 32, 124,13);
 
         //Insert the user into the database
-        friend_dao.upsert(testFriend1);
-        friend_dao.upsert(testFriend2);
+        friendDao.upsert(testFriend1);
+        friendDao.upsert(testFriend2);
 
         // test exists
-        assertTrue(friend_dao.exists("7830"));
-        assertTrue(friend_dao.exists("7831"));
+        assertTrue(friendDao.exists("7830"));
+        assertTrue(friendDao.exists("7831"));
 
         // test not inserted should not exist
-        assertFalse(friend_dao.exists("7832"));
+        assertFalse(friendDao.exists("7832"));
     }
 
     @Test
@@ -65,16 +65,16 @@ public class FriendDatabaseTest extends TestCase {
                 "nini2", 32, 124,22);
 
         //Insert the friend into the database
-        friend_dao.upsert(testFriend1);
-        friend_dao.upsert(testFriend2);
+        friendDao.upsert(testFriend1);
+        friendDao.upsert(testFriend2);
 
         // retrieve live data for the use in repository
-        LiveData<Friend>  liveRetreivedFriend = friend_dao.get("7830");
+        LiveData<Friend>  liveRetreivedFriend = friendDao.get("7830");
         // test livedata is not null
         assertNotNull(liveRetreivedFriend);
 
         // retrieve user object to test specific information
-        Friend retreivedFriend = friend_dao.friendGet("7830");
+        Friend retreivedFriend = friendDao.friendGet("7830");
 
         // transform to json, to check there is no "private code" information
         String actualFriendJson = retreivedFriend.toJSON();
