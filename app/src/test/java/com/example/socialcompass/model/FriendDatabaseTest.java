@@ -1,5 +1,6 @@
 package com.example.socialcompass.model;
-import static org.junit.Assert.assertNotEquals;
+
+import static org.junit.Assert.*;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Room;
@@ -35,15 +36,13 @@ public class FriendDatabaseTest extends TestCase {
 
     @After
     public void closeDb() {
-
         friendDb.close();
     }
 
     @Test
-    public void testExist()  {
-        Friend testFriend1 = new Friend("7830",  "nini", 32, -124,12);
-        Friend testFriend2 = new Friend("7831",
-                "nini2", 32, 124,13);
+    public void testExist() {
+        Friend testFriend1 = new Friend("7830", "nini", 32, -124);
+        Friend testFriend2 = new Friend("7831", "nini2", 32, 124);
 
         //Insert the user into the database
         friendDao.upsert(testFriend1);
@@ -58,26 +57,26 @@ public class FriendDatabaseTest extends TestCase {
     }
 
     @Test
-    public void testGet(){
+    public void testGet() {
         Friend testFriend1 = new Friend("7830",
-                "nini", 32, -124,12);
+                "nini", 32, -124);
         Friend testFriend2 = new Friend("7831",
-                "nini2", 32, 124,22);
+                "nini2", 32, 124);
 
         //Insert the friend into the database
         friendDao.upsert(testFriend1);
         friendDao.upsert(testFriend2);
 
         // retrieve live data for the use in repository
-        LiveData<Friend>  liveRetreivedFriend = friendDao.get("7830");
+        LiveData<Friend> liveRetrievedFriend = friendDao.get("7830");
         // test livedata is not null
-        assertNotNull(liveRetreivedFriend);
+        assertNotNull(liveRetrievedFriend);
 
         // retrieve user object to test specific information
-        Friend retreivedFriend = friendDao.friendGet("7830");
+        Friend retrievedFriend = friendDao.friendGet("7830");
 
         // transform to json, to check there is no "private code" information
-        String actualFriendJson = retreivedFriend.toJSON();
+        String actualFriendJson = retrievedFriend.toJSON();
         // truncate the string so time stamp are not included
         String friendJsonEl1 = actualFriendJson.split(",")[0];
         String friendJsonEl2 = actualFriendJson.split(",")[1];
@@ -89,7 +88,6 @@ public class FriendDatabaseTest extends TestCase {
         assertEquals("\"longitude\":-124.0", friendJsonEl4);
 
     }
-
 
 
 }

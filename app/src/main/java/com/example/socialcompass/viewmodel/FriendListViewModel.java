@@ -25,8 +25,8 @@ public class FriendListViewModel extends AndroidViewModel {
         friendListItemDao = db.getDao();
     }
 
-    public LiveData<List<Friend>> getFriendListItems(){
-        if(friendListItems == null){
+    public LiveData<List<Friend>> getFriendListItems() {
+        if (friendListItems == null) {
             loadFriends();
         }
         return friendListItems;
@@ -36,13 +36,12 @@ public class FriendListViewModel extends AndroidViewModel {
         friendListItems = friendListItemDao.getAllLive();
     }
 
-    public void createFriend(String public_code){
-        int endOfListOrder = friendListItemDao.getOrderForAppend();
-        Friend newItem = new Friend(public_code,"default name",12,13,endOfListOrder);
-        friendListItemDao.upsert( newItem);
+    public void createFriend(String public_code) {
+        Friend newItem = new Friend(public_code, "default name", 12, 13);
+        friendListItemDao.upsert(newItem);
     }
 
-    public void toggleDelete(Friend friendListItem){
+    public void toggleDelete(Friend friendListItem) {
         friendListItemDao.delete(friendListItem);
     }
 

@@ -1,7 +1,5 @@
 package com.example.socialcompass.model.friend;
 
-import android.content.Context;
-
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -10,18 +8,10 @@ import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
-import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.lang.reflect.Type;
 import java.time.Instant;
-import java.util.Collections;
-import java.util.List;
 
 
 class TimestampAdapter extends TypeAdapter<Long> {
@@ -61,7 +51,6 @@ public class Friend {
     @NonNull
     public float longitude;
 
-    public int order;
 
     @JsonAdapter(TimestampAdapter.class)
     @SerializedName(value = "created_at", alternate = "createdAt")
@@ -74,28 +63,14 @@ public class Friend {
     public Friend() {}
 
     /** General constructor for a note. */
-    public Friend(@NonNull String publicCode, @NonNull String label, @NonNull float latitude, @NonNull float longitude, int order) {
+    public Friend(@NonNull String publicCode, @NonNull String label, @NonNull float latitude, @NonNull float longitude) {
         this.publicCode = publicCode;
         this.label = label;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.order = order;
     }
 
 
-    public static List<Friend> loadJSON(Context context, String path){
-        try{
-            InputStream input = context.getAssets().open(path);
-            Reader reader = new InputStreamReader(input);
-            Gson gson = new Gson();
-            Type type = new TypeToken<List<Friend>>(){}.getType();
-            return gson.fromJson(reader,type);
-
-        }catch (IOException e){
-            e.printStackTrace();
-            return Collections.emptyList();
-        }
-    }
 
     public static Friend fromJSON(String json) {
         return new Gson().fromJson(json, Friend.class);
