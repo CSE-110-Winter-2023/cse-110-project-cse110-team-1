@@ -34,6 +34,8 @@ public abstract class FriendDao {
     @Delete
     public abstract int delete(Friend friend);
 
+    // TODO: Should it be
+    // public abstract List<LiveData<Friend>> getAllLive();
     @Query("SELECT * FROM `friends` ORDER BY `label`")
     public abstract LiveData<List<Friend>> getAllLive();
 
