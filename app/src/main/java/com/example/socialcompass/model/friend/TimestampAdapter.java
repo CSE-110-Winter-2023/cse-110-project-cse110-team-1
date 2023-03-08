@@ -1,5 +1,9 @@
 package com.example.socialcompass.model.Friend;
 
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+
 import java.time.Instant;
 
 public class TimestampAdapter extends TypeAdapter<Long> {

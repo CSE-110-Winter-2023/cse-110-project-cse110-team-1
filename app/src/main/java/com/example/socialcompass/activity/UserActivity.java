@@ -35,8 +35,6 @@ public class UserActivity extends AppCompatActivity {
 
         }
 
-
-
     }
 
     private void onSaveUserNameClicked(View view) {
