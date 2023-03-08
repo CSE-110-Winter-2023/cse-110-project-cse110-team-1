@@ -6,11 +6,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.socialcompass.model.friend.Friend;
 import com.example.socialcompass.viewmodel.FriendListViewModel;
 import com.example.socialcompass.R;
 import com.example.socialcompass.view.FriendListAdapter;
@@ -52,6 +54,17 @@ public class FriendListActivity extends AppCompatActivity {
     private void onAddFriendClicked(View view) {
         String friend_public_code = newFriendPublicCode.getText().toString();
         newFriendPublicCode.setText("");
-        viewModel.createFriend(friend_public_code);
+//        var friend = viewModel.createFriend(friend_public_code);
+//        friend.observe(this,this::onSetFriend);
+
+        viewModel.addFriend(friend_public_code);
+
+
+    }
+
+    private void onSetFriend(Friend friend){
+//        Log.d("onsetfriend",friend.label);
+
+//        viewModel.addFriend(friend);
     }
 }
