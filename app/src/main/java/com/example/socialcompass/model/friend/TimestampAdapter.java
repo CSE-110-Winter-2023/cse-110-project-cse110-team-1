@@ -1,4 +1,8 @@
-package com.example.socialcompass.model.Friend;
+package com.example.socialcompass.model.friend;
+
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;

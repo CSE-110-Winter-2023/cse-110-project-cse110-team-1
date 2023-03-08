@@ -4,6 +4,7 @@ import com.example.socialcompass.model.friend.FriendDao;
 import com.example.socialcompass.model.friend.Friend;
 import com.example.socialcompass.model.api.API;
 
+
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
@@ -100,11 +101,7 @@ public class Repository {
     }
 
     //Used to update Self location
-    public void upsertRemote() {
-
-        //TODO: Implement get self data from SharedPreferences.
-        Friend user = null;
-        String privateCode = null;
+    public void upsertRemote(Friend user, String privateCode) {
 
         API api = new API();
         AsyncTask.execute(new Runnable() {
@@ -113,9 +110,5 @@ public class Repository {
                 api.putUser(user, privateCode);
             }
         });
-        ScheduledExecutorService btExec = Executors.newScheduledThreadPool(1);
-        Runnable putSelf = () -> api.putUser(user, privateCode);;
-        this.poller = btExec.scheduleAtFixedRate(putSelf, (long) 3, (long) 3, TimeUnit.SECONDS);
-
     }
 }
