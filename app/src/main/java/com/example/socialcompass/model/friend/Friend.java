@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.example.socialcompass.model.Friend.TimestampAdapter;
+import com.example.socialcompass.model.friend.TimestampAdapter;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;

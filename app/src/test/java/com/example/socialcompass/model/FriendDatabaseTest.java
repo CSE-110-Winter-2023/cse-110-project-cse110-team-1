@@ -82,7 +82,7 @@ public class FriendDatabaseTest extends TestCase {
         String friendJsonEl2 = actualFriendJson.split(",")[1];
         String friendJsonEl3 = actualFriendJson.split(",")[2];
         String friendJsonEl4 = actualFriendJson.split(",")[3];
-        assertEquals("{\"publicCode\":\"7830\"", friendJsonEl1);
+        assertEquals("{\"public_code\":\"7830\"", friendJsonEl1);
         assertEquals("\"label\":\"nini\"", friendJsonEl2);
         assertEquals("\"latitude\":32.0", friendJsonEl3);
         assertEquals("\"longitude\":-124.0", friendJsonEl4);
