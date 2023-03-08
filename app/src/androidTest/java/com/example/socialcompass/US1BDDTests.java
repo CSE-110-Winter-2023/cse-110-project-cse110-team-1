@@ -2,8 +2,6 @@ package com.example.socialcompass;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.RootMatchers.isDialog;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -13,31 +11,18 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.lifecycle.Lifecycle;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 import androidx.test.core.app.ActivityScenario;
-import androidx.test.core.app.ApplicationProvider;
 
-import com.example.socialcompass.activity.FriendListActivity;
 import com.example.socialcompass.activity.UserActivity;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.manipulation.Ordering;
 
-import java.util.List;
+public class US1BDDTests {
 
-public class UserActivityTest {
-    private UserActivity userActivity;
 
     /*
     * BDD scenario 1:
