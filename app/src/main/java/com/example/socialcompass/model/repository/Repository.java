@@ -30,17 +30,20 @@ public class Repository {
     // Synced Methods
     // ==============
 
-    //Used to get observe changes in single friend location.
+    //Used to get observe changes in single friend location remotely
     public LiveData<Friend> getSyncedFriend(String public_code) {
         var friend = new MediatorLiveData<Friend>();
 
         Observer<Friend> updateFromRemote = theirFriend -> {
             var ourFriend = friend.getValue();
+            if (theirFriend == null) return; // do nothing
             if (ourFriend == null || ourFriend.updatedAt < theirFriend.updatedAt) {
                 upsertLocal(theirFriend);
             }
         };
 
+        // If we get a local update, pass it on.
+        friend.addSource(getLocalFriend(public_code), friend::postValue);
         // If we get a remote update, update the local version (triggering the above observer)
         friend.addSource(getRemote(public_code), updateFromRemote);
 
