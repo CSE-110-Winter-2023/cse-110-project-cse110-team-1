@@ -41,11 +41,14 @@ public class UserActivity extends AppCompatActivity {
             input_name.setFocusable(false);
         }
 
-
-
     }
 
     private void onSaveUserNameClicked(View view) {
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         EditText input_name = this.findViewById(R.id.my_input_name);
 
         if(input_name.getText().toString().length() == 0){
@@ -55,7 +58,7 @@ public class UserActivity extends AppCompatActivity {
             //store user information: name
             SharedPreferences preferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
-            String userPublicCode = Utilities.generatePrivateId();
+            String userPublicCode = Utilities.generatePublicId();
             String userPrivateCode = Utilities.generatePrivateId();
             String label = input_name.getText().toString();
             float currentLatitude = locationService.getLocation().getValue().first.floatValue();
@@ -72,6 +75,7 @@ public class UserActivity extends AppCompatActivity {
             // repo.upsertRemote(user, userPrivateCode);
             Intent intent = new Intent(this, FriendListActivity.class);
             intent.putExtra("inputName", input_name.getText().toString());
+            intent.putExtra("publicCode",userPublicCode);
             startActivity(intent);
         }
 

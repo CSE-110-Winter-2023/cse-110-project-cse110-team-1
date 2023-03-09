@@ -81,8 +81,5 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
             this.publicCode.setText(friendListItem.publicCode);
         }
 
-
-
-
     }
 }
