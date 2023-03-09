@@ -36,7 +36,7 @@ public class GPSLocationHandler implements LocationListener {
         } catch(SecurityException e) {
             throw new IllegalStateException("Does not have app permissions to get GPS Location!");
         }
-        this.currentLocation.postValue(new Pair<Double,Double>(0D,0D));
+//        this.currentLocation.postValue(new Pair<Double,Double>(0D,0D));
     }
 
 
