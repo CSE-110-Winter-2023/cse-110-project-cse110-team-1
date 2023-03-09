@@ -82,12 +82,6 @@ public class UtilitiesTest {
         }
     }
 
-    @Test
-    public void testGnerateUniquePublicID() {
-        String id = Utilities.generatePublicId();
-        assertEquals(id,"123");
-    }
-
 
     @Test
     public void testCalculateDistance() {
