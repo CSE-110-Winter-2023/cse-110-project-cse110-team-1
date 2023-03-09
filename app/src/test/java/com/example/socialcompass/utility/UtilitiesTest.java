@@ -73,6 +73,23 @@ public class UtilitiesTest {
     }
 
     @Test
+    public void testGeneratePublicID() {
+        Set<String> idSet = new HashSet<>();
+        for (int i = 0; i < 1000000; i++) {
+            String id = Utilities.generatePublicId();
+            assertFalse(idSet.contains(id)); // Check if ID is unique
+            idSet.add(id);
+        }
+    }
+
+    @Test
+    public void testGnerateUniquePublicID() {
+        String id = Utilities.generatePublicId();
+        assertEquals(id,"123");
+    }
+
+
+    @Test
     public void testCalculateDistance() {
         double lat1 = 37.7749; // San Francisco
         double lon1 = -122.4194;
