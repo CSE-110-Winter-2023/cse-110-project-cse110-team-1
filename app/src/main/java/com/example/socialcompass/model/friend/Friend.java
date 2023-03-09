@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.example.socialcompass.model.friend.TimestampAdapter;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
@@ -11,22 +12,6 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
-import java.time.Instant;
-
-
-class TimestampAdapter extends TypeAdapter<Long> {
-    @Override
-    public void write(JsonWriter out, Long value) throws java.io.IOException {
-        var instant = Instant.ofEpochSecond(value);
-        out.value(instant.toString());
-    }
-
-    @Override
-    public Long read(JsonReader in) throws java.io.IOException {
-        var instant = Instant.parse(in.nextString());
-        return instant.getEpochSecond();
-    }
-}
 
 @Entity(tableName = "friends")
 public class Friend {
