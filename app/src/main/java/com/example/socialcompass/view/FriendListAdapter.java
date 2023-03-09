@@ -1,4 +1,4 @@
-package com.example.socialcompass.Friendview;
+package com.example.socialcompass.view;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.socialcompass.R;
-import com.example.socialcompass.Friendmodel.Friend;
-import com.example.socialcompass.Friendmodel.Friend;
+import com.example.socialcompass.model.friend.Friend;
 
 import java.util.Collections;
 import java.util.List;
@@ -81,9 +80,6 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
             this.label.setText(friendListItem.label);
             this.publicCode.setText(friendListItem.publicCode);
         }
-
-
-
 
     }
 }

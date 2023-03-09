@@ -1,4 +1,4 @@
-package com.example.socialcompass;
+package com.example.socialcompass.utility;
 
 import org.junit.Test;
 
@@ -71,6 +71,17 @@ public class UtilitiesTest {
         assertEquals("Expected 1000000 unique UUIDs", numberOfUUIDsToGenerate, uuids.size());
         assertEquals(count,1000000);
     }
+
+    @Test
+    public void testGeneratePublicID() {
+        Set<String> idSet = new HashSet<>();
+        for (int i = 0; i < 1000000; i++) {
+            String id = Utilities.generatePublicId();
+            assertFalse(idSet.contains(id)); // Check if ID is unique
+            idSet.add(id);
+        }
+    }
+
 
     @Test
     public void testCalculateDistance() {

@@ -1,4 +1,4 @@
-package com.example.socialcompass;
+package com.example.socialcompass.old;
 
 import android.app.Activity;
 import android.content.Context;
@@ -19,7 +19,7 @@ public class OrientationService implements SensorEventListener {
     private MutableLiveData<Float> azimuth;
 
 
-    OrientationService(Activity activity) {
+    public OrientationService(Activity activity) {
         this.azimuth = new MutableLiveData<>();
         this.sensorManager = (SensorManager) activity.getSystemService(Context.SENSOR_SERVICE);
         this.registerSensorListeners();

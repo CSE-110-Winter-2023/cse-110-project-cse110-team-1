@@ -1,4 +1,4 @@
-package com.example.socialcompass.Friendmodel;
+package com.example.socialcompass.model.friend;
 
 
 import androidx.annotation.VisibleForTesting;
@@ -10,7 +10,7 @@ import androidx.room.Query;
 import androidx.room.Upsert;
 
 
-import com.example.socialcompass.Friendmodel.Friend;
+import com.example.socialcompass.model.friend.Friend;
 
 import java.util.List;
 @Dao
@@ -28,23 +28,19 @@ public abstract class FriendDao {
     @Query("SELECT * FROM friends WHERE publicCode = :publicCode")
     public abstract LiveData<Friend> get(String publicCode);
 
-    @Query("SELECT * FROM `friends` ORDER BY `order`")
+    @Query("SELECT * FROM `friends` ORDER BY `label`")
     public abstract List<Friend> getAll();
 
     @Delete
     public abstract int delete(Friend friend);
 
-    @Query("SELECT * FROM `friends` ORDER BY `order`")
+    // TODO: Should it be
+    // public abstract List<LiveData<Friend>> getAllLive();
+    @Query("SELECT * FROM `friends` ORDER BY `label`")
     public abstract LiveData<List<Friend>> getAllLive();
 
-    @Query("SELECT `order` +1  FROM `friends` ORDER BY `order` DESC LIMIT 1")
-    public abstract int getOrderForAppend();
 
-    @Insert
-    public abstract List<Long> insertAll(List<Friend> friendListItem);
     @VisibleForTesting
     @Query("SELECT * FROM friends WHERE publicCode = :publicCode")
     public abstract Friend friendGet(String publicCode);
-
-
 }

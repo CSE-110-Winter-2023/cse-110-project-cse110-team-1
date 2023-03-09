@@ -30,6 +30,7 @@ import org.robolectric.shadows.ShadowLooper;
 import static org.junit.Assert.*;
 
 import com.example.socialcompass.activity.MainActivity;
+import com.example.socialcompass.old.compass_activity;
 
 @Config(
         instrumentedPackages = {

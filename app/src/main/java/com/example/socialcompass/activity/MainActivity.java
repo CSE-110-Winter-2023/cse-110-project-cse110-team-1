@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.example.socialcompass.R;
-import com.example.socialcompass.compass_activity;
+import com.example.socialcompass.old.compass_activity;
 import com.example.socialcompass.utility.Utilities;
 
 
