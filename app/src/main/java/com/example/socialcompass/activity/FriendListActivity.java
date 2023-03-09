@@ -40,6 +40,15 @@ public class FriendListActivity extends AppCompatActivity {
         myName = this.findViewById(R.id.my_name_from_friendlist);
         myName.setText(text);
 
+        Button compassViewButton = this.findViewById(R.id.compass_view_button);
+
+        compassViewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(FriendListActivity.this, CompassActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -60,6 +69,8 @@ public class FriendListActivity extends AppCompatActivity {
         setupRecycler(adapter);
         setupInput(viewModel);
     }
+
+
 
     private void setupInput(FriendListViewModel viewModel) {
         this.newFriendPublicCode = this.findViewById(R.id.new_friend_public_code);
