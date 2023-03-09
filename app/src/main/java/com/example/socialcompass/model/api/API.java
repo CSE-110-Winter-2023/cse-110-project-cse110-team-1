@@ -43,11 +43,11 @@ public class API {
                 .method("GET", null)
                 .build();
 
-
         try (var response = client.newCall(request).execute()) {
             assert response.body() != null;
             if (response.isSuccessful()) {
                 var body = response.body().string();
+                Log.d("API_HELLO", body);
                 return Friend.fromJSON(body);
             } else {
                 return null;
