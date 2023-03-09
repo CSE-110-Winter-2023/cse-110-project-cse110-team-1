@@ -19,7 +19,9 @@ import com.example.socialcompass.utility.Utilities;
 import java.util.List;
 
 public class FriendListViewModel extends AndroidViewModel {
+//    private LiveData<List<Friend>> friendListItems;
     private LiveData<List<Friend>> friendListItems;
+
     private final FriendDao friendListItemDao;
 
     private final Repository repo;
@@ -46,7 +48,7 @@ public class FriendListViewModel extends AndroidViewModel {
     }
 
     public LiveData<Friend> createFriend(String public_code) {
-          return repo.getSyncedFriend(public_code);
+//          return repo.getSyncedFriend(public_code);
 //        Log.d("friend returnd by api",friend.getValue().label);
 
 //        Log.d("friend object returnd by server",friend.getValue().label);
@@ -55,7 +57,15 @@ public class FriendListViewModel extends AndroidViewModel {
 //            Friend newItem = new Friend(public_code, "friendLabel", 12, 13);
 //            friendListItemDao.upsert(newItem);
 //        }
-
+        if(!repo.existsLocal(public_code)) {
+            var friend = new Friend(public_code, "friendLabel", 12, 13);
+            repo.upsertLocal(friend);
+        }
+        LiveData<Friend> updateFriend = null;
+        if ( repo.getLocalFriend(public_code) != null) {
+            updateFriend = repo.getSyncedFriend(public_code);//TODO: this line is not getting the data back
+        }
+        return updateFriend;
 
     }
     public void toggleDelete(Friend friendListItem) {
