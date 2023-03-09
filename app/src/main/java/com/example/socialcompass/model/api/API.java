@@ -47,7 +47,7 @@ public class API {
             assert response.body() != null;
             if (response.isSuccessful()) {
                 var body = response.body().string();
-                Log.d("API_HELLO", body);
+                Log.d("API_HELLO", Friend.fromJSON(body).toString());
                 return Friend.fromJSON(body);
             } else {
                 return null;
