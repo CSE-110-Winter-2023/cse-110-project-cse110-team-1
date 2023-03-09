@@ -60,6 +60,7 @@ public class FriendListActivityTest {
             List<Friend> afterFriendList = friendListItemDao.getAll();
             assertEquals(beforeFriendList.size()+1,afterFriendList.size());
             assertEquals(newText,afterFriendList.get(afterFriendList.size()-1).publicCode);
+
         });
     }
 }
