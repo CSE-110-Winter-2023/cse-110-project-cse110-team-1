@@ -70,6 +70,7 @@ public class UserActivity extends AppCompatActivity {
             // repo.upsertRemote(user, userPrivateCode);
             Intent intent = new Intent(this, FriendListActivity.class);
             intent.putExtra("inputName", input_name.getText().toString());
+            intent.putExtra("publicCode",userPublicCode);
             startActivity(intent);
         }
 
