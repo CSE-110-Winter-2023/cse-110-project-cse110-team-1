@@ -29,6 +29,8 @@ import org.robolectric.shadows.ShadowLooper;
 
 import static org.junit.Assert.*;
 
+import com.example.socialcompass.activity.MainActivity;
+
 @Config(
         instrumentedPackages = {
                 // required to access final members on androidx.loader.content.ModernAsyncTask
