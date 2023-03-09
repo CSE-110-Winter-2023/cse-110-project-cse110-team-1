@@ -45,8 +45,8 @@ public class FriendListViewModel extends AndroidViewModel {
         friendListItems = friendListItemDao.getAllLive();
     }
 
-    public void createFriend(String public_code) {
-          repo.getSyncedFriend(public_code);
+    public LiveData<Friend> createFriend(String public_code) {
+          return repo.getSyncedFriend(public_code);
 //        Log.d("friend returnd by api",friend.getValue().label);
 
 //        Log.d("friend object returnd by server",friend.getValue().label);
