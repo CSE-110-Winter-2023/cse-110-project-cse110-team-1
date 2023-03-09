@@ -42,9 +42,9 @@ public class FriendListActivity extends AppCompatActivity {
         String text = getIntent().getStringExtra("inputName");
         myName = this.findViewById(R.id.my_name_from_friendlist);
         myName.setText(text);
-//        String publicCode = getIntent().getStringExtra("publicCode");
-//        myPublicCode = this.findViewById(R.id.my_public_code);
-//        myPublicCode.setText(publicCode);
+        String publicCode = getIntent().getStringExtra("publicCode");
+        myPublicCode = this.findViewById(R.id.my_public_code);
+        myPublicCode.setText(publicCode);
 
 
         Button compassViewButton = this.findViewById(R.id.compass_view_button);
