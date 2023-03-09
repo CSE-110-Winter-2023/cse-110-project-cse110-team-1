@@ -19,12 +19,15 @@ import com.example.socialcompass.viewmodel.FriendListViewModel;
 import com.example.socialcompass.R;
 import com.example.socialcompass.view.FriendListAdapter;
 
+import org.w3c.dom.Text;
+
 public class FriendListActivity extends AppCompatActivity {
 
     public RecyclerView recyclerView;
     private EditText newFriendPublicCode;
     private Button addFriendButton;
     TextView myName;
+    TextView myPublicCode;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +42,10 @@ public class FriendListActivity extends AppCompatActivity {
         String text = getIntent().getStringExtra("inputName");
         myName = this.findViewById(R.id.my_name_from_friendlist);
         myName.setText(text);
+        String publicCode = getIntent().getStringExtra("publicCode");
+        myPublicCode = this.findViewById(R.id.my_public_code);
+        myPublicCode.setText(publicCode);
+
 
         Button compassViewButton = this.findViewById(R.id.compass_view_button);
 
