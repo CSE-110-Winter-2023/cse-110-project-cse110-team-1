@@ -7,7 +7,7 @@
     tools:context=".activity.CompassActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/compass_layout"
+        android:id="@+id/compass_screen_layout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="10dp"
@@ -27,16 +27,24 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/compass" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/compass_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
+        android:id="@+id/to_friends_list_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:clickable="true"
         android:contentDescription="@string/add_another_friend"
+        android:onClick="toFriendsList"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_menu_add" />
