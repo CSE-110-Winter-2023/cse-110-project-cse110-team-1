@@ -45,23 +45,17 @@ public class FriendListViewModel extends AndroidViewModel {
         friendListItems = friendListItemDao.getAllLive();
     }
 
-    public LiveData<Friend> createFriend(String public_code) {
-        LiveData<Friend> friend = repo.getSyncedFriend(public_code);
-        Log.d("friend object returnd by server",friend.toString());
+    public void createFriend(String public_code) {
+          repo.getSyncedFriend(public_code);
+//        Log.d("friend returnd by api",friend.getValue().label);
 
-        return friend;
+//        Log.d("friend object returnd by server",friend.getValue().label);
 //        if(friend != null){
 //            String friendLabel = friend.getValue().label;
-//            Friend newItem = new Friend(public_code, friendLabel, 12, 13);
+//            Friend newItem = new Friend(public_code, "friendLabel", 12, 13);
 //            friendListItemDao.upsert(newItem);
 //        }
 
-    }
-
-    public void addFriend(String public_code) {
-            Friend newItem = new Friend(public_code, "default", 12, 13);
-            friendListItemDao.upsert(newItem);
-//            friendListItemDao.upsert(friend);
 
     }
     public void toggleDelete(Friend friendListItem) {

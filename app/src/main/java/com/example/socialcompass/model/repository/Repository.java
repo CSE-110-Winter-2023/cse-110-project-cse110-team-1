@@ -6,6 +6,7 @@ import com.example.socialcompass.model.api.API;
 
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -39,12 +40,13 @@ public class Repository {
             if (theirFriend == null) return; // do nothing
             if (ourFriend == null || ourFriend.updatedAt < theirFriend.updatedAt) {
                 upsertLocal(theirFriend);
+//                Log.d("inside getSYN","hello");
             }
         };
 
-        // If we get a local update, pass it on.
+//         If we get a local update, pass it on.
         friend.addSource(getLocalFriend(public_code), friend::postValue);
-        // If we get a remote update, update the local version (triggering the above observer)
+//         If we get a remote update, update the local version (triggering the above observer)
         friend.addSource(getRemote(public_code), updateFromRemote);
 
         return friend;

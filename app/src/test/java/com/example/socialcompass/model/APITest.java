@@ -65,12 +65,12 @@ public class APITest extends TestCase {
         ExecuteShellCommand.executeCommand(script);
     }
 
-//    @After
-//    public void dismantle() {
-//        // remove the test friend from server
-//        String script = "./src/test/java/com/example/socialcompass/model/delete_script";
-//        ExecuteShellCommand.executeCommand(script);
-//    }
+    @After
+    public void dismantle() {
+        // remove the test friend from server
+        String script = "./src/test/java/com/example/socialcompass/model/delete_script";
+        ExecuteShellCommand.executeCommand(script);
+    }
 
 
     @Test

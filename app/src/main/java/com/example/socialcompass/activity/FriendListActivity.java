@@ -54,17 +54,8 @@ public class FriendListActivity extends AppCompatActivity {
     private void onAddFriendClicked(View view) {
         String friend_public_code = newFriendPublicCode.getText().toString();
         newFriendPublicCode.setText("");
-//        var friend = viewModel.createFriend(friend_public_code);
+        viewModel.createFriend(friend_public_code);
 //        friend.observe(this,this::onSetFriend);
 
-        viewModel.addFriend(friend_public_code);
-
-
-    }
-
-    private void onSetFriend(Friend friend){
-//        Log.d("onsetfriend",friend.label);
-
-//        viewModel.addFriend(friend);
     }
 }

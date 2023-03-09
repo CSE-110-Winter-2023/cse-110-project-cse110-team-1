@@ -48,11 +48,14 @@ public class Friend {
     public Friend() {}
 
     /** General constructor for a note. */
-    public Friend(@NonNull String publicCode, @NonNull String label, @NonNull float latitude, @NonNull float longitude) {
+    public Friend(@NonNull String publicCode, @NonNull String label, @NonNull float latitude,
+                  @NonNull float longitude) {
         this.publicCode = publicCode;
         this.label = label;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.createdAt = createdAt;
+        this.updatedAt = 0;
     }
 
 
