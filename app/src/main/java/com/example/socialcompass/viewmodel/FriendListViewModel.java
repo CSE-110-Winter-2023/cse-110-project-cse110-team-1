@@ -63,7 +63,9 @@ public class FriendListViewModel extends AndroidViewModel {
         }
         LiveData<Friend> updateFriend = null;
         if ( repo.getLocalFriend(public_code) != null) {
-            updateFriend = repo.getSyncedFriend(public_code);//TODO: this line is not getting the data back
+            Log.d("VIEW_MODEL", "call to remote");
+            updateFriend = repo.getSyncedFriend(public_code); //TODO: this line is not getting the data back
+            Log.d("VIEW MODEL", updateFriend.getValue().toString());
         }
         return updateFriend;
 

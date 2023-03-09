@@ -1,5 +1,5 @@
 package com.example.socialcompass.utility;
-
+import java.security.SecureRandom;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -150,6 +150,19 @@ public class Utilities {
         String uniqueID = UUID.randomUUID().toString();
         return uniqueID;
     }
+
+
+    public static String generatePublicId() {
+        SecureRandom random = new SecureRandom();
+        StringBuilder sb = new StringBuilder(10);
+        while (sb.length() < 10) {
+            int randomInt = random.nextInt(36);
+            char c = (randomInt < 10) ? (char) ('0' + randomInt) : (char) ('a' + randomInt - 10);
+            sb.append(c);
+        }
+        return sb.toString();
+    }
+
 
     public static double calculateDistanceInMiles(double lat1, double lon1, double lat2, double lon2) {
         double earthRadiusInMiles = 3958.8; // radius of the earth in miles

@@ -6,6 +6,7 @@ import com.example.socialcompass.model.api.API;
 
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -79,28 +80,40 @@ public class Repository {
 
     public LiveData<Friend> getRemote(String public_code) {
 
-        if (this.poller != null && !this.poller.isCancelled()) {
-            poller.cancel(true);
-        }
+//        if (this.poller != null && !this.poller.isCancelled()) {
+//            poller.cancel(true);
+//        }
+
+//        API api = new API();
+//        MutableLiveData<Friend> friendData = new MutableLiveData<>();
+//
+////        AsyncTask.execute(new Runnable() {
+////            @Override
+////            public void run() {
+////                Log.d("GET_REMOTE", "get remote is called");
+////                var friend = api.getFriend(public_code);
+////                Log.d("GET_REMOTE", friend.toString());
+////                friendData.postValue(friend);
+////            }
+////        });
+//
+//        // Update every 3 seconds with executor
+//        ScheduledExecutorService btExec = Executors.newScheduledThreadPool(1);
+//
+//        Runnable getFriends = () -> friendData.postValue(api.getFriend(public_code));
+//        this.poller = btExec.scheduleAtFixedRate(getFriends, (long) 3, (long) 3, TimeUnit.SECONDS);
+//
+//        return friendData;
 
         API api = new API();
-        MutableLiveData<Friend> friendData = new MutableLiveData<>();
+        var executor = Executors.newSingleThreadScheduledExecutor();
+        MutableLiveData<Friend> friend = new MutableLiveData<>();
 
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                var friend = api.getFriend(public_code);
-                friendData.postValue(friend);
-            }
-        });
-
-        // Update every 3 seconds with executor
-        ScheduledExecutorService btExec = Executors.newScheduledThreadPool(1);
-
-        Runnable getFriends = () -> friendData.postValue(api.getFriend(public_code));
-        this.poller = btExec.scheduleAtFixedRate(getFriends, (long) 3, (long) 3, TimeUnit.SECONDS);
-
-        return friendData;
+        executor.scheduleAtFixedRate(() -> {
+            Friend fetchedNote = api.getFriend(public_code);
+            friend.postValue(fetchedNote);
+        }, 0, 3000, TimeUnit.MILLISECONDS);
+        return friend;
     }
 
     //Used to update Self location
