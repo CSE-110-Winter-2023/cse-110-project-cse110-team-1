@@ -41,8 +41,6 @@ public class UserActivity extends AppCompatActivity {
             input_name.setFocusable(false);
         }
 
-
-
     }
 
     private void onSaveUserNameClicked(View view) {
@@ -65,6 +63,7 @@ public class UserActivity extends AppCompatActivity {
             editor.putString("label", label);
             editor.putString("latitude", String.valueOf(currentLatitude));
             editor.putString("longitude", String.valueOf(currentLongitude));
+            //TODO: Add created_at updated_at strings
             editor.apply();
             Friend user = new Friend(userPublicCode, label, currentLatitude, currentLongitude);
             // TODO: Add repository object (repo) to this class.

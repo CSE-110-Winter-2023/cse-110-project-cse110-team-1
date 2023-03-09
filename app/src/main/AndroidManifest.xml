@@ -15,6 +15,9 @@
         android:theme="@style/Theme.SocialCompass"
         tools:targetApi="31">
         <activity
+            android:name=".activity.CompassActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.UserActivity"
             android:exported="false" />
         <activity
