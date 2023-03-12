@@ -23,9 +23,11 @@ public class Repository {
 
     private final FriendDao dao;
     private ScheduledFuture<?> poller;
+    private final MutableLiveData<Friend> realNoteData;
 
     public Repository(FriendDao dao) {
         this.dao = dao;
+        realNoteData = new MutableLiveData<>();
     }
 
     // Synced Methods
@@ -44,7 +46,7 @@ public class Repository {
         };
 
         // If we get a local update, pass it on.
-        friend.addSource(getLocalFriend(public_code), friend::postValue);
+//        friend.addSource(getLocalFriend(public_code), friend::postValue);
         // If we get a remote update, update the local version (triggering the above observer)
         friend.addSource(getRemote(public_code), updateFromRemote);
 
@@ -105,15 +107,14 @@ public class Repository {
 //
 //        return friendData;
 
-        API api = new API();
+        API api = API.provide();
         var executor = Executors.newSingleThreadScheduledExecutor();
-        MutableLiveData<Friend> friend = new MutableLiveData<>();
 
         executor.scheduleAtFixedRate(() -> {
             Friend fetchedNote = api.getFriend(public_code);
-            friend.postValue(fetchedNote);
+            realNoteData.postValue(fetchedNote);
         }, 0, 3000, TimeUnit.MILLISECONDS);
-        return friend;
+        return realNoteData;
     }
 
     //Used to update Self location

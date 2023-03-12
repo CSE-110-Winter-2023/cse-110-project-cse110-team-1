@@ -44,11 +44,11 @@ public class UserActivity extends AppCompatActivity {
     }
 
     private void onSaveUserNameClicked(View view) {
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            Thread.sleep(3000);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
         EditText input_name = this.findViewById(R.id.my_input_name);
 
         if(input_name.getText().toString().length() == 0){

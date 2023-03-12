@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.socialcompass.R;
 import com.example.socialcompass.model.friend.Friend;
@@ -20,7 +21,7 @@ public class FriendActivity extends AppCompatActivity {
 
     private LiveData<Friend> friend;
     private FriendDao dao;
-    private EditText contentView;
+    private TextView contentView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +32,14 @@ public class FriendActivity extends AppCompatActivity {
         var intent = getIntent();
         var publicCode = intent.getStringExtra("friendPublicCode");
         friend = viewModel.getFriend(publicCode);
+        contentView = findViewById(R.id.show_the_name);
+        friend.observe(this,this::onFriendChanged);
     }
+
+    private void onFriendChanged(Friend friend) {
+        contentView.setText(friend.label);
+    }
+
 
     private FriendViewModel setupViewModel() {
         return new ViewModelProvider(this).get(FriendViewModel.class);
