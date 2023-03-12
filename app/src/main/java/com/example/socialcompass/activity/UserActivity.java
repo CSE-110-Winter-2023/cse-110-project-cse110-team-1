@@ -48,9 +48,13 @@ public class UserActivity extends AppCompatActivity {
         //store user information: name
         SharedPreferences preferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
+        String userName = preferences.getString("label", null);
 
-        if(input_name.getText().toString().length() == 0){
-            Utilities.showAlert(this,"Please enter your name");
+        if(userName == null){
+            if(input_name.getText().toString().length() == 0 ){
+                Utilities.showAlert(this,"Please enter your name");
+
+            }
             String userPublicCode = Utilities.generatePublicId();
             String userPrivateCode = Utilities.generatePrivateId();
             String label = input_name.getText().toString();
@@ -69,7 +73,7 @@ public class UserActivity extends AppCompatActivity {
             // repo.upsertRemote(user, userPrivateCode);
         }
         else{
-            String userName = preferences.getString("label", null);
+            userName = preferences.getString("label", null);
             String userPublicCode = preferences.getString("publicCode", null);
             Intent intent = new Intent(this, FriendListActivity.class);
             intent.putExtra("inputName", userName);
