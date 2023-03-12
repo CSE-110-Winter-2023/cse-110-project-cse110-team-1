@@ -54,7 +54,17 @@ public class Friend {
         this.updatedAt = 0;
     }
 
-
+    @Override
+    public String toString() {
+        return "Friend{" +
+                "publicCode='" + publicCode + '\'' +
+                ", label='" + label + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
 
     public static Friend fromJSON(String json) {
         return new Gson().fromJson(json, Friend.class);

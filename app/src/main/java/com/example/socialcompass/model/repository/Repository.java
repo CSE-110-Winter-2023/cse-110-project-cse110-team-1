@@ -15,15 +15,16 @@ import androidx.lifecycle.Observer;
 
 import java.util.List;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Repository {
 
     private final FriendDao dao;
     private ScheduledFuture<?> poller;
     private final MutableLiveData<Friend> realNoteData;
+    private MediatorLiveData<Long> timeData;
 
     public Repository(FriendDao dao) {
         this.dao = dao;
@@ -36,19 +37,29 @@ public class Repository {
     //Used to get observe changes in single friend location remotely
     public LiveData<Friend> getSyncedFriend(String public_code) {
         var friend = new MediatorLiveData<Friend>();
+        var stuff = new MediatorLiveData<String>();
 
         Observer<Friend> updateFromRemote = theirFriend -> {
             var ourFriend = friend.getValue();
+            Log.d("SYNC_FRIEND", "get sync called");
             if (theirFriend == null) return; // do nothing
             if (ourFriend == null || ourFriend.updatedAt < theirFriend.updatedAt) {
                 upsertLocal(theirFriend);
             }
         };
 
+        Observer<Long> superDummy = theirFriend -> {
+            Log.d("SYNC_DUMMY", "Super dummy called with " + theirFriend.toString());
+        };
+
+
         // If we get a local update, pass it on.
 //        friend.addSource(getLocalFriend(public_code), friend::postValue);
         // If we get a remote update, update the local version (triggering the above observer)
         friend.addSource(getRemote(public_code), updateFromRemote);
+
+        dummy();
+        stuff.addSource(timeData, superDummy);
 
         return friend;
     }
@@ -110,6 +121,7 @@ public class Repository {
         API api = API.provide();
         var executor = Executors.newSingleThreadScheduledExecutor();
 
+
         executor.scheduleAtFixedRate(() -> {
             Friend fetchedNote = api.getFriend(public_code);
             realNoteData.postValue(fetchedNote);
@@ -127,5 +139,18 @@ public class Repository {
                 api.putUser(user, privateCode);
             }
         });
+    }
+
+    public void dummy() {
+        var executor = Executors.newSingleThreadScheduledExecutor();
+//        MutableLiveData<Long> dumm = new MutableLiveData<>();
+
+
+        executor.scheduleAtFixedRate(() -> {
+            Log.d("DUMMY_CALL", "DUMMY 1");
+            timeData.postValue(System.currentTimeMillis());
+            Log.d("DUMMY_CALL", "DUMMY 2");
+        }, 0, 3000, TimeUnit.MILLISECONDS);
+
     }
 }
