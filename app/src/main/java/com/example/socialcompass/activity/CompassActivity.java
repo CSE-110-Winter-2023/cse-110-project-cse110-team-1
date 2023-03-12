@@ -1,6 +1,8 @@
 package com.example.socialcompass.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.util.Log;
@@ -120,7 +122,14 @@ public class CompassActivity extends AppCompatActivity {
     }
 
     public void toFriendsList(View v) {
+
+        SharedPreferences preferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
         Intent intent = new Intent(this, FriendListActivity.class);
+        String userName = preferences.getString("label", null);
+        String userPublicCode = preferences.getString("publicCode", null);
+
+        intent.putExtra("inputName", userName);
+        intent.putExtra("publicCode",userPublicCode);
         startActivity(intent);
     }
 
