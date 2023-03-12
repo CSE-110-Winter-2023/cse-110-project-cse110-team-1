@@ -81,7 +81,7 @@ public class compass_activity extends AppCompatActivity {
         nodeLabel_2.setText(label_2);
 
 
-        ConstraintLayout constraintLayout = findViewById(R.id.compass_layout);
+        ConstraintLayout constraintLayout = findViewById(R.id.compass_screen_layout);
         ConstraintSet constraintSet = new ConstraintSet();
         constraintSet.clone(constraintLayout);
         constraintSet.constrainCircle(R.id.node_1, R.id.compass_img, 462, angle0);
@@ -96,14 +96,14 @@ public class compass_activity extends AppCompatActivity {
 
     void setRotation(float rotation){
         float degrees = (float) Math.toDegrees(rotation);
-        ConstraintLayout constraintLayout = findViewById(R.id.compass_layout);
+        ConstraintLayout constraintLayout = findViewById(R.id.compass_screen_layout);
         constraintLayout.setRotation(-1 * degrees);
     }
 
 
     void setUiMockOrientation(float rotation){
 
-        ConstraintLayout constraintLayout = findViewById(R.id.compass_layout);
+        ConstraintLayout constraintLayout = findViewById(R.id.compass_screen_layout);
         constraintLayout.setRotation(rotation);
     }
 
