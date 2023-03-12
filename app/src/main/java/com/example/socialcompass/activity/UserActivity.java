@@ -26,7 +26,7 @@ public class UserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
-        locationService = new GPSLocationHandler(this);
+//        locationService = new GPSLocationHandler(this);
 
         //Click SAVE starts FriendList activity
         this.saveUserNameButton = this.findViewById(R.id.save_user_name_btn);
@@ -34,7 +34,7 @@ public class UserActivity extends AppCompatActivity {
 
         //get user information: name and block EditText
         SharedPreferences preferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
-        String userName = preferences.getString("name", null);
+        String userName = preferences.getString("label", null);
         if(userName != null){
             EditText input_name = this.findViewById(R.id.my_input_name);
             input_name.setText(userName);
@@ -44,20 +44,13 @@ public class UserActivity extends AppCompatActivity {
     }
 
     private void onSaveUserNameClicked(View view) {
-//        try {
-//            Thread.sleep(3000);
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
         EditText input_name = this.findViewById(R.id.my_input_name);
+        //store user information: name
+        SharedPreferences preferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
 
         if(input_name.getText().toString().length() == 0){
             Utilities.showAlert(this,"Please enter your name");
-        }
-        else{
-            //store user information: name
-            SharedPreferences preferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
             String userPublicCode = Utilities.generatePublicId();
             String userPrivateCode = Utilities.generatePrivateId();
             String label = input_name.getText().toString();
@@ -67,15 +60,19 @@ public class UserActivity extends AppCompatActivity {
             editor.putString("publicCode", userPublicCode);
             editor.putString("privateCode", userPrivateCode);
             editor.putString("label", label);
-//            editor.putString("latitude", String.valueOf(currentLatitude));
+            //editor.putString("latitude", String.valueOf(currentLatitude));
 //            editor.putString("longitude", String.valueOf(currentLongitude));
             //TODO: Add created_at updated_at strings
             editor.apply();
             Friend user = new Friend(userPublicCode, label, 12, 11);
             // TODO: Add repository object (repo) to this class.
             // repo.upsertRemote(user, userPrivateCode);
+        }
+        else{
+            String userName = preferences.getString("label", null);
+            String userPublicCode = preferences.getString("publicCode", null);
             Intent intent = new Intent(this, FriendListActivity.class);
-            intent.putExtra("inputName", input_name.getText().toString());
+            intent.putExtra("inputName", userName);
             intent.putExtra("publicCode",userPublicCode);
             startActivity(intent);
         }
