@@ -9,24 +9,34 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.example.socialcompass.model.friend.Friend;
-import com.example.socialcompass.model.repository.Repository;
 
 import com.example.socialcompass.R;
+import com.example.socialcompass.model.friend.FriendDao;
+import com.example.socialcompass.model.friend.FriendDatabase;
+import com.example.socialcompass.model.repository.Repository;
 import com.example.socialcompass.old.GPSLocationHandler;
 import com.example.socialcompass.utility.Utilities;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 public class UserActivity extends AppCompatActivity {
     Button saveUserNameButton;
     private GPSLocationHandler locationService;
+    private FriendDao friendListItemDao;
+
+    private Repository repo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
-//        locationService = new GPSLocationHandler(this);
+        FriendDatabase db = FriendDatabase.provide(this);
+        friendListItemDao = db.getDao();
+        repo = new Repository(friendListItemDao);
+
+        locationService = new GPSLocationHandler(this);
 
         //Click SAVE starts FriendList activity
         this.saveUserNameButton = this.findViewById(R.id.save_user_name_btn);
@@ -59,18 +69,26 @@ public class UserActivity extends AppCompatActivity {
             String userPrivateCode = Utilities.generatePrivateId();
             String label = input_name.getText().toString();
             //TODO: location service return error
-//            float currentLatitude = locationService.getLocation().getValue().first.floatValue();
-//            float currentLongitude = locationService.getLocation().getValue().second.floatValue();
+            AtomicReference<Float> currentLatitude = new AtomicReference<>((float) 0);
+            AtomicReference<Float> currentLongitude = new AtomicReference<>((float) 0);
+            var locations = locationService.getLocation();
+            locations.observe(this, locationValue->{
+                locations.removeObservers(this);
+                currentLatitude.set(locationValue.first.floatValue());
+                currentLongitude.set(locationValue.second.floatValue());
+
+            });
+
             editor.putString("publicCode", userPublicCode);
             editor.putString("privateCode", userPrivateCode);
             editor.putString("label", label);
-            //editor.putString("latitude", String.valueOf(currentLatitude));
-//            editor.putString("longitude", String.valueOf(currentLongitude));
+            editor.putString("latitude", String.valueOf(currentLatitude));
+            editor.putString("longitude", String.valueOf(currentLongitude));
             //TODO: Add created_at updated_at strings
             editor.apply();
-            Friend user = new Friend(userPublicCode, label, 12, 11);
+            Friend user = new Friend(userPublicCode, label, currentLatitude.get(),currentLongitude.get() );
             // TODO: Add repository object (repo) to this class.
-            // repo.upsertRemote(user, userPrivateCode);
+             repo.upsertRemote(user, userPrivateCode);
         }
         else{
             userName = preferences.getString("label", null);
