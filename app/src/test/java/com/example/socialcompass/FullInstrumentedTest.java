@@ -161,14 +161,14 @@ public class FullInstrumentedTest {
 
                 //Test Orientation and Node angle values
                 compass_activity compassActivity = Robolectric.buildActivity(compass_activity.class).create().start().resume().get();
-                ConstraintLayout compass_layout = compassActivity.findViewById(R.id.compass_layout);
+                ConstraintLayout compass_layout = compassActivity.findViewById(R.id.compass_screen_layout);
 
                 //Test Orientation values when device is facing North
                 float rotation = compass_layout.getRotation();
                 assertEquals(0f, rotation, 0.1f);
 
                 //Test Node angle values when device is facing North
-                ConstraintLayout constraintLayout = (ConstraintLayout) compassActivity.findViewById(R.id.compass_layout);
+                ConstraintLayout constraintLayout = (ConstraintLayout) compassActivity.findViewById(R.id.compass_screen_layout);
                 ConstraintLayout.LayoutParams layoutParamsNode1_1 = (ConstraintLayout.LayoutParams) constraintLayout.findViewById(R.id.node_1).getLayoutParams();
                 float angle1_1 = layoutParamsNode1_1.circleAngle;
                 ConstraintLayout.LayoutParams layoutParamsNode1_2 = (ConstraintLayout.LayoutParams) constraintLayout.findViewById(R.id.node_2).getLayoutParams();
@@ -194,12 +194,12 @@ public class FullInstrumentedTest {
                 ActivityController<compass_activity> compassActivity2Controller;
                 compassActivity2Controller = Robolectric.buildActivity(compass_activity.class);
                 compass_activity compassActivity2 = compassActivity2Controller.create().start().resume().get();
-                ConstraintLayout compass_layout2 = compassActivity2.findViewById(R.id.compass_layout);
+                ConstraintLayout compass_layout2 = compassActivity2.findViewById(R.id.compass_screen_layout);
                 float rotation2 = compass_layout2.getRotation();
                 assertEquals(180f, rotation2, 0.1f);
 
                 //Test Node angle values when device is facing South (should be the same as North)
-                ConstraintLayout constraintLayout2 = (ConstraintLayout) compassActivity2.findViewById(R.id.compass_layout);
+                ConstraintLayout constraintLayout2 = (ConstraintLayout) compassActivity2.findViewById(R.id.compass_screen_layout);
                 ConstraintLayout.LayoutParams layoutParamsNode2_1 = (ConstraintLayout.LayoutParams) constraintLayout2.findViewById(R.id.node_1).getLayoutParams();
                 float angle2_1 = layoutParamsNode2_1.circleAngle;
                 ConstraintLayout.LayoutParams layoutParamsNode2_2 = (ConstraintLayout.LayoutParams) constraintLayout2.findViewById(R.id.node_2).getLayoutParams();
@@ -221,7 +221,7 @@ public class FullInstrumentedTest {
                 compassActivity2 = compassActivity2Controller.create().start().resume().get();
 
                 //Test the node angles after restarting
-                ConstraintLayout constraintLayout3 = (ConstraintLayout) compassActivity2.findViewById(R.id.compass_layout);
+                ConstraintLayout constraintLayout3 = (ConstraintLayout) compassActivity2.findViewById(R.id.compass_screen_layout);
                 ConstraintLayout.LayoutParams layoutParamsNode3_1 = (ConstraintLayout.LayoutParams) constraintLayout2.findViewById(R.id.node_1).getLayoutParams();
                 float angle3_1 = layoutParamsNode3_1.circleAngle;
                 ConstraintLayout.LayoutParams layoutParamsNode3_2 = (ConstraintLayout.LayoutParams) constraintLayout2.findViewById(R.id.node_2).getLayoutParams();
