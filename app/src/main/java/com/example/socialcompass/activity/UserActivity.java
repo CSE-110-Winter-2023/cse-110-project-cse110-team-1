@@ -97,6 +97,7 @@ public class UserActivity extends AppCompatActivity {
             intent.putExtra("inputName", userName);
             intent.putExtra("publicCode",userPublicCode);
             startActivity(intent);
+
         }
 
     }
