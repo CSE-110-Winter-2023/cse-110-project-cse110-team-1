@@ -45,27 +45,8 @@ public class FriendListViewModel extends AndroidViewModel {
     }
 
     public LiveData<Friend> getOrcreateFriend(String public_code) {
-//          return repo.getSyncedFriend(public_code);
-//        Log.d("friend returnd by api",friend.getValue().label);
 
-//        Log.d("friend object returnd by server",friend.getValue().label);
-//        if(friend != null){
-//            String friendLabel = friend.getValue().label;
-//            Friend newItem = new Friend(public_code, "friendLabel", 12, 13);
-//            friendListItemDao.upsert(newItem);
-//        }
-        if(!repo.existsLocal(public_code)) {
-            var friend = new Friend(public_code, "friendLabel", 12, 13);
-            repo.upsertLocal(friend);
-        }
-//        LiveData<Friend> updateFriend = null;
-////        if ( repo.getLocalFriend(public_code) != null) {
-////            Log.d("VIEW_MODEL", "call to remote");
-////            updateFriend = repo.getSyncedFriend(public_code); //TODO: this line is not getting the data back
-////            //Log.d("VIEW MODEL", updateFriend.getValue().toString());
-////        }
-
-        return repo.getLocalFriend(public_code);
+        return repo.getSyncedFriend(public_code);
 
     }
     public void toggleDelete(Friend friendListItem) {

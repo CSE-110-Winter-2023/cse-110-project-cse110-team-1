@@ -120,7 +120,7 @@ public class Repository {
     //Used to update Self location
     public void upsertRemote(Friend user, String privateCode) {
 
-        API api = new API();
+        API api = API.provide();
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {

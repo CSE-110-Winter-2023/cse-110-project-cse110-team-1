@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -16,6 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.socialcompass.model.friend.Friend;
+import com.example.socialcompass.utility.Utilities;
 import com.example.socialcompass.viewmodel.FriendListViewModel;
 import com.example.socialcompass.R;
 import com.example.socialcompass.view.FriendListAdapter;
@@ -61,6 +63,7 @@ public class FriendListActivity extends AppCompatActivity {
     private FriendListAdapter setupAdapter(FriendListViewModel viewModel) {
         FriendListAdapter adapter = new FriendListAdapter();
         adapter.setHasStableIds(true);
+        //handle delete item
         adapter.setOnDeleteClickedHandler(viewModel::toggleDelete);
         viewModel.getFriendListItems().observe(this,adapter::setFriendListItems);
         return adapter;
@@ -87,29 +90,9 @@ public class FriendListActivity extends AppCompatActivity {
                 String friend_public_code = newFriendPublicCode.getText().toString();
                 newFriendPublicCode.setText("");
                 var friend = viewModel.getOrcreateFriend(friend_public_code);
-                friend.observe(FriendListActivity.this,friendEntity->{
-                    friend.removeObservers(FriendListActivity.this);
-                    Intent intent = FriendActivity.intentFor(getApplicationContext(),friendEntity);
-                    startActivity(intent);
-                });
+                friend.observe(FriendListActivity.this,friendEntity->{});
             }
         });
-
-//        newFriendPublicCode.setOnEditorActionListener((view,actionId,event)->{
-//            if(actionId != EditorInfo.IME_ACTION_DONE){
-//                return false;
-//            }
-//            String friend_public_code = newFriendPublicCode.getText().toString();
-//            newFriendPublicCode.setText("");
-//            var friend = viewModel.getOrcreateFriend(friend_public_code);
-//            friend.observe(this,friendEntity->{
-//                friend.removeObservers(this);
-//                Intent intent = FriendActivity.intentFor(getApplicationContext(),friendEntity);
-//                startActivity(intent);
-//            });
-//            return true;
-//
-//        });
 
     }
 
@@ -121,11 +104,4 @@ public class FriendListActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-//    private void onAddFriendClicked(View view) {
-//        String friend_public_code = newFriendPublicCode.getText().toString();
-//        newFriendPublicCode.setText("");
-//        viewModel.createFriend(friend_public_code);
-////        friend.observe(this,this::onSetFriend);
-//
-//    }
 }
