@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 
@@ -28,12 +30,17 @@ public class FriendActivity extends AppCompatActivity {
 
         var intent = getIntent();
         var publicCode = intent.getStringExtra("friendPublicCode");
-
         friend = viewModel.getFriend(publicCode);
     }
 
     private FriendViewModel setupViewModel() {
         return new ViewModelProvider(this).get(FriendViewModel.class);
 
+    }
+
+    public static Intent intentFor(Context context, Friend friend) {
+        var intent = new Intent(context, FriendActivity.class);
+        intent.putExtra("friendPublicCode", friend.publicCode);
+        return intent;
     }
 }

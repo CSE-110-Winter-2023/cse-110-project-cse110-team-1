@@ -8,13 +8,10 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.example.socialcompass.activity.FriendListActivity;
-import com.example.socialcompass.model.api.API;
 import com.example.socialcompass.model.friend.FriendDao;
 import com.example.socialcompass.model.friend.Friend;
 import com.example.socialcompass.model.friend.FriendDatabase;
 import com.example.socialcompass.model.repository.Repository;
-import com.example.socialcompass.utility.Utilities;
 
 import java.util.List;
 
@@ -47,7 +44,7 @@ public class FriendListViewModel extends AndroidViewModel {
         friendListItems = friendListItemDao.getAllLive();
     }
 
-    public LiveData<Friend> createFriend(String public_code) {
+    public LiveData<Friend> getOrcreateFriend(String public_code) {
 //          return repo.getSyncedFriend(public_code);
 //        Log.d("friend returnd by api",friend.getValue().label);
 
@@ -61,13 +58,14 @@ public class FriendListViewModel extends AndroidViewModel {
             var friend = new Friend(public_code, "friendLabel", 12, 13);
             repo.upsertLocal(friend);
         }
-        LiveData<Friend> updateFriend = null;
-        if ( repo.getLocalFriend(public_code) != null) {
-            Log.d("VIEW_MODEL", "call to remote");
-            updateFriend = repo.getSyncedFriend(public_code); //TODO: this line is not getting the data back
-            //Log.d("VIEW MODEL", updateFriend.getValue().toString());
-        }
-        return updateFriend;
+//        LiveData<Friend> updateFriend = null;
+////        if ( repo.getLocalFriend(public_code) != null) {
+////            Log.d("VIEW_MODEL", "call to remote");
+////            updateFriend = repo.getSyncedFriend(public_code); //TODO: this line is not getting the data back
+////            //Log.d("VIEW MODEL", updateFriend.getValue().toString());
+////        }
+
+        return repo.getLocalFriend(public_code);
 
     }
     public void toggleDelete(Friend friendListItem) {

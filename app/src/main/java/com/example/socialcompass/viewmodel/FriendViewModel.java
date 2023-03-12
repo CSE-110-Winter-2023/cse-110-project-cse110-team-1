@@ -14,7 +14,7 @@ public class FriendViewModel extends AndroidViewModel {
 
     private LiveData<Friend> friend;
     private final Repository repo;
-    public FriendViewModel(@NonNull Application application, LiveData<Friend> friend, Repository repo) {
+    public FriendViewModel(@NonNull Application application) {
         super(application);
 
         var context = application.getApplicationContext();

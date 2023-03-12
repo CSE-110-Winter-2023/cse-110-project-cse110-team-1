@@ -61,16 +61,17 @@ public class UserActivity extends AppCompatActivity {
             String userPublicCode = Utilities.generatePublicId();
             String userPrivateCode = Utilities.generatePrivateId();
             String label = input_name.getText().toString();
-            float currentLatitude = locationService.getLocation().getValue().first.floatValue();
-            float currentLongitude = locationService.getLocation().getValue().second.floatValue();
+            //TODO: location service return error
+//            float currentLatitude = locationService.getLocation().getValue().first.floatValue();
+//            float currentLongitude = locationService.getLocation().getValue().second.floatValue();
             editor.putString("publicCode", userPublicCode);
             editor.putString("privateCode", userPrivateCode);
             editor.putString("label", label);
-            editor.putString("latitude", String.valueOf(currentLatitude));
-            editor.putString("longitude", String.valueOf(currentLongitude));
+//            editor.putString("latitude", String.valueOf(currentLatitude));
+//            editor.putString("longitude", String.valueOf(currentLongitude));
             //TODO: Add created_at updated_at strings
             editor.apply();
-            Friend user = new Friend(userPublicCode, label, currentLatitude, currentLongitude);
+            Friend user = new Friend(userPublicCode, label, 12, 11);
             // TODO: Add repository object (repo) to this class.
             // repo.upsertRemote(user, userPrivateCode);
             Intent intent = new Intent(this, FriendListActivity.class);
