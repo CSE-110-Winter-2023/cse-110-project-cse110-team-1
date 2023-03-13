@@ -121,6 +121,7 @@ public class CompassActivity extends AppCompatActivity {
             constraintLayout.setRotation(-1 * degrees);
         });
         locationService.getLocation().observe(this, (a) -> {
+            this.updateUserLocation();
             this.redrawAllFriends();
         });
 
@@ -142,6 +143,7 @@ public class CompassActivity extends AppCompatActivity {
 
     public void toFriendsList(View v) {
         SharedPreferences preferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+
         Intent intent = new Intent(this, FriendListActivity.class);
         String userName = preferences.getString("label", null);
         String userPublicCode = preferences.getString("publicCode", null);
@@ -149,6 +151,26 @@ public class CompassActivity extends AppCompatActivity {
         intent.putExtra("inputName", userName);
         intent.putExtra("publicCode", userPublicCode);
         startActivity(intent);
+    }
+
+    public void updateUserLocation(){
+        SharedPreferences preferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+
+        Pair<Double, Double> loc = locationService.getLocation().getValue();
+        final float gpsLat = loc.first.floatValue(),
+                gpsLon = loc.second.floatValue();
+
+        //Update user location in shared preferences
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("latitude", String.valueOf(gpsLat));
+        editor.putString("longitude", String.valueOf(gpsLon));
+        editor.apply();
+        //Update user location in remote server
+        String label = preferences.getString("label", null);
+        String userPublicCode = preferences.getString("publicCode", null);
+        String userPrivateCode = preferences.getString("privateCode",null);
+        Friend user = new Friend(userPublicCode,label,gpsLat,gpsLon);
+        repo.upsertRemote(user, userPrivateCode);
     }
 
 }
