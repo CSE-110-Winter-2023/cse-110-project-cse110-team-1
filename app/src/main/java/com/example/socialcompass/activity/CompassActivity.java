@@ -114,8 +114,11 @@ public class CompassActivity extends AppCompatActivity {
         locationService = new GPSLocationHandler(this);
         orientationService = new OrientationService(this);
 
-        orientationService.getOrientation().observe(this, (a) -> {
-            this.redrawAllFriends();
+        orientationService.getOrientation().observe(this, (rotation) -> {
+//            this.redrawAllFriends();
+            float degrees = (float) Math.toDegrees(rotation);
+            ConstraintLayout constraintLayout = findViewById(R.id.compass_screen_layout);
+            constraintLayout.setRotation(-1 * degrees);
         });
         locationService.getLocation().observe(this, (a) -> {
             this.redrawAllFriends();
