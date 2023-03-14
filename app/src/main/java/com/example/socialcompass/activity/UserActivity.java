@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,7 +26,6 @@ public class UserActivity extends AppCompatActivity {
     Button saveUserNameButton;
     private GPSLocationHandler locationService;
     private FriendDao friendListItemDao;
-
     private Repository repo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +34,6 @@ public class UserActivity extends AppCompatActivity {
 
         FriendDatabase db = FriendDatabase.provide(this);
         friendListItemDao = db.getDao();
-        repo = new Repository(friendListItemDao);
 
         locationService = new GPSLocationHandler(this);
 
@@ -51,6 +50,19 @@ public class UserActivity extends AppCompatActivity {
             input_name.setFocusable(false);
         }
 
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("apiURL", null);
+        editor.apply();
+        Button apiURLSubmit = this.findViewById(R.id.api_url_submit);
+        apiURLSubmit.setOnClickListener(new View.OnClickListener() {
+            EditText apiURLMock = (EditText) findViewById(R.id.api_url_mock);
+            public void onClick(View view) {
+                String temp = apiURLMock.getText().toString();
+                editor.putString("apiURL", temp);
+                editor.apply();
+                Log.d("API URL Saved:", temp);
+            }
+        });
     }
 
     private void onSaveUserNameClicked(View view) {
@@ -88,6 +100,8 @@ public class UserActivity extends AppCompatActivity {
             editor.apply();
             Friend user = new Friend(userPublicCode, label, currentLatitude.get(),currentLongitude.get() );
             // TODO: Add repository object (repo) to this class.
+            String apiURL = preferences.getString("apiURL", null);
+            this.repo = new Repository(friendListItemDao, apiURL);
              repo.upsertRemote(user, userPrivateCode);
         }
         else{

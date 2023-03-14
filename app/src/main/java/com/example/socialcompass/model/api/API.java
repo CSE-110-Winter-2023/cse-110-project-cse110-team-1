@@ -22,13 +22,19 @@ public class API {
     private volatile static API instance = null;
     private OkHttpClient client;
 
-    public API() {
+    private String url;
+    public API(String url) {
         this.client = new OkHttpClient();
+        if (url == null) {
+            this.url = "https://socialcompass.goto.ucsd.edu/";
+        } else {
+            this.url = url;
+        }
     }
 
-    public static API provide() {
+    public static API provide(String url) {
         if (instance == null) {
-            instance = new API();
+            instance = new API(url);
         }
         return instance;
     }
@@ -38,8 +44,9 @@ public class API {
     public Friend getFriend(String publicCode) {
         // URLs cannot contain spaces, so we replace them with %20.
         publicCode = publicCode.replace(" ", "%20");
+
         var request = new Request.Builder()
-                .url("https://socialcompass.goto.ucsd.edu/location/" + publicCode)
+                .url( url + "location/" + publicCode)
                 .method("GET", null)
                 .build();
 
@@ -73,7 +80,7 @@ public class API {
 
 
         var request = new Request.Builder()
-                .url("https://socialcompass.goto.ucsd.edu/location/" + user.publicCode)
+                .url( url + "location/" + user.publicCode)
                 .put(RequestBody.create(String.valueOf(reqContent), JSON))
                 .build();
 

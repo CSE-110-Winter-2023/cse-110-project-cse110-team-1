@@ -2,6 +2,7 @@ package com.example.socialcompass.viewmodel;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -29,8 +30,9 @@ public class FriendListViewModel extends AndroidViewModel {
         Context context = getApplication().getApplicationContext();
         FriendDatabase db = FriendDatabase.provide(context);
         friendListItemDao = db.getDao();
-
-        this.repo = new Repository(friendListItemDao);
+        SharedPreferences preferences = context.getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        String apiURL = preferences.getString("apiURL", null);
+        this.repo = new Repository(friendListItemDao, apiURL);
     }
 
     public LiveData<List<Friend>> getFriendListItems() {

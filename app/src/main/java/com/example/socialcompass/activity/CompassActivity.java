@@ -109,7 +109,9 @@ public class CompassActivity extends AppCompatActivity {
         nodeIcon = Icon.createWithResource(getApplicationContext(), R.drawable.address_node);
 
         friendDao = FriendDatabase.provide(getApplicationContext()).getDao();
-        this.repo = new Repository(friendDao);
+        SharedPreferences preferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        String apiURL = preferences.getString("apiURL", null);
+        this.repo = new Repository(friendDao, apiURL);
         friendsList = friendDao.getAllLive();
         friendsList.observe(this, (allFriends) -> {
             this.redrawAllFriends();
