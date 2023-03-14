@@ -6,6 +6,7 @@ import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.util.Log;
 import android.util.Pair;
 
 import androidx.annotation.NonNull;
@@ -14,11 +15,15 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 public class GPSLocationHandler implements LocationListener {
+    private final Context mContext;
     private MutableLiveData<Pair<Double,Double>> currentLocation;
     private final LocationManager locationManager;
 
     public static final int MIN_MS_UPDATE = 10, MIN_DIST_UPDATE = 0;
 
+    public boolean isGPSOn() {
+        return locationManager.isLocationEnabled();
+    }
     @Override
     public void onLocationChanged(@NonNull Location location) {
         this.currentLocation.postValue(new Pair<Double,Double>(
@@ -29,8 +34,10 @@ public class GPSLocationHandler implements LocationListener {
 
     public GPSLocationHandler(@NonNull Activity me) {
         currentLocation = new MutableLiveData<>();
+        this.mContext = me.getApplicationContext();
         locationManager = (LocationManager) me.getSystemService(Context.LOCATION_SERVICE);
         try {
+            Log.d("GPS", "GPS Initialized");
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                     MIN_MS_UPDATE, MIN_DIST_UPDATE, this);
         } catch(SecurityException e) {
@@ -38,8 +45,5 @@ public class GPSLocationHandler implements LocationListener {
         }
 //        this.currentLocation.postValue(new Pair<Double,Double>(0D,0D));
     }
-
-
-
 
 }

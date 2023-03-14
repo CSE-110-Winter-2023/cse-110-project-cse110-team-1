@@ -56,7 +56,7 @@ public class APITest extends TestCase {
 
     @Before
     public void setup() {
-        api = API.provide();
+        api = API.provide(null);
         privateCode = "some random string here";
         testFriend = new Friend("the-world", "The world", (float) -25.326356, (float) 33.25622);
 
