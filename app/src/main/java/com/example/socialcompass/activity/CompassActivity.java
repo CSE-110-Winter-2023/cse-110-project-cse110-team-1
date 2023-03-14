@@ -3,6 +3,9 @@ package com.example.socialcompass.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,6 +31,8 @@ import com.example.socialcompass.utility.Utilities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class CompassActivity extends AppCompatActivity {
     private Icon nodeIcon;
@@ -132,9 +137,42 @@ public class CompassActivity extends AppCompatActivity {
             repo.getSyncedFriend(friend.publicCode).observe(this, (a) -> {});
         }
 
+        TextView last_connected = findViewById(R.id.last_connected);
+        ImageView status_indicator = findViewById(R.id.status_indicator);
+        var executor = Executors.newSingleThreadScheduledExecutor();
+        SharedPreferences sharedPref = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        PorterDuffColorFilter redFilter = new PorterDuffColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
+        PorterDuffColorFilter greenFilter = new PorterDuffColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP);
 
+        executor.scheduleAtFixedRate(() -> {
+            long currentTimeMillis = System.currentTimeMillis();
 
+            if (locationService.isGPSOn()) {
+                Log.d("Status", "Online");
+                editor.putLong("lastConnectedTime", currentTimeMillis);
+                editor.apply();
+                last_connected.setText("Online");
+                status_indicator.setColorFilter(greenFilter);
+            } else {
+                Log.d("Status", "Offline");
+                long timeOffline = currentTimeMillis - sharedPref.getLong("lastConnectedTime", (long) 0.0);
+                String timeOfflineString = statusTimeFormatter(timeOffline);
+                last_connected.setText(timeOfflineString);
+                status_indicator.setColorFilter(redFilter);
+            }
+        }, 0, 3000, TimeUnit.MILLISECONDS);
+    }
 
+    public String statusTimeFormatter(long timeOffline) {
+        int minutes = (int) TimeUnit.MILLISECONDS.toMinutes(timeOffline);
+        int hours = (int) TimeUnit.MILLISECONDS.toHours(timeOffline);
+        String returnString = "";
+        if (hours > 0) {
+            returnString = returnString.concat(hours + "h ");
+        }
+        returnString = returnString.concat(minutes + "m");
+        return returnString;
     }
 
     public void toFriendsList(View v) {

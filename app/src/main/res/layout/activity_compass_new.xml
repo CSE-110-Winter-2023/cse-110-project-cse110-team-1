@@ -6,6 +6,23 @@
     android:layout_height="match_parent"
     tools:context=".activity.CompassActivity">
 
+    <ImageView
+        android:id="@+id/status_indicator"
+        android:layout_width="30dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="300dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/compass_screen_layout"
+        app:layout_constraintCircleAngle="150"
+        app:layout_constraintCircleRadius="175dp"
+        app:layout_constraintEnd_toStartOf="@+id/last_connected"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.038"
+        app:srcCompat="@drawable/address_node" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/compass_screen_layout"
         android:layout_width="0dp"
@@ -56,4 +73,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_menu_add" />
+
+    <TextView
+        android:id="@+id/last_connected"
+        android:layout_width="53dp"
+        android:layout_height="16dp"
+        android:layout_marginEnd="220dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/compass_screen_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.434" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
