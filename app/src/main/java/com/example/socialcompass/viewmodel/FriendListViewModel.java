@@ -48,7 +48,7 @@ public class FriendListViewModel extends AndroidViewModel {
 
         var friend = repo.getSyncedFriend(public_code);
 
-        Log.d("UPSER_LOCAL_FRIEND", String.valueOf(friendListItemDao.getAll().size()));
+        Log.d("getOrcreateFriend", String.valueOf(friendListItemDao.getAll().size()));
         return friend;
 
     }

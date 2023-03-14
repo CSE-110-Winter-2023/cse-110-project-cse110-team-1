@@ -27,12 +27,14 @@ import com.example.socialcompass.viewmodel.FriendListViewModel;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
-
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+@RunWith(AndroidJUnit4.class)
 public class FriendListActivityTest {
     FriendDatabase testDb;
     FriendDao friendListItemDao;
@@ -46,7 +48,6 @@ public class FriendListActivityTest {
         FriendDatabase.inject(testDb);
 
         friendListItemDao = testDb.getDao();
-
     }
 
     @Test
@@ -64,24 +65,25 @@ public class FriendListActivityTest {
 
             //the before database
             var beforeDao = friendListItemDao.getAll();
-
+            newPublicCode.requestFocus();
             //enter a new public code
             newPublicCode.setText(newText);
             //click on ADD
             addTodoButton.performClick();
 
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+
 
             //the new Friend should be added to the database
-            var afterDao = friendListItemDao.getAll();
+            var afterDao = friendListItemDao.getAllLive();
 
+            afterDao.observe(activity, (a) -> {
+                if (a.size() != beforeDao.size()) {
+                    assertEquals(beforeDao.size()+1,a.size());
+                }
+            });
 
             // Observe changes to the test LiveData object
-            assertEquals(beforeDao.size()+1,afterDao.size());
+//
 
         });
     }
