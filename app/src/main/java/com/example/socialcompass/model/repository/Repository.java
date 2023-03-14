@@ -76,7 +76,11 @@ public class Repository {
     }
 
     public void upsertLocal(Friend friend) {
+        Log.d("UPSER_LOCAL_FRIEND", friend.publicCode);
+        Log.d("UPSER_LOCAL_FRIEND", String.valueOf(dao.getAll().size()));
         dao.upsert(friend);
+        Log.d("UPSER_LOCAL_FRIEND", String.valueOf(dao.getAll().size()));
+
     }
 
     public boolean existsLocal(String public_code) {
