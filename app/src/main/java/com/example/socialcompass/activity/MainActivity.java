@@ -23,8 +23,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent intent = new Intent(this, CompassActivity.class);
-//        Intent intent = new Intent(this, UserActivity.class);
+//        Intent intent = new Intent(this, CompassActivity.class);
+        Intent intent = new Intent(this, UserActivity.class);
         startActivity(intent);
 
         /*

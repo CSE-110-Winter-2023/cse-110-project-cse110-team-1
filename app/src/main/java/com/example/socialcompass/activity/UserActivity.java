@@ -9,22 +9,32 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.example.socialcompass.model.friend.Friend;
-import com.example.socialcompass.model.repository.Repository;
 
 import com.example.socialcompass.R;
+import com.example.socialcompass.model.friend.FriendDao;
+import com.example.socialcompass.model.friend.FriendDatabase;
+import com.example.socialcompass.model.repository.Repository;
 import com.example.socialcompass.old.GPSLocationHandler;
 import com.example.socialcompass.utility.Utilities;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 public class UserActivity extends AppCompatActivity {
     Button saveUserNameButton;
     private GPSLocationHandler locationService;
+    private FriendDao friendListItemDao;
+
+    private Repository repo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
+
+        FriendDatabase db = FriendDatabase.provide(this);
+        friendListItemDao = db.getDao();
+        repo = new Repository(friendListItemDao);
 
         locationService = new GPSLocationHandler(this);
 
@@ -34,7 +44,7 @@ public class UserActivity extends AppCompatActivity {
 
         //get user information: name and block EditText
         SharedPreferences preferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
-        String userName = preferences.getString("name", null);
+        String userName = preferences.getString("label", null);
         if(userName != null){
             EditText input_name = this.findViewById(R.id.my_input_name);
             input_name.setText(userName);
@@ -44,25 +54,31 @@ public class UserActivity extends AppCompatActivity {
     }
 
     private void onSaveUserNameClicked(View view) {
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
         EditText input_name = this.findViewById(R.id.my_input_name);
+        //store user information: name
+        SharedPreferences preferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        String userName = preferences.getString("label", null);
 
-        if(input_name.getText().toString().length() == 0){
-            Utilities.showAlert(this,"Please enter your name");
-        }
-        else{
-            //store user information: name
-            SharedPreferences preferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
+        if(userName == null){
+            if(input_name.getText().toString().length() == 0 ){
+                Utilities.showAlert(this,"Please enter your name");
+
+            }
             String userPublicCode = Utilities.generatePublicId();
             String userPrivateCode = Utilities.generatePrivateId();
             String label = input_name.getText().toString();
-            float currentLatitude = locationService.getLocation().getValue().first.floatValue();
-            float currentLongitude = locationService.getLocation().getValue().second.floatValue();
+            //TODO: location service return error
+            AtomicReference<Float> currentLatitude = new AtomicReference<>((float) 0);
+            AtomicReference<Float> currentLongitude = new AtomicReference<>((float) 0);
+            var locations = locationService.getLocation();
+            locations.observe(this, locationValue->{
+                locations.removeObservers(this);
+                currentLatitude.set(locationValue.first.floatValue());
+                currentLongitude.set(locationValue.second.floatValue());
+
+            });
+
             editor.putString("publicCode", userPublicCode);
             editor.putString("privateCode", userPrivateCode);
             editor.putString("label", label);
@@ -70,13 +86,18 @@ public class UserActivity extends AppCompatActivity {
             editor.putString("longitude", String.valueOf(currentLongitude));
             //TODO: Add created_at updated_at strings
             editor.apply();
-            Friend user = new Friend(userPublicCode, label, currentLatitude, currentLongitude);
+            Friend user = new Friend(userPublicCode, label, currentLatitude.get(),currentLongitude.get() );
             // TODO: Add repository object (repo) to this class.
-            // repo.upsertRemote(user, userPrivateCode);
+             repo.upsertRemote(user, userPrivateCode);
+        }
+        else{
+            userName = preferences.getString("label", null);
+            String userPublicCode = preferences.getString("publicCode", null);
             Intent intent = new Intent(this, FriendListActivity.class);
-            intent.putExtra("inputName", input_name.getText().toString());
+            intent.putExtra("inputName", userName);
             intent.putExtra("publicCode",userPublicCode);
             startActivity(intent);
+
         }
 
     }

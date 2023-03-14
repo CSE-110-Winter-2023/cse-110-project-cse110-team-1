@@ -2,7 +2,9 @@ package com.example.socialcompass.activity;
 
 import static java.lang.String.valueOf;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,6 +37,10 @@ import java.util.List;
 public class CompassActivity extends AppCompatActivity {
     private Icon nodeIcon;
     private int displayCompass;
+
+//    List<ImageView> nodes = new ArrayList<>();
+//    List<TextView> labels = new ArrayList<>();
+
 
     public synchronized void redrawAllFriends() {
         if(locationService.getLocation().getValue() == null
@@ -80,35 +86,37 @@ public class CompassActivity extends AppCompatActivity {
         for(i = 0; i < friends.size(); i++) {
             Friend f = friends.get(i);
             float angle = Utilities.getAngle(gpsLat, gpsLon, f.latitude, f.longitude);
+            double actual_dist = Utilities.calculateDistanceInMiles(gpsLat, gpsLon, f.latitude, f.longitude);
+            int radius_dist = Utilities.calculateRadius( displayCompass, actual_dist);
 
             labels.get(i).setText( String.format("%s\n%.0fmi",f.label, Utilities.calculateDistanceInMiles(gpsLat, gpsLon, f.latitude, f.longitude)));
-            double dist_in_mile = Utilities.calculateDistanceInMiles(gpsLat, gpsLon, f.latitude, f.longitude);
-            int dist_in_scale = Utilities.calculateRadius(displayCompass,dist_in_mile);
+//            cs.constrainCircle(nodes.get(i).getId(), R.id.compass_layout, radius_dist, angle);
+//            cs.constrainCircle(labels.get(i).getId(), R.id.compass_layout, radius_dist, angle);
 
 
-//            cs.constrainCircle(labels.get(i).getId(), R.id.compass_layout, (int) dist_in_scale, angle);
-            cs.constrainCircle(nodes.get(i).getId(), R.id.compass_layout, dist_in_scale, angle);
-//            cs.constrainCircle(nodes.get(i).getId(), R.id.compass_layout, 462, angle);
-            cs.constrainCircle(labels.get(i).getId(), R.id.compass_layout, dist_in_scale, angle);
+//            nodes.get(i).setVisibility(View.GONE);
+////            Utilities.showAlert(this,""+nodes.get(i).getVisibility());
+//            labels.get(i).setVisibility(View.VISIBLE);
 
-            nodes.get(i).setVisibility(View.VISIBLE);
-            labels.get(i).setVisibility(View.VISIBLE);
-
-//            if(dist_in_scale==462){
+            if(radius_dist==462){
+                cs.constrainCircle(nodes.get(i).getId(), R.id.compass_layout, radius_dist, angle);
 //                nodes.get(i).setVisibility(View.VISIBLE);
 //                labels.get(i).setVisibility(View.INVISIBLE);
-//            }else{
+            }else{
+                cs.constrainCircle(labels.get(i).getId(), R.id.compass_layout, radius_dist, angle);
 //                nodes.get(i).setVisibility(View.INVISIBLE);
 //                labels.get(i).setVisibility(View.VISIBLE);
-//            }
+            }
 
         }
-        for(; i < nodes.size(); i++) {
-            nodes.get(i).setVisibility(View.INVISIBLE);
-            labels.get(i).setVisibility(View.INVISIBLE);
-        }
+//        for(; i < nodes.size(); i++) {
+//            nodes.get(i).setVisibility(View.INVISIBLE);
+//            labels.get(i).setVisibility(View.INVISIBLE);
+//        }
 
         cs.applyTo(layout);
+
+
 
 //        Log.d("Layout", String.valueOf(layout.getChildCount()));
     }
@@ -194,7 +202,14 @@ public class CompassActivity extends AppCompatActivity {
     }
 
     public void toFriendsList(View v) {
+
+        SharedPreferences preferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
         Intent intent = new Intent(this, FriendListActivity.class);
+        String userName = preferences.getString("label", null);
+        String userPublicCode = preferences.getString("publicCode", null);
+
+        intent.putExtra("inputName", userName);
+        intent.putExtra("publicCode",userPublicCode);
         startActivity(intent);
     }
 
