@@ -136,9 +136,6 @@ public class CompassActivity extends AppCompatActivity {
             repo.getSyncedFriend(friend.publicCode).observe(this, (a) -> {});
         }
 
-
-
-
     }
 
     public void toFriendsList(View v) {
