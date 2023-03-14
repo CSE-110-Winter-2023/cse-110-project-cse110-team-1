@@ -25,9 +25,11 @@ public class Repository {
     private ScheduledFuture<?> poller;
     private final MutableLiveData<Friend> realNoteData;
     private MediatorLiveData<Long> timeData;
+    private String apiURL;
 
-    public Repository(FriendDao dao) {
+    public Repository(FriendDao dao, String apiURL) {
         this.dao = dao;
+        this.apiURL = apiURL;
         realNoteData = new MutableLiveData<>();
     }
 
@@ -37,7 +39,6 @@ public class Repository {
     //Used to get observe changes in single friend location remotely
     public LiveData<Friend> getSyncedFriend(String public_code) {
         var friend = new MediatorLiveData<Friend>();
-        var stuff = new MediatorLiveData<String>();
 
         Observer<Friend> updateFromRemote = theirFriend -> {
             var ourFriend = friend.getValue();
@@ -48,18 +49,14 @@ public class Repository {
             }
         };
 
-        Observer<Long> superDummy = theirFriend -> {
-            Log.d("SYNC_DUMMY", "Super dummy called with " + theirFriend.toString());
-        };
+
 
 
         // If we get a local update, pass it on.
-//        friend.addSource(getLocalFriend(public_code), friend::postValue);
+        friend.addSource(getLocalFriend(public_code), friend::postValue);
         // If we get a remote update, update the local version (triggering the above observer)
         friend.addSource(getRemote(public_code), updateFromRemote);
 
-        dummy();
-        stuff.addSource(timeData, superDummy);
 
         return friend;
     }
@@ -93,32 +90,7 @@ public class Repository {
 
     public LiveData<Friend> getRemote(String public_code) {
 
-//        if (this.poller != null && !this.poller.isCancelled()) {
-//            poller.cancel(true);
-//        }
-
-//        API api = new API();
-//        MutableLiveData<Friend> friendData = new MutableLiveData<>();
-//
-////        AsyncTask.execute(new Runnable() {
-////            @Override
-////            public void run() {
-////                Log.d("GET_REMOTE", "get remote is called");
-////                var friend = api.getFriend(public_code);
-////                Log.d("GET_REMOTE", friend.toString());
-////                friendData.postValue(friend);
-////            }
-////        });
-//
-//        // Update every 3 seconds with executor
-//        ScheduledExecutorService btExec = Executors.newScheduledThreadPool(1);
-//
-//        Runnable getFriends = () -> friendData.postValue(api.getFriend(public_code));
-//        this.poller = btExec.scheduleAtFixedRate(getFriends, (long) 3, (long) 3, TimeUnit.SECONDS);
-//
-//        return friendData;
-
-        API api = API.provide();
+        API api = API.provide(apiURL);
         var executor = Executors.newSingleThreadScheduledExecutor();
 
 
@@ -132,7 +104,7 @@ public class Repository {
     //Used to update Self location
     public void upsertRemote(Friend user, String privateCode) {
 
-        API api = API.provide();
+        API api = API.provide(apiURL);
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -141,16 +113,5 @@ public class Repository {
         });
     }
 
-    public void dummy() {
-        var executor = Executors.newSingleThreadScheduledExecutor();
-//        MutableLiveData<Long> dumm = new MutableLiveData<>();
 
-
-        executor.scheduleAtFixedRate(() -> {
-            Log.d("DUMMY_CALL", "DUMMY 1");
-            timeData.postValue(System.currentTimeMillis());
-            Log.d("DUMMY_CALL", "DUMMY 2");
-        }, 0, 3000, TimeUnit.MILLISECONDS);
-
-    }
 }

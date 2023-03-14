@@ -89,7 +89,8 @@ public class CompassActivity extends AppCompatActivity {
             double actual_dist = Utilities.calculateDistanceInMiles(gpsLat, gpsLon, f.latitude, f.longitude);
             int radius_dist = Utilities.calculateRadius( displayCompass, actual_dist);
 
-            labels.get(i).setText( String.format("%s\n%.0fmi",f.label, Utilities.calculateDistanceInMiles(gpsLat, gpsLon, f.latitude, f.longitude)));
+            labels.get(i).setText( String.format("%s\n%.0fmi",f.label,
+                    Utilities.calculateDistanceInMiles(gpsLat, gpsLon, f.latitude, f.longitude)));
 //            cs.constrainCircle(nodes.get(i).getId(), R.id.compass_layout, radius_dist, angle);
 //            cs.constrainCircle(labels.get(i).getId(), R.id.compass_layout, radius_dist, angle);
 
@@ -98,7 +99,7 @@ public class CompassActivity extends AppCompatActivity {
 ////            Utilities.showAlert(this,""+nodes.get(i).getVisibility());
 //            labels.get(i).setVisibility(View.VISIBLE);
 
-            if(radius_dist==462){
+            if(radius_dist==450){
                 cs.constrainCircle(nodes.get(i).getId(), R.id.compass_layout, radius_dist, angle);
 //                nodes.get(i).setVisibility(View.VISIBLE);
 //                labels.get(i).setVisibility(View.INVISIBLE);
