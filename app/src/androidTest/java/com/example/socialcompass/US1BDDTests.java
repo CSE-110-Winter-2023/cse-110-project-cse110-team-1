@@ -39,7 +39,7 @@ public class US1BDDTests {
         scenario.moveToState(Lifecycle.State.RESUMED);
 
         // Set test input name as John Doe
-        String testInputName = "John Doe";
+        String testInputName = "Gilen";
 
         // start testing on this scenario
         scenario.onActivity(activity -> {

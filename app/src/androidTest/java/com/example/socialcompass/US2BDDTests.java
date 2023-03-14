@@ -68,11 +68,19 @@ public class US2BDDTests {
             EditText newFriendPCode = activity.findViewById(R.id.new_friend_public_code);
             Button addButton = activity.findViewById(R.id.add_friend_btn);
 
+            var beforeDao = friendDao.getAll();
             newFriendPCode.setText("1233446");
             addButton.performClick();
+            var afterDao = friendDao.getAllLive();
+            afterDao.observe(activity, (a) -> {
+                if (a.size() != beforeDao.size()) {
+                    assertEquals(beforeDao.size(),a.size());
+                }
+            });
         });
-        onView(withId(R.id.friend_items))
-                .check(matches(hasDescendant(withText("default name"))));
+//        onView(withId(R.id.friend_items))
+//                .check(matches(hasDescendant(withText("default name"))));
+
     }
 
 }

@@ -71,8 +71,6 @@ public class FriendListActivityTest {
             //click on ADD
             addTodoButton.performClick();
 
-
-
             //the new Friend should be added to the database
             var afterDao = friendListItemDao.getAllLive();
 
@@ -82,7 +80,6 @@ public class FriendListActivityTest {
                 }
             });
 
-            // Observe changes to the test LiveData object
 //
 
         });
