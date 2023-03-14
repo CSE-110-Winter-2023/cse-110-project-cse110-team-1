@@ -99,7 +99,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
-        android:id="@+id/zoomInButton"
+        android:id="@+id/zoom_in_button"
         android:layout_width="115dp"
         android:layout_height="48dp"
         android:layout_marginEnd="216dp"
@@ -110,7 +110,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/zoomOutButton"
+        android:id="@+id/zoom_out_button"
         android:layout_width="115dp"
         android:layout_height="48dp"
         android:layout_marginEnd="216dp"
