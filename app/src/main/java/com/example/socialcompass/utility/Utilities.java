@@ -175,5 +175,66 @@ public class Utilities {
         double distanceInMiles = earthRadiusInMiles * c;
         return distanceInMiles;
     }
-
+    public static double convertToScale(double distance) {
+        if (distance < 0) {
+            return -1;
+        }
+        if (distance >= 0 && distance <= 1) {
+            return distance;
+        } else if (distance > 1 && distance <= 10) {
+            return (distance - 1) / 9;
+        } else if (distance > 10 && distance <= 100) {
+            return (distance - 10) / 90;
+        } else if (distance > 100 && distance <= 500) {
+            return (distance - 100) / 400;
+        } else {
+            return 1;
+        }
+    }
+    public static double zoomDistance(int zoom, double distance) {
+        if (zoom < 1 || zoom > 4 || distance < 0) {
+            return -1;
+        }
+        double scaledDistance = convertToScale(distance);
+        if (zoom == 1) {
+            if (distance <= 1) {
+                return scaledDistance / zoom;
+            } else return 1;
+        } else if (zoom == 2) {
+            if (distance <= 1) {
+                return scaledDistance / zoom;
+            } else if (distance <= 10) {
+                return scaledDistance / zoom + (1.0 / zoom);
+            } else return 1;
+        } else if (zoom == 3) {
+            if (distance <= 1) {
+                return scaledDistance / zoom;
+            } else if (distance <= 10) {
+                return scaledDistance / zoom + (1.0 / zoom);
+            } else if (distance <= 100) {
+                return scaledDistance / zoom + (2.0 / zoom);
+            } else return 1;
+        } else if (zoom == 4) {
+            if (distance <= 1) {
+                return scaledDistance / zoom;
+            } else if (distance <= 10) {
+                return scaledDistance / zoom + (1.0 / zoom);
+            } else if (distance <= 100) {
+                return scaledDistance / zoom + (2.0 / zoom);
+            } else if (distance <= 500) {
+                return scaledDistance / zoom + (3.0 / zoom);
+            } else return 1;
+        }
+        return -1;
+    }
+    /**
+     * Converts the given distance to a value of raius, based on predefined scales.
+     * @param zoom the zoom level, which must be 1, 2, 3, or 4 correspond to 0-1,1-10,10-100,100-500
+     * @param distance the distance to convert
+     * @return the converted value between 0 and 462
+     */
+    public static int calculateRadius(int zoom, double distance) {
+        int radius = (int)Math.ceil(462*zoomDistance(zoom, distance));
+        return radius;
+    }
 }
