@@ -145,7 +145,7 @@ public class CompassActivity extends AppCompatActivity {
                         // Check if the TextViews intersect
                         if (Rect.intersects(rect1, rect2)) {
                             textView.setMaxLines(1);
-                            textView.setWidth(50);
+                            textView.setWidth(70);
 
                             // Remove the listener to avoid redundant calculations
                             textView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
@@ -171,21 +171,21 @@ public class CompassActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass_new);
 
+        SharedPreferences preferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        String apiURL = preferences.getString("apiURL", null);
         nodeIcon = Icon.createWithResource(getApplicationContext(), R.drawable.address_node);
 
         friendDao = FriendDatabase.provide(getApplicationContext()).getDao();
-        SharedPreferences preferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
-        String apiURL = preferences.getString("apiURL", null);
+        locationService = new GPSLocationHandler(this);
+        orientationService = new OrientationService(this);
         this.repo = new Repository(friendDao, apiURL);
+
+
         friendsList = friendDao.getAllLive();
         friendsList.observe(this, (allFriends) -> {
             this.redrawAllFriends();
 
         });
-
-        locationService = new GPSLocationHandler(this);
-        orientationService = new OrientationService(this);
-
         orientationService.getOrientation().observe(this, (rotation) -> {
 //            this.redrawAllFriends();
             float degrees = (float) Math.toDegrees(rotation);
@@ -202,10 +202,14 @@ public class CompassActivity extends AppCompatActivity {
          * This is a terrible way to fix this
          * Basically, we observe every single nodes and spawn a thread for each of those
          */
-        for (Friend friend : allFriends) {
-            Log.d("COMPASS_LOG", "DAO friend list updated");
-            repo.getSyncedFriend(friend.publicCode).observe(this, (a) -> {});
-        }
+//        for (Friend friend : allFriends) {
+//            Log.d("COMPASS_LOG", "DAO friend list updated");
+//            repo.getSyncedFriend(friend.publicCode).observe(this, (a) -> {
+//                this.redrawAllFriends();
+//
+//            });
+//
+//        }
 
         //Update GPS status
         TextView last_connected = findViewById(R.id.last_connected);
@@ -317,7 +321,6 @@ public class CompassActivity extends AppCompatActivity {
         intent.putExtra("publicCode", userPublicCode);
         startActivity(intent);
     }
-
 
     public void updateUserLocation(){
         SharedPreferences preferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
