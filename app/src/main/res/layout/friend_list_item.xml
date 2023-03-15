@@ -11,28 +11,43 @@
 
         android:background="#F1F3DA"
         android:visibility="visible">
-
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="200dp" />
 
         <TextView
             android:id="@+id/friend_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="60dp"
             android:inputType="textPersonName"
             android:text="Name"
             android:textSize="25dp"
+            android:maxLines="1"
+            android:ellipsize="end"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="@id/guideline"
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
         <TextView
             android:id="@+id/friend_public_code"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
             android:inputType="textPersonName"
+            android:maxLines="1"
+            android:singleLine="true"
             android:text="UID"
             android:textSize="25dp"
+            android:maxWidth="150dp"
+            app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/friend_name"
             app:layout_constraintTop_toTopOf="parent" />
