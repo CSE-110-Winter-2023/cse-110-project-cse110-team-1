@@ -5,6 +5,9 @@ import static java.lang.String.valueOf;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,6 +37,8 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class CompassActivity extends AppCompatActivity {
     private Icon nodeIcon;
@@ -128,12 +133,13 @@ public class CompassActivity extends AppCompatActivity {
 //        Log.d("Layout", String.valueOf(layout.getChildCount()));
     }
 
+
     private GPSLocationHandler locationService;
     private OrientationService orientationService;
 
     private LiveData<List<Friend>> friendsList;
-
-    private FriendDao friends;
+    private FriendDao friendDao;
+    private Repository repo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,16 +148,73 @@ public class CompassActivity extends AppCompatActivity {
 
         nodeIcon = Icon.createWithResource(getApplicationContext(), R.drawable.address_node);
 
-        friends = FriendDatabase.provide(getApplicationContext()).getDao();
-        friendsList = friends.getAllLive();
-        friendsList.observe(this, (a) -> { this.redrawAllFriends(); });
+        friendDao = FriendDatabase.provide(getApplicationContext()).getDao();
+        SharedPreferences preferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        String apiURL = preferences.getString("apiURL", null);
+        this.repo = new Repository(friendDao, apiURL);
+        friendsList = friendDao.getAllLive();
+        friendsList.observe(this, (allFriends) -> {
+            this.redrawAllFriends();
+
+        });
 
         locationService = new GPSLocationHandler(this);
         orientationService = new OrientationService(this);
 
-        orientationService.getOrientation().observe(this, (a) -> { this.redrawAllFriends(); });
-        locationService.getLocation().observe(this, (a) -> { this.redrawAllFriends(); });
+        orientationService.getOrientation().observe(this, (rotation) -> {
+//            this.redrawAllFriends();
+            float degrees = (float) Math.toDegrees(rotation);
+            ConstraintLayout constraintLayout = findViewById(R.id.compass_screen_layout);
+            constraintLayout.setRotation(-1 * degrees);
+        });
+        locationService.getLocation().observe(this, (a) -> {
+            this.updateUserLocation();
+            this.redrawAllFriends();
+        });
+        List<Friend> allFriends = friendDao.getAll();
+        /**
+         * TODO: fix this ASAP
+         * This is a terrible way to fix this
+         * Basically, we observe every single nodes and spawn a thread for each of those
+         */
+        for (Friend friend : allFriends) {
+            Log.d("COMPASS_LOG", "DAO friend list updated");
+            repo.getSyncedFriend(friend.publicCode).observe(this, (a) -> {});
+        }
 
+        //Update GPS status
+        TextView last_connected = findViewById(R.id.last_connected);
+        ImageView status_indicator = findViewById(R.id.status_indicator);
+        var executor = Executors.newSingleThreadScheduledExecutor();
+        SharedPreferences sharedPref = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        PorterDuffColorFilter redFilter = new PorterDuffColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
+        PorterDuffColorFilter greenFilter = new PorterDuffColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP);
+
+        executor.scheduleAtFixedRate(() -> {
+            long currentTimeMillis = System.currentTimeMillis();
+
+            if (locationService.isGPSOn()) {
+                Log.d("Status", "Online");
+                editor.putLong("lastConnectedTime", currentTimeMillis);
+                editor.apply();
+                last_connected.setText("Online");
+                status_indicator.setColorFilter(greenFilter);
+            } else {
+                Log.d("Status", "Offline");
+                long timeOffline = currentTimeMillis - sharedPref.getLong("lastConnectedTime", (long) 0.0);
+                String timeOfflineString = statusTimeFormatter(timeOffline);
+                last_connected.setText(timeOfflineString);
+                status_indicator.setColorFilter(redFilter);
+            }
+        }, 0, 3000, TimeUnit.MILLISECONDS);
+
+
+
+
+
+
+        //Handle Zoom In and Zoom out
         // default start at compass view 2
         displayCompass = 2;
         visibleCompass(displayCompass);
@@ -185,6 +248,7 @@ public class CompassActivity extends AppCompatActivity {
         });
 
 
+
     }
 
 
@@ -207,17 +271,46 @@ public class CompassActivity extends AppCompatActivity {
             }
         }
     }
-
+    public String statusTimeFormatter(long timeOffline) {
+        int minutes = (int) TimeUnit.MILLISECONDS.toMinutes(timeOffline);
+        int hours = (int) TimeUnit.MILLISECONDS.toHours(timeOffline);
+        String returnString = "";
+        if (hours > 0) {
+            returnString = returnString.concat(hours + "h ");
+        }
+        returnString = returnString.concat(minutes + "m");
+        return returnString;
+    }
     public void toFriendsList(View v) {
-
         SharedPreferences preferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+
         Intent intent = new Intent(this, FriendListActivity.class);
         String userName = preferences.getString("label", null);
         String userPublicCode = preferences.getString("publicCode", null);
 
         intent.putExtra("inputName", userName);
-        intent.putExtra("publicCode",userPublicCode);
+        intent.putExtra("publicCode", userPublicCode);
         startActivity(intent);
     }
 
+
+    public void updateUserLocation(){
+        SharedPreferences preferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+
+        Pair<Double, Double> loc = locationService.getLocation().getValue();
+        final float gpsLat = loc.first.floatValue(),
+                gpsLon = loc.second.floatValue();
+
+        //Update user location in shared preferences
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("latitude", String.valueOf(gpsLat));
+        editor.putString("longitude", String.valueOf(gpsLon));
+        editor.apply();
+        //Update user location in remote server
+        String label = preferences.getString("label", null);
+        String userPublicCode = preferences.getString("publicCode", null);
+        String userPrivateCode = preferences.getString("privateCode",null);
+        Friend user = new Friend(userPublicCode,label,gpsLat,gpsLon);
+        repo.upsertRemote(user, userPrivateCode);
+    }
 }
