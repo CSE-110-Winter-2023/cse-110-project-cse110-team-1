@@ -77,6 +77,7 @@ public class CompassActivity extends AppCompatActivity {
                 node.setImageIcon(nodeIcon);
                 node.setId(View.generateViewId());
                 node.setLayoutParams(new LinearLayout.LayoutParams(50,50));
+                node.setTag("node_"+i);
                 layout.addView(node);
                 nodes.add(node);
             } else {
@@ -84,10 +85,11 @@ public class CompassActivity extends AppCompatActivity {
                 text.setId(View.generateViewId());
                 text.setText( String.format("%s\n%.0fmi",f.label,
                         Utilities.calculateDistanceInMiles(gpsLat, gpsLon, f.latitude, f.longitude)));
+
+                text.setTag("label_" + i);
                 layout.addView(text);
                 nodes.add(text);
             }
-
         }
 
         ConstraintSet cs = new ConstraintSet();
@@ -105,9 +107,9 @@ public class CompassActivity extends AppCompatActivity {
 //            cs.constrainCircle(labels.get(i).getId(), R.id.compass_layout, radius_dist, angle);
 
 
-//            nodes.get(i).setVisibility(View.GONE);
+            nodes.get(i).setVisibility(View.VISIBLE);
 ////            Utilities.showAlert(this,""+nodes.get(i).getVisibility());
-//            labels.get(i).setVisibility(View.VISIBLE);
+            //labels.get(i).setVisibility(View.VISIBLE);
 
             cs.constrainCircle(nodes.get(i).getId(), R.id.compass_layout, radius_dist, angle);
 //            if(radius_dist==450){
