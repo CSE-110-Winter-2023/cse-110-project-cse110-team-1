@@ -8,11 +8,16 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.graphics.Rect;
 import android.graphics.drawable.Icon;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.TextUtils;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -40,6 +45,8 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import kotlin.Triple;
+
 public class CompassActivity extends AppCompatActivity {
     private Icon nodeIcon;
     private int displayCompass;
@@ -66,11 +73,24 @@ public class CompassActivity extends AppCompatActivity {
 
         List<Friend> friends = friendsList.getValue();
         List<View> nodes = new ArrayList<>(friends.size());
+        List<Triple<String,Float,Integer>> overlapCheckList = new ArrayList<>();
 
         for(int i = 0; i < friends.size(); i++) {
             Friend f = friends.get(i);
             double actual_dist = Utilities.calculateDistanceInMiles(gpsLat, gpsLon, f.latitude, f.longitude);
             int radius_dist = Utilities.calculateRadius( displayCompass, actual_dist);
+            float angle = Utilities.getAngle(gpsLat, gpsLon, f.latitude, f.longitude);
+            overlapCheckList.add(new Triple<>(f.label,angle,radius_dist));
+
+        }
+
+        for(int i = 0; i < friends.size(); i++) {
+            Friend f = friends.get(i);
+            double actual_dist = Utilities.calculateDistanceInMiles(gpsLat, gpsLon, f.latitude, f.longitude);
+            int radius_dist = Utilities.calculateRadius( displayCompass, actual_dist);
+
+
+            float angle = Utilities.getAngle(gpsLat, gpsLon, f.latitude, f.longitude);
 
             if(radius_dist >= 450) {
                 ImageView node = new ImageView(getApplicationContext());
@@ -83,9 +103,22 @@ public class CompassActivity extends AppCompatActivity {
             } else {
                 TextView text = new TextView(getApplicationContext());
                 text.setId(View.generateViewId());
-                text.setText( String.format("%s\n%.0fmi",f.label,
-                        Utilities.calculateDistanceInMiles(gpsLat, gpsLon, f.latitude, f.longitude)));
+//                text.setText( String.format("%s\n%.0fmi",f.label,
+//                        Utilities.calculateDistanceInMiles(gpsLat, gpsLon, f.latitude, f.longitude)));
 
+
+
+                //if the current textview has similar radius and distance like other existing textview
+                //change the textview Width to 50px
+                Boolean checkOverlap = checkOverlapTextView(f.label,angle,radius_dist,overlapCheckList,displayCompass);
+
+                if(checkOverlap){
+                    text.setMaxLines(1);
+                    text.setWidth(70);
+
+                }
+
+                text.setText( String.format("%s",f.label));
                 text.setTag("label_" + i);
                 layout.addView(text);
                 nodes.add(text);
@@ -100,39 +133,50 @@ public class CompassActivity extends AppCompatActivity {
             Friend f = friends.get(i);
             float angle = Utilities.getAngle(gpsLat, gpsLon, f.latitude, f.longitude);
             double actual_dist = Utilities.calculateDistanceInMiles(gpsLat, gpsLon, f.latitude, f.longitude);
-            int radius_dist = Utilities.calculateRadius( displayCompass, actual_dist);
-
-
-//            cs.constrainCircle(nodes.get(i).getId(), R.id.compass_layout, radius_dist, angle);
-//            cs.constrainCircle(labels.get(i).getId(), R.id.compass_layout, radius_dist, angle);
-
-
-            //nodes.get(i).setVisibility(View.VISIBLE);
-////            Utilities.showAlert(this,""+nodes.get(i).getVisibility());
-            //labels.get(i).setVisibility(View.VISIBLE);
-
+            int radius_dist = Utilities.calculateRadius(displayCompass, actual_dist);
+            nodes.get(i).setVisibility(View.VISIBLE);
             cs.constrainCircle(nodes.get(i).getId(), R.id.compass_layout, radius_dist, angle);
-//            if(radius_dist==450){
-//
-////                nodes.get(i).setVisibility(View.VISIBLE);
-////                labels.get(i).setVisibility(View.INVISIBLE);
-//            }else{
-//                cs.constrainCircle(labels.get(i).getId(), R.id.compass_layout, radius_dist, angle);
-////                nodes.get(i).setVisibility(View.INVISIBLE);
-////                labels.get(i).setVisibility(View.VISIBLE);
-//            }
+
+
+            cs.applyTo(layout);
+        }
+    }
+
+
+    private Boolean checkOverlapTextView(String label,float angle, int radiusDist, List<Triple<String,Float,Integer>> overlapCheckList, int displayCompass) {
+        for(var pairs: overlapCheckList){
+            if (label != pairs.getFirst()){
+                //level 1
+                if(displayCompass == 1){
+                    if ((Math.abs(pairs.getSecond() - angle) <10) && (Math.abs(pairs.getThird() - radiusDist) < 450)){
+                        return true;
+                    }
+                }
+                else if(displayCompass ==2){
+                    //level 2
+                    if ((Math.abs(pairs.getSecond() - angle) <10) && (Math.abs(pairs.getThird() - radiusDist) < 225)){
+                        return true;
+                    }
+                }
+                else if(displayCompass ==3){
+                    //level 3
+                    if ((Math.abs(pairs.getSecond() - angle) <10) && (Math.abs(pairs.getThird() - radiusDist) < 150)){
+                        return true;
+                    }
+                }
+                else if(displayCompass ==4){
+                    //level 4
+                    if ((Math.abs(pairs.getSecond() - angle) <10) && (Math.abs(pairs.getThird() - radiusDist) < 100)){
+                        return true;
+                    }
+                }
+
+
+            }
+
 
         }
-//        for(; i < nodes.size(); i++) {
-//            nodes.get(i).setVisibility(View.INVISIBLE);
-//            labels.get(i).setVisibility(View.INVISIBLE);
-//        }
-
-        cs.applyTo(layout);
-
-
-
-//        Log.d("Layout", String.valueOf(layout.getChildCount()));
+        return false;
     }
 
 
@@ -148,21 +192,21 @@ public class CompassActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass_new);
 
+        SharedPreferences preferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        String apiURL = preferences.getString("apiURL", null);
         nodeIcon = Icon.createWithResource(getApplicationContext(), R.drawable.address_node);
 
         friendDao = FriendDatabase.provide(getApplicationContext()).getDao();
-        SharedPreferences preferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
-        String apiURL = preferences.getString("apiURL", null);
+        locationService = new GPSLocationHandler(this);
+        orientationService = new OrientationService(this);
         this.repo = new Repository(friendDao, apiURL);
+
+
         friendsList = friendDao.getAllLive();
         friendsList.observe(this, (allFriends) -> {
             this.redrawAllFriends();
 
         });
-
-        locationService = new GPSLocationHandler(this);
-        orientationService = new OrientationService(this);
-
         orientationService.getOrientation().observe(this, (rotation) -> {
 //            this.redrawAllFriends();
             float degrees = (float) Math.toDegrees(rotation);
@@ -181,7 +225,11 @@ public class CompassActivity extends AppCompatActivity {
          */
         for (Friend friend : allFriends) {
             Log.d("COMPASS_LOG", "DAO friend list updated");
-            repo.getSyncedFriend(friend.publicCode).observe(this, (a) -> {});
+            repo.getSyncedFriend(friend.publicCode).observe(this, (a) -> {
+                this.redrawAllFriends();
+
+            });
+
         }
 
         //Update GPS status
@@ -294,7 +342,6 @@ public class CompassActivity extends AppCompatActivity {
         intent.putExtra("publicCode", userPublicCode);
         startActivity(intent);
     }
-
 
     public void updateUserLocation(){
         SharedPreferences preferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);

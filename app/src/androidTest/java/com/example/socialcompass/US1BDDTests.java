@@ -16,9 +16,11 @@ import android.widget.EditText;
 
 import androidx.lifecycle.Lifecycle;
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.rule.GrantPermissionRule;
 
 import com.example.socialcompass.activity.UserActivity;
 
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -26,6 +28,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class US1BDDTests {
 
+    @Rule
+    public GrantPermissionRule permissionRule = GrantPermissionRule.grant(android.Manifest.permission.ACCESS_FINE_LOCATION);
 
     /*
     * BDD scenario 1:
