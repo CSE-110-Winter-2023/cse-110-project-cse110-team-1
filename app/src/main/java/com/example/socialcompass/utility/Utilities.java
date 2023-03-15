@@ -240,10 +240,10 @@ public class Utilities {
      * Converts the given distance to a value of raius, based on predefined scales.
      * @param zoom the zoom level, which must be 1, 2, 3, or 4 correspond to 0-1,1-10,10-100,100-500
      * @param distance the distance to convert
-     * @return the converted value between 0 and 462
+     * @return the converted value between 0 and 450
      */
     public static int calculateRadius(int zoom, double distance) {
-        int radius = (int)Math.ceil(462*zoomDistance(zoom, distance));
+        int radius = (int)Math.ceil(450*zoomDistance(zoom, distance));
         return radius;
     }
 }
