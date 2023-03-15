@@ -1,11 +1,20 @@
 package com.example.socialcompass.utility;
+import static androidx.test.espresso.intent.Checks.checkNotNull;
+
 import java.security.SecureRandom;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.pm.PackageManager;
+import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.test.espresso.matcher.BoundedMatcher;
+
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 
 import java.util.UUID;
 
@@ -240,10 +249,41 @@ public class Utilities {
      * Converts the given distance to a value of raius, based on predefined scales.
      * @param zoom the zoom level, which must be 1, 2, 3, or 4 correspond to 0-1,1-10,10-100,100-500
      * @param distance the distance to convert
-     * @return the converted value between 0 and 462
+     * @return the converted value between 0 and 450
      */
     public static int calculateRadius(int zoom, double distance) {
-        int radius = (int)Math.ceil(462*zoomDistance(zoom, distance));
+        int radius = (int)Math.ceil(450*zoomDistance(zoom, distance));
         return radius;
+    }
+
+    /**
+     * Helper methods for testing with Espresso
+     * Used to get the item from a RecyclerView
+     * Source: https://stackoverflow.com/questions/31394569/how-to-assert-inside-a-recyclerview-in-espresso
+     * To see how this is used, see FriendListActivityTest
+     * @param position
+     * @param itemMatcher
+     * @return
+     */
+    public static Matcher<View> atPosition(final int position, @NonNull final Matcher<View> itemMatcher) {
+        checkNotNull(itemMatcher);
+        return new BoundedMatcher<>(RecyclerView.class) {
+
+            @Override
+            public void describeTo(Description description) {
+//                description.appendText("has item at position " + position + ": ");
+                itemMatcher.describeTo(description);
+            }
+
+            @Override
+            protected boolean matchesSafely(final RecyclerView view) {
+                RecyclerView.ViewHolder viewHolder = view.findViewHolderForAdapterPosition(position);
+                if (viewHolder == null) {
+                    // has no item on such position
+                    return false;
+                }
+                return itemMatcher.matches(viewHolder.itemView);
+            }
+        };
     }
 }

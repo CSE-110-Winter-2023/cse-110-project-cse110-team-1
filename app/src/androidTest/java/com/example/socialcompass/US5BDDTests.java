@@ -46,11 +46,12 @@ public class US5BDDTests {
     @Rule
     public GrantPermissionRule permissionRule = GrantPermissionRule.grant(android.Manifest.permission.ACCESS_FINE_LOCATION);
     @Test
-    public void testCompassActivity() throws InterruptedException {
+    public void testDisplayNode() throws InterruptedException {
         // add friend "utah"
         ActivityScenario<FriendListActivity> scenario
                 = ActivityScenario.launch(FriendListActivity.class);
 
+        //onView(withId(R.id.delete_btn)).perform(click());
         onView(withId(R.id.new_friend_public_code)).perform(typeText("utah"), closeSoftKeyboard());
         Thread.sleep(1000);
         onView(withId(R.id.add_friend_btn)).perform(click());
@@ -65,20 +66,20 @@ public class US5BDDTests {
         // Verify that the correct number of friends is displayed on the compass view
         Thread.sleep(5000);
         int numberOfFriends = 1;
-        for (int i = 1; i <= numberOfFriends; i++) {
+        for (int i = 0; i < numberOfFriends; i++) {
+            String nodeTag = "node_" + i;
             ViewInteraction friendViewInteraction = onView(
                     allOf(withId(R.id.compass_layout)));
             friendViewInteraction.check(matches(isDisplayed()));
-            onView(withTagValue(is((Object) "node_0"))).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
-            onView(withTagValue(is((Object) "node_0"))).check(matches(isDisplayed()));
+            onView(withTagValue(is((Object)nodeTag))).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+            onView(withTagValue(is((Object)nodeTag))).check(matches(isDisplayed()));
         }
-
     }
 
 
 
     @Test
-    public void testGetNodeRadius() throws InterruptedException {
+    public void testDisplayLabel() throws InterruptedException {
         ActivityScenario<FriendListActivity> scenario
                 = ActivityScenario.launch(FriendListActivity.class);
 
@@ -95,14 +96,15 @@ public class US5BDDTests {
         Thread.sleep(1000);
 
         int numberOfFriends = 1;
-        for (int i = 1; i <= numberOfFriends; i++) {
+        for (int i = 0; i < numberOfFriends; i++) {
+            String labelTag = "label_" + i;
             ViewInteraction friendViewInteraction = onView(
                     allOf(withId(R.id.compass_layout)));
             friendViewInteraction.check(matches(isDisplayed()));
-            onView(withTagValue(is((Object) "label_0"))).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
-            onView(withTagValue(is((Object) "label_0"))).check(matches(isDisplayed()));
+            onView(withTagValue(is((Object) labelTag))).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+            onView(withTagValue(is((Object) labelTag))).check(matches(isDisplayed()));
 
-            ViewInteraction labelInteraction = onView(withTagValue(is((Object) "label_0")));
+            ViewInteraction labelInteraction = onView(withTagValue(is((Object)labelTag)));
             CharSequence labelText = getTextFromTextView(labelInteraction);
             assertEquals("Utah\n534mi",labelText);
         }
