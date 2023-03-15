@@ -13,8 +13,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,6 +30,7 @@ import com.example.socialcompass.model.friend.Friend;
 import com.example.socialcompass.model.friend.FriendDao;
 import com.example.socialcompass.model.friend.FriendDatabase;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,25 +42,20 @@ public class US2BDDTests {
     private FriendDatabase friendDb;
 
     @Before
-    public void preparetDatabase(){
+    public void clearFriendList(){
+        // clear all pre-existing friends
         var context2 = ApplicationProvider.getApplicationContext();
         friendDb = Room.inMemoryDatabaseBuilder(context2, FriendDatabase.class)
                 .allowMainThreadQueries().build();
         // indirectly test getDao function
         friendDao = friendDb.getDao();
-        Friend testFriend1 = new Friend("1233445", "john", 32, -124);
-        Friend testFriend2 = new Friend("1233446", "mary", 32, 124);
 
-//        List<Friend> friends = Friend.toJSON(context,"demo_todos.json");
-        //Insert the user into the database
-        friendDao.upsert(testFriend1);
-        friendDao.upsert(testFriend2);
 
     }
 
-    /*Test invalid friend insertion*/
+    /*Test valid friend insertion*/
     @Test
-    public void testAddNonValidFriend(){
+    public void testAddValidFriend(){
         ActivityScenario<FriendListActivity> scenario
                 = ActivityScenario.launch(FriendListActivity.class);
         scenario.moveToState(Lifecycle.State.CREATED);
@@ -65,11 +63,18 @@ public class US2BDDTests {
         scenario.moveToState(Lifecycle.State.RESUMED);
 
         scenario.onActivity(activity -> {
+            // first, clear the list
+            View listItemView = activity.findViewById(R.id.friend_items);
+            TextView deleteButton = listItemView.findViewById(R.id.delete_btn);
+            if(deleteButton!=null){
+                deleteButton.performClick();
+            }
+
             EditText newFriendPCode = activity.findViewById(R.id.new_friend_public_code);
             Button addButton = activity.findViewById(R.id.add_friend_btn);
 
             var beforeDao = friendDao.getAll();
-            newFriendPCode.setText("1233446");
+            newFriendPCode.setText("20238026");
             addButton.performClick();
             var afterDao = friendDao.getAllLive();
             afterDao.observe(activity, (a) -> {
@@ -77,10 +82,17 @@ public class US2BDDTests {
                     assertEquals(beforeDao.size(),a.size());
                 }
             });
+
+            TextView thisFriend = listItemView.findViewById(R.id.friend_name);
+            assertEquals("Point Nemo",thisFriend.getText().toString());
         });
-//        onView(withId(R.id.friend_items))
-//                .check(matches(hasDescendant(withText("default name"))));
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
     }
+
 
 }
