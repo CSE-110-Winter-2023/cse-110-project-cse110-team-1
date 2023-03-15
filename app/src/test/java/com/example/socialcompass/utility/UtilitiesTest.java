@@ -210,4 +210,56 @@ public class UtilitiesTest {
 
     }
 
+    @Test
+    public void testZoomDistance() {
+        int count = 0;
+        for (int zoom = 1; zoom <= 4; zoom++) {
+            for (double distance = 0.0; distance <= 12450.5; distance += 0.5) {
+                double result = Utilities.zoomDistance(zoom, distance);
+
+                if (zoom == 1) {
+                    if (distance > 1) {
+                        assertEquals(1, result, 0.0001);count++;
+                    } else {
+                        assertTrue(result >= 0 && result <= 1);count++;
+                    }
+                } else if (zoom == 2) {
+                    if (distance > 10) {
+                        assertEquals(1, result, 0.0001);count++;
+                    } else {
+                        assertTrue(result >= 0 && result <= 1);count++;
+                        if(distance < 1) {
+                            assertTrue(result <=0.50);count++;
+                        }
+                    }
+                } else if (zoom == 3) {
+                    if(distance < 10) {
+                        assertTrue(result <= 0.67);count++;
+                    }
+                    if(distance < 1) {
+                        assertTrue(result <=0.34);count++;
+                    }
+                    if (distance > 500) {
+                        assertEquals(1, result, 0.0001);count++;
+                    } else {
+                        assertTrue(result >= 0 && result <= 1);count++;
+                    }
+                } else if (zoom == 4) {
+                    if (distance < 500) {
+                        assertTrue(result >= 0 && result <= 0.75);count++;
+                        if(distance < 10) {
+                            assertTrue(result <= 0.5);count++;
+                        }
+                        if(distance < 1) {
+                            assertTrue(result <=0.25);count++;
+                        }
+                    } else {
+                        assertTrue(result >= 0.75 && result <= 1);count++;
+                    }
+                }
+            }
+        }
+        assertEquals(count, 99654);
+    }
+
 }
