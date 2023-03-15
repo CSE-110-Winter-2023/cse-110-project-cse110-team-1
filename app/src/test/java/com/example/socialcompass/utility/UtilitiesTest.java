@@ -1,7 +1,6 @@
 package com.example.socialcompass.utility;
 
 import org.junit.Test;
-
 import static org.junit.Assert.*;
 
 import com.example.socialcompass.utility.Utilities;
@@ -210,4 +209,5 @@ public class UtilitiesTest {
         assertEquals(expectedDistance, actualDistance, delta);
 
     }
+
 }

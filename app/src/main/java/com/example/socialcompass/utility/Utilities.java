@@ -183,13 +183,22 @@ public class Utilities {
             return distance;
         } else if (distance > 1 && distance <= 10) {
             return (distance - 1) / 9;
-        } else if (distance > 10 && distance <= 100) {
-            return (distance - 10) / 90;
-        } else if (distance > 100 && distance <= 500) {
-            return (distance - 100) / 400;
-        } else {
-            return 1;
+        } else if (distance > 10 && distance <= 500) {
+            return (distance - 10) / 490;
         }
+        return 1;
+
+    }
+    public static double mapDistanceToLogScale(double distance) {
+        double minDistance = 500.0;
+        double maxDistance = 12450.5;
+        double minLogValue = Math.log(minDistance);
+        double maxLogValue = Math.log(maxDistance);
+
+        double logDistance = Math.log(distance);
+        double mappedValue = (logDistance - minLogValue) / (maxLogValue - minLogValue);
+
+        return mappedValue;
     }
     public static double zoomDistance(int zoom, double distance) {
         if (zoom < 1 || zoom > 4 || distance < 0) {
@@ -211,7 +220,7 @@ public class Utilities {
                 return scaledDistance / zoom;
             } else if (distance <= 10) {
                 return scaledDistance / zoom + (1.0 / zoom);
-            } else if (distance <= 100) {
+            } else if (distance <= 500) {
                 return scaledDistance / zoom + (2.0 / zoom);
             } else return 1;
         } else if (zoom == 4) {
@@ -219,10 +228,10 @@ public class Utilities {
                 return scaledDistance / zoom;
             } else if (distance <= 10) {
                 return scaledDistance / zoom + (1.0 / zoom);
-            } else if (distance <= 100) {
-                return scaledDistance / zoom + (2.0 / zoom);
             } else if (distance <= 500) {
-                return scaledDistance / zoom + (3.0 / zoom);
+                return scaledDistance / zoom + (2.0 / zoom);
+            } else if (distance > 500) {
+                return mapDistanceToLogScale(distance) / zoom + (3.0 / zoom);
             } else return 1;
         }
         return -1;
