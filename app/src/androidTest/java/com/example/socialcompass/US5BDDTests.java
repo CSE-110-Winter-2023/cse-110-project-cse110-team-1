@@ -46,7 +46,7 @@ public class US5BDDTests {
     @Rule
     public GrantPermissionRule permissionRule = GrantPermissionRule.grant(android.Manifest.permission.ACCESS_FINE_LOCATION);
     @Test
-    public void testCompassActivity() throws InterruptedException {
+    public void testDisplayNode() throws InterruptedException {
         // add friend "utah"
         ActivityScenario<FriendListActivity> scenario
                 = ActivityScenario.launch(FriendListActivity.class);
@@ -78,7 +78,7 @@ public class US5BDDTests {
 
 
     @Test
-    public void testGetNodeRadius() throws InterruptedException {
+    public void testDisplayLabel() throws InterruptedException {
         ActivityScenario<FriendListActivity> scenario
                 = ActivityScenario.launch(FriendListActivity.class);
 

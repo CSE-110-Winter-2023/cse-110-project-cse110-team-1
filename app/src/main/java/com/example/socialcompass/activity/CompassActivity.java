@@ -107,7 +107,7 @@ public class CompassActivity extends AppCompatActivity {
 //            cs.constrainCircle(labels.get(i).getId(), R.id.compass_layout, radius_dist, angle);
 
 
-            nodes.get(i).setVisibility(View.VISIBLE);
+            //nodes.get(i).setVisibility(View.VISIBLE);
 ////            Utilities.showAlert(this,""+nodes.get(i).getVisibility());
             //labels.get(i).setVisibility(View.VISIBLE);
 
