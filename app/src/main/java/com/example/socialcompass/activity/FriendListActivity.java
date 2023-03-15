@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,10 +19,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.socialcompass.model.friend.Friend;
+import com.example.socialcompass.model.friend.FriendDatabase;
+import com.example.socialcompass.model.repository.Repository;
+import com.example.socialcompass.old.GPSLocationHandler;
+import com.example.socialcompass.old.OrientationService;
 import com.example.socialcompass.utility.Utilities;
 import com.example.socialcompass.viewmodel.FriendListViewModel;
 import com.example.socialcompass.R;
 import com.example.socialcompass.view.FriendListAdapter;
+
+import java.util.List;
 
 public class FriendListActivity extends AppCompatActivity {
 
@@ -57,7 +65,6 @@ public class FriendListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 
     private FriendListAdapter setupAdapter(FriendListViewModel viewModel) {
@@ -90,7 +97,8 @@ public class FriendListActivity extends AppCompatActivity {
                 String friend_public_code = newFriendPublicCode.getText().toString();
                 newFriendPublicCode.setText("");
                 var friend = viewModel.getOrcreateFriend(friend_public_code);
-                friend.observe(FriendListActivity.this,friendEntity->{});
+                friend.observe(FriendListActivity.this,friendEntity->{
+                });
             }
         });
 

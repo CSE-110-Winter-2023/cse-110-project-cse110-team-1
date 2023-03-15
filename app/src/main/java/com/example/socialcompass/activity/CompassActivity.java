@@ -202,14 +202,14 @@ public class CompassActivity extends AppCompatActivity {
          * This is a terrible way to fix this
          * Basically, we observe every single nodes and spawn a thread for each of those
          */
-//        for (Friend friend : allFriends) {
-//            Log.d("COMPASS_LOG", "DAO friend list updated");
-//            repo.getSyncedFriend(friend.publicCode).observe(this, (a) -> {
-//                this.redrawAllFriends();
-//
-//            });
-//
-//        }
+        for (Friend friend : allFriends) {
+            Log.d("COMPASS_LOG", "DAO friend list updated");
+            repo.getSyncedFriend(friend.publicCode).observe(this, (a) -> {
+                this.redrawAllFriends();
+
+            });
+
+        }
 
         //Update GPS status
         TextView last_connected = findViewById(R.id.last_connected);
