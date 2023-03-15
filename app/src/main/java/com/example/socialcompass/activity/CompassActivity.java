@@ -45,6 +45,8 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import kotlin.Triple;
+
 public class CompassActivity extends AppCompatActivity {
     private Icon nodeIcon;
     private int displayCompass;
@@ -71,11 +73,24 @@ public class CompassActivity extends AppCompatActivity {
 
         List<Friend> friends = friendsList.getValue();
         List<View> nodes = new ArrayList<>(friends.size());
+        List<Triple<String,Float,Integer>> overlapCheckList = new ArrayList<>();
 
         for(int i = 0; i < friends.size(); i++) {
             Friend f = friends.get(i);
             double actual_dist = Utilities.calculateDistanceInMiles(gpsLat, gpsLon, f.latitude, f.longitude);
             int radius_dist = Utilities.calculateRadius( displayCompass, actual_dist);
+            float angle = Utilities.getAngle(gpsLat, gpsLon, f.latitude, f.longitude);
+            overlapCheckList.add(new Triple<>(f.label,angle,radius_dist));
+
+        }
+
+        for(int i = 0; i < friends.size(); i++) {
+            Friend f = friends.get(i);
+            double actual_dist = Utilities.calculateDistanceInMiles(gpsLat, gpsLon, f.latitude, f.longitude);
+            int radius_dist = Utilities.calculateRadius( displayCompass, actual_dist);
+
+
+            float angle = Utilities.getAngle(gpsLat, gpsLon, f.latitude, f.longitude);
 
             if(radius_dist >= 450) {
                 ImageView node = new ImageView(getApplicationContext());
@@ -90,6 +105,19 @@ public class CompassActivity extends AppCompatActivity {
                 text.setId(View.generateViewId());
 //                text.setText( String.format("%s\n%.0fmi",f.label,
 //                        Utilities.calculateDistanceInMiles(gpsLat, gpsLon, f.latitude, f.longitude)));
+
+
+
+                //if the current textview has similar radius and distance like other existing textview
+                //change the textview Width to 50px
+                Boolean checkOverlap = checkOverlapTextView(f.label,angle,radius_dist,overlapCheckList,displayCompass);
+
+                if(checkOverlap){
+                    text.setMaxLines(1);
+                    text.setWidth(70);
+
+                }
+
                 text.setText( String.format("%s",f.label));
                 text.setTag("label_" + i);
                 layout.addView(text);
@@ -111,51 +139,44 @@ public class CompassActivity extends AppCompatActivity {
 
 
             cs.applyTo(layout);
-            truncateTextView(layout);}
+        }
     }
 
 
-    private void truncateTextView(ConstraintLayout layout) {
-        int childCount = layout.getChildCount();
-        ArrayList<TextView> textViewList = new ArrayList<>();
-        for (int i = 0; i < childCount; i++) {
-            View view = layout.getChildAt(i);
-            if (view instanceof TextView) {
-                textViewList.add((TextView) view);
-            }
-        }
-        for (TextView textView : textViewList) {
-            // Set up a listener for layout changes
-            ViewTreeObserver observer = textView.getViewTreeObserver();
-            observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-                    // Get the global bounds of textView1 and textView2
-                    Rect rect1 = new Rect();
-                    textView.getGlobalVisibleRect(rect1);
-
-                    // Loop through the other TextViews to find the one that overlaps with textView
-                    for (TextView otherTextView : textViewList) {
-                        if (otherTextView == textView) {
-                            continue;
-                        }
-                        Rect rect2 = new Rect();
-                        otherTextView.getGlobalVisibleRect(rect2);
-
-                        // Check if the TextViews intersect
-                        if (Rect.intersects(rect1, rect2)) {
-                            textView.setMaxLines(1);
-                            textView.setWidth(70);
-
-                            // Remove the listener to avoid redundant calculations
-                            textView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-
-                        }
+    private Boolean checkOverlapTextView(String label,float angle, int radiusDist, List<Triple<String,Float,Integer>> overlapCheckList, int displayCompass) {
+        for(var pairs: overlapCheckList){
+            if (label != pairs.getFirst()){
+                //level 1
+                if(displayCompass == 1){
+                    if ((Math.abs(pairs.getSecond() - angle) <10) && (Math.abs(pairs.getThird() - radiusDist) < 450)){
+                        return true;
                     }
                 }
-            });
-        }
+                else if(displayCompass ==2){
+                    //level 2
+                    if ((Math.abs(pairs.getSecond() - angle) <10) && (Math.abs(pairs.getThird() - radiusDist) < 225)){
+                        return true;
+                    }
+                }
+                else if(displayCompass ==3){
+                    //level 3
+                    if ((Math.abs(pairs.getSecond() - angle) <10) && (Math.abs(pairs.getThird() - radiusDist) < 150)){
+                        return true;
+                    }
+                }
+                else if(displayCompass ==4){
+                    //level 4
+                    if ((Math.abs(pairs.getSecond() - angle) <10) && (Math.abs(pairs.getThird() - radiusDist) < 100)){
+                        return true;
+                    }
+                }
 
+
+            }
+
+
+        }
+        return false;
     }
 
 
