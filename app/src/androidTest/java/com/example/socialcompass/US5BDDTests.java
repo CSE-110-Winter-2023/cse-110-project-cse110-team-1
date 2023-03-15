@@ -51,6 +51,7 @@ public class US5BDDTests {
         ActivityScenario<FriendListActivity> scenario
                 = ActivityScenario.launch(FriendListActivity.class);
 
+        //onView(withId(R.id.delete_btn)).perform(click());
         onView(withId(R.id.new_friend_public_code)).perform(typeText("utah"), closeSoftKeyboard());
         Thread.sleep(1000);
         onView(withId(R.id.add_friend_btn)).perform(click());
