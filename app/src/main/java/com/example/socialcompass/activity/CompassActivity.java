@@ -38,8 +38,8 @@ public class CompassActivity extends AppCompatActivity {
     private Icon nodeIcon;
     private int displayCompass;
 
-//    List<ImageView> nodes = new ArrayList<>();
-//    List<TextView> labels = new ArrayList<>();
+//    private final List<ImageView> nodes = new ArrayList<>();
+//    private final List<TextView> labels = new ArrayList<>();
 
 
     public synchronized void redrawAllFriends() {
@@ -51,8 +51,6 @@ public class CompassActivity extends AppCompatActivity {
         ConstraintLayout layout = findViewById(R.id.compass_layout);
         layout.removeAllViews();
 
-        ImageView compassimg = findViewById(R.id.compass_img);
-
         Log.d("CompassView","Redraw "+friendsList.getValue());
 
         Pair<Double, Double> loc = locationService.getLocation().getValue();
@@ -60,23 +58,30 @@ public class CompassActivity extends AppCompatActivity {
         final float gpsLat = loc.first.floatValue(),
                     gpsLon = loc.second.floatValue();
 
-        List<ImageView> nodes = new ArrayList<>();
-        List<TextView> labels = new ArrayList<>();
         List<Friend> friends = friendsList.getValue();
+        List<View> nodes = new ArrayList<>(friends.size());
 
-        for(int i = nodes.size(); i < friends.size(); i++) {
-            ImageView node = new ImageView(getApplicationContext());
-            node.setImageIcon(nodeIcon);
-            node.setId(View.generateViewId());
-            node.setLayoutParams(new LinearLayout.LayoutParams(50,50));
-            layout.addView(node);
+        for(int i = 0; i < friends.size(); i++) {
+            Friend f = friends.get(i);
+            double actual_dist = Utilities.calculateDistanceInMiles(gpsLat, gpsLon, f.latitude, f.longitude);
+            int radius_dist = Utilities.calculateRadius( displayCompass, actual_dist);
 
-            TextView text = new TextView(getApplicationContext());
-            text.setId(View.generateViewId());
-            layout.addView(text);
+            if(radius_dist >= 450) {
+                ImageView node = new ImageView(getApplicationContext());
+                node.setImageIcon(nodeIcon);
+                node.setId(View.generateViewId());
+                node.setLayoutParams(new LinearLayout.LayoutParams(50,50));
+                layout.addView(node);
+                nodes.add(node);
+            } else {
+                TextView text = new TextView(getApplicationContext());
+                text.setId(View.generateViewId());
+                text.setText( String.format("%s\n%.0fmi",f.label,
+                        Utilities.calculateDistanceInMiles(gpsLat, gpsLon, f.latitude, f.longitude)));
+                layout.addView(text);
+                nodes.add(text);
+            }
 
-            labels.add(text);
-            nodes.add(node);
         }
 
         ConstraintSet cs = new ConstraintSet();
@@ -89,8 +94,7 @@ public class CompassActivity extends AppCompatActivity {
             double actual_dist = Utilities.calculateDistanceInMiles(gpsLat, gpsLon, f.latitude, f.longitude);
             int radius_dist = Utilities.calculateRadius( displayCompass, actual_dist);
 
-            labels.get(i).setText( String.format("%s\n%.0fmi",f.label,
-                    Utilities.calculateDistanceInMiles(gpsLat, gpsLon, f.latitude, f.longitude)));
+
 //            cs.constrainCircle(nodes.get(i).getId(), R.id.compass_layout, radius_dist, angle);
 //            cs.constrainCircle(labels.get(i).getId(), R.id.compass_layout, radius_dist, angle);
 
@@ -99,15 +103,16 @@ public class CompassActivity extends AppCompatActivity {
 ////            Utilities.showAlert(this,""+nodes.get(i).getVisibility());
 //            labels.get(i).setVisibility(View.VISIBLE);
 
-            if(radius_dist==450){
-                cs.constrainCircle(nodes.get(i).getId(), R.id.compass_layout, radius_dist, angle);
-//                nodes.get(i).setVisibility(View.VISIBLE);
-//                labels.get(i).setVisibility(View.INVISIBLE);
-            }else{
-                cs.constrainCircle(labels.get(i).getId(), R.id.compass_layout, radius_dist, angle);
-//                nodes.get(i).setVisibility(View.INVISIBLE);
-//                labels.get(i).setVisibility(View.VISIBLE);
-            }
+            cs.constrainCircle(nodes.get(i).getId(), R.id.compass_layout, radius_dist, angle);
+//            if(radius_dist==450){
+//
+////                nodes.get(i).setVisibility(View.VISIBLE);
+////                labels.get(i).setVisibility(View.INVISIBLE);
+//            }else{
+//                cs.constrainCircle(labels.get(i).getId(), R.id.compass_layout, radius_dist, angle);
+////                nodes.get(i).setVisibility(View.INVISIBLE);
+////                labels.get(i).setVisibility(View.VISIBLE);
+//            }
 
         }
 //        for(; i < nodes.size(); i++) {
