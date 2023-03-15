@@ -1,5 +1,7 @@
 package com.example.socialcompass.activity;
 
+import static java.lang.String.valueOf;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,9 +10,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -26,75 +30,110 @@ import com.example.socialcompass.old.GPSLocationHandler;
 import com.example.socialcompass.old.OrientationService;
 import com.example.socialcompass.utility.Utilities;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class CompassActivity extends AppCompatActivity {
     private Icon nodeIcon;
+    private int displayCompass;
+
+//    private final List<ImageView> nodes = new ArrayList<>();
+//    private final List<TextView> labels = new ArrayList<>();
+
 
     public synchronized void redrawAllFriends() {
-        if (locationService.getLocation().getValue() == null
-                || orientationService.getOrientation().getValue() == null
-                || friendsList == null) return;
+        if(locationService.getLocation().getValue() == null
+        || orientationService.getOrientation().getValue() == null
+        || friendsList == null) return;
 
         // TODO synchronize against the activity drawing?
         ConstraintLayout layout = findViewById(R.id.compass_layout);
         layout.removeAllViews();
 
-//        Log.d("CompassView", "Redraw " + friendsList.getValue());
+        Log.d("CompassView","Redraw "+friendsList.getValue());
 
         Pair<Double, Double> loc = locationService.getLocation().getValue();
 
         final float gpsLat = loc.first.floatValue(),
-                gpsLon = loc.second.floatValue();
+                    gpsLon = loc.second.floatValue();
 
-        List<ImageView> nodes = new ArrayList<>();
-        List<TextView> labels = new ArrayList<>();
         List<Friend> friends = friendsList.getValue();
+        List<View> nodes = new ArrayList<>(friends.size());
 
-        for (int i = nodes.size(); i < friends.size(); i++) {
-            ImageView node = new ImageView(getApplicationContext());
-            node.setImageIcon(nodeIcon);
-            node.setId(View.generateViewId());
-            node.setLayoutParams(new LinearLayout.LayoutParams(50, 50));
-            layout.addView(node);
+        for(int i = 0; i < friends.size(); i++) {
+            Friend f = friends.get(i);
+            double actual_dist = Utilities.calculateDistanceInMiles(gpsLat, gpsLon, f.latitude, f.longitude);
+            int radius_dist = Utilities.calculateRadius( displayCompass, actual_dist);
 
-            TextView text = new TextView(getApplicationContext());
-            text.setId(View.generateViewId());
-            layout.addView(text);
+            if(radius_dist >= 450) {
+                ImageView node = new ImageView(getApplicationContext());
+                node.setImageIcon(nodeIcon);
+                node.setId(View.generateViewId());
+                node.setLayoutParams(new LinearLayout.LayoutParams(50,50));
+                layout.addView(node);
+                nodes.add(node);
+            } else {
+                TextView text = new TextView(getApplicationContext());
+                text.setId(View.generateViewId());
+                text.setText( String.format("%s\n%.0fmi",f.label,
+                        Utilities.calculateDistanceInMiles(gpsLat, gpsLon, f.latitude, f.longitude)));
+                layout.addView(text);
+                nodes.add(text);
+            }
 
-            labels.add(text);
-            nodes.add(node);
         }
 
         ConstraintSet cs = new ConstraintSet();
         cs.clone(layout);
 
         int i;
-        for (i = 0; i < friends.size(); i++) {
+        for(i = 0; i < friends.size(); i++) {
             Friend f = friends.get(i);
             float angle = Utilities.getAngle(gpsLat, gpsLon, f.latitude, f.longitude);
-            cs.constrainCircle(nodes.get(i).getId(), R.id.compass_layout, 462, angle);
-            labels.get(i).setText(String.format("%s\n%.0fmi", f.label, Utilities.calculateDistanceInMiles(gpsLat, gpsLon, f.latitude, f.longitude)));
-            cs.constrainCircle(labels.get(i).getId(), R.id.compass_layout, 330, angle);
+            double actual_dist = Utilities.calculateDistanceInMiles(gpsLat, gpsLon, f.latitude, f.longitude);
+            int radius_dist = Utilities.calculateRadius( displayCompass, actual_dist);
 
-            nodes.get(i).setVisibility(View.VISIBLE);
-            labels.get(i).setVisibility(View.VISIBLE);
+
+//            cs.constrainCircle(nodes.get(i).getId(), R.id.compass_layout, radius_dist, angle);
+//            cs.constrainCircle(labels.get(i).getId(), R.id.compass_layout, radius_dist, angle);
+
+
+//            nodes.get(i).setVisibility(View.GONE);
+////            Utilities.showAlert(this,""+nodes.get(i).getVisibility());
+//            labels.get(i).setVisibility(View.VISIBLE);
+
+            cs.constrainCircle(nodes.get(i).getId(), R.id.compass_layout, radius_dist, angle);
+//            if(radius_dist==450){
+//
+////                nodes.get(i).setVisibility(View.VISIBLE);
+////                labels.get(i).setVisibility(View.INVISIBLE);
+//            }else{
+//                cs.constrainCircle(labels.get(i).getId(), R.id.compass_layout, radius_dist, angle);
+////                nodes.get(i).setVisibility(View.INVISIBLE);
+////                labels.get(i).setVisibility(View.VISIBLE);
+//            }
+
         }
-        for (; i < nodes.size(); i++) {
-            nodes.get(i).setVisibility(View.INVISIBLE);
-            labels.get(i).setVisibility(View.INVISIBLE);
-        }
+//        for(; i < nodes.size(); i++) {
+//            nodes.get(i).setVisibility(View.INVISIBLE);
+//            labels.get(i).setVisibility(View.INVISIBLE);
+//        }
 
         cs.applyTo(layout);
+
+
+
+//        Log.d("Layout", String.valueOf(layout.getChildCount()));
     }
 
     private GPSLocationHandler locationService;
     private OrientationService orientationService;
 
     private LiveData<List<Friend>> friendsList;
-    private FriendDao friendDao;
-    private Repository repo;
+
+    private FriendDao friends;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,71 +142,82 @@ public class CompassActivity extends AppCompatActivity {
 
         nodeIcon = Icon.createWithResource(getApplicationContext(), R.drawable.address_node);
 
-        friendDao = FriendDatabase.provide(getApplicationContext()).getDao();
-        this.repo = new Repository(friendDao);
-        friendsList = friendDao.getAllLive();
-        friendsList.observe(this, (allFriends) -> {
-            this.redrawAllFriends();
-
-        });
+        friends = FriendDatabase.provide(getApplicationContext()).getDao();
+        friendsList = friends.getAllLive();
+        friendsList.observe(this, (a) -> { this.redrawAllFriends(); });
 
         locationService = new GPSLocationHandler(this);
         orientationService = new OrientationService(this);
 
-        orientationService.getOrientation().observe(this, (rotation) -> {
-//            this.redrawAllFriends();
-            float degrees = (float) Math.toDegrees(rotation);
-            ConstraintLayout constraintLayout = findViewById(R.id.compass_screen_layout);
-            constraintLayout.setRotation(-1 * degrees);
-        });
-        locationService.getLocation().observe(this, (a) -> {
-            this.updateUserLocation();
-            this.redrawAllFriends();
+        orientationService.getOrientation().observe(this, (a) -> { this.redrawAllFriends(); });
+        locationService.getLocation().observe(this, (a) -> { this.redrawAllFriends(); });
+
+        // default start at compass view 2
+        displayCompass = 2;
+        visibleCompass(displayCompass);
+        Button zoomInButton = this.findViewById(R.id.zoom_in_button);
+        Button zoomOutButton = this.findViewById(R.id.zoom_out_button);
+
+        zoomOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(displayCompass<4){
+                    displayCompass = displayCompass+1;
+                    visibleCompass(displayCompass);
+                }else{
+                    Toast.makeText(CompassActivity.this,
+                            "Cannot zoom out further", Toast.LENGTH_SHORT).show();
+                }
+            }
         });
 
-        List<Friend> allFriends = friendDao.getAll();
-        /**
-         * TODO: fix this ASAP
-         * This is a terrible way to fix this
-         * Basically, we observe every single nodes and spawn a thread for each of those
-         */
-        for (Friend friend : allFriends) {
-            Log.d("COMPASS_LOG", "DAO friend list updated");
-            repo.getSyncedFriend(friend.publicCode).observe(this, (a) -> {});
-        }
+        zoomInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(displayCompass>1){
+                    displayCompass = displayCompass-1;
+                    visibleCompass(displayCompass);
+                }else{
+                    Toast.makeText(CompassActivity.this,
+                            "Cannot zoom in further", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
 
     }
 
-    public void toFriendsList(View v) {
-        SharedPreferences preferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
 
+    /*
+    * Function to control only one compass view is displayed
+    * */
+    private void visibleCompass(int compass_no){
+        for(int i = 1; i<=4; i++){
+            if( i != compass_no){
+                String compass_id = "imageView"+ valueOf(i);
+                int id = getResources().getIdentifier(compass_id, "id", getPackageName());
+                ImageView asVisible = findViewById(id);
+                asVisible.setVisibility(View.INVISIBLE);
+            }else{
+                String compass_id = "imageView"+ valueOf(compass_no);
+                int id = getResources().getIdentifier(compass_id, "id", getPackageName());
+                ImageView asVisible = findViewById(id);
+                asVisible.setVisibility(View.VISIBLE);
+
+            }
+        }
+    }
+
+    public void toFriendsList(View v) {
+
+        SharedPreferences preferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
         Intent intent = new Intent(this, FriendListActivity.class);
         String userName = preferences.getString("label", null);
         String userPublicCode = preferences.getString("publicCode", null);
 
         intent.putExtra("inputName", userName);
-        intent.putExtra("publicCode", userPublicCode);
+        intent.putExtra("publicCode",userPublicCode);
         startActivity(intent);
-    }
-
-    public void updateUserLocation(){
-        SharedPreferences preferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE);
-
-        Pair<Double, Double> loc = locationService.getLocation().getValue();
-        final float gpsLat = loc.first.floatValue(),
-                gpsLon = loc.second.floatValue();
-
-        //Update user location in shared preferences
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("latitude", String.valueOf(gpsLat));
-        editor.putString("longitude", String.valueOf(gpsLon));
-        editor.apply();
-        //Update user location in remote server
-        String label = preferences.getString("label", null);
-        String userPublicCode = preferences.getString("publicCode", null);
-        String userPrivateCode = preferences.getString("privateCode",null);
-        Friend user = new Friend(userPublicCode,label,gpsLat,gpsLon);
-        repo.upsertRemote(user, userPrivateCode);
     }
 
 }

@@ -25,9 +25,11 @@ public class Repository {
     private ScheduledFuture<?> poller;
     private final MutableLiveData<Friend> realNoteData;
     private MediatorLiveData<Long> timeData;
+    private String apiURL;
 
-    public Repository(FriendDao dao) {
+    public Repository(FriendDao dao, String apiURL) {
         this.dao = dao;
+        this.apiURL = apiURL;
         realNoteData = new MutableLiveData<>();
     }
 
@@ -92,7 +94,7 @@ public class Repository {
 
     public LiveData<Friend> getRemote(String public_code) {
 
-        API api = API.provide();
+        API api = API.provide(apiURL);
         var executor = Executors.newSingleThreadScheduledExecutor();
 
 
@@ -106,7 +108,7 @@ public class Repository {
     //Used to update Self location
     public void upsertRemote(Friend user, String privateCode) {
 
-        API api = API.provide();
+        API api = API.provide(apiURL);
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
