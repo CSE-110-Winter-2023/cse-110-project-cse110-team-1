@@ -37,6 +37,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+
         <ImageView
             android:id="@+id/imageView4"
             android:layout_width="0dp"
@@ -110,6 +111,33 @@
             android:id="@+id/compass_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:text="This is a very long text that needs to be truncated"
+                app:layout_constrainedHeight="true"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintHorizontal_weight="1"
+
+                tools:layout_editor_absoluteX="72dp"
+                tools:layout_editor_absoluteY="0dp" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="Another text view"
+                android:ellipsize="end"
+
+                app:layout_constrainedHeight="true"
+                app:layout_constrainedWidth="true"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="0dp"
+                app:layout_constraintHorizontal_weight="1"
+                />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

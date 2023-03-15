@@ -8,11 +8,16 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.graphics.Rect;
 import android.graphics.drawable.Icon;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.TextUtils;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -83,9 +88,9 @@ public class CompassActivity extends AppCompatActivity {
             } else {
                 TextView text = new TextView(getApplicationContext());
                 text.setId(View.generateViewId());
-                text.setText( String.format("%s\n%.0fmi",f.label,
-                        Utilities.calculateDistanceInMiles(gpsLat, gpsLon, f.latitude, f.longitude)));
-
+//                text.setText( String.format("%s\n%.0fmi",f.label,
+//                        Utilities.calculateDistanceInMiles(gpsLat, gpsLon, f.latitude, f.longitude)));
+                text.setText( String.format("%s",f.label));
                 text.setTag("label_" + i);
                 layout.addView(text);
                 nodes.add(text);
@@ -100,39 +105,57 @@ public class CompassActivity extends AppCompatActivity {
             Friend f = friends.get(i);
             float angle = Utilities.getAngle(gpsLat, gpsLon, f.latitude, f.longitude);
             double actual_dist = Utilities.calculateDistanceInMiles(gpsLat, gpsLon, f.latitude, f.longitude);
-            int radius_dist = Utilities.calculateRadius( displayCompass, actual_dist);
-
-
-//            cs.constrainCircle(nodes.get(i).getId(), R.id.compass_layout, radius_dist, angle);
-//            cs.constrainCircle(labels.get(i).getId(), R.id.compass_layout, radius_dist, angle);
-
-
+            int radius_dist = Utilities.calculateRadius(displayCompass, actual_dist);
             nodes.get(i).setVisibility(View.VISIBLE);
-////            Utilities.showAlert(this,""+nodes.get(i).getVisibility());
-            //labels.get(i).setVisibility(View.VISIBLE);
-
             cs.constrainCircle(nodes.get(i).getId(), R.id.compass_layout, radius_dist, angle);
-//            if(radius_dist==450){
-//
-////                nodes.get(i).setVisibility(View.VISIBLE);
-////                labels.get(i).setVisibility(View.INVISIBLE);
-//            }else{
-//                cs.constrainCircle(labels.get(i).getId(), R.id.compass_layout, radius_dist, angle);
-////                nodes.get(i).setVisibility(View.INVISIBLE);
-////                labels.get(i).setVisibility(View.VISIBLE);
-//            }
 
+
+            cs.applyTo(layout);
+            truncateTextView(layout);}
+    }
+
+
+    private void truncateTextView(ConstraintLayout layout) {
+        int childCount = layout.getChildCount();
+        ArrayList<TextView> textViewList = new ArrayList<>();
+        for (int i = 0; i < childCount; i++) {
+            View view = layout.getChildAt(i);
+            if (view instanceof TextView) {
+                textViewList.add((TextView) view);
+            }
         }
-//        for(; i < nodes.size(); i++) {
-//            nodes.get(i).setVisibility(View.INVISIBLE);
-//            labels.get(i).setVisibility(View.INVISIBLE);
-//        }
+        for (TextView textView : textViewList) {
+            // Set up a listener for layout changes
+            ViewTreeObserver observer = textView.getViewTreeObserver();
+            observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    // Get the global bounds of textView1 and textView2
+                    Rect rect1 = new Rect();
+                    textView.getGlobalVisibleRect(rect1);
 
-        cs.applyTo(layout);
+                    // Loop through the other TextViews to find the one that overlaps with textView
+                    for (TextView otherTextView : textViewList) {
+                        if (otherTextView == textView) {
+                            continue;
+                        }
+                        Rect rect2 = new Rect();
+                        otherTextView.getGlobalVisibleRect(rect2);
 
+                        // Check if the TextViews intersect
+                        if (Rect.intersects(rect1, rect2)) {
+                            textView.setMaxLines(1);
+                            textView.setWidth(50);
 
+                            // Remove the listener to avoid redundant calculations
+                            textView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
-//        Log.d("Layout", String.valueOf(layout.getChildCount()));
+                        }
+                    }
+                }
+            });
+        }
+
     }
 
 
