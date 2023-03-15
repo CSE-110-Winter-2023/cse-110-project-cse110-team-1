@@ -65,14 +65,14 @@ public class US5BDDTests {
         // Verify that the correct number of friends is displayed on the compass view
         Thread.sleep(5000);
         int numberOfFriends = 1;
-        for (int i = 1; i <= numberOfFriends; i++) {
+        for (int i = 0; i < numberOfFriends; i++) {
+            String nodeTag = "node_" + i;
             ViewInteraction friendViewInteraction = onView(
                     allOf(withId(R.id.compass_layout)));
             friendViewInteraction.check(matches(isDisplayed()));
-            onView(withTagValue(is((Object) "node_0"))).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
-            onView(withTagValue(is((Object) "node_0"))).check(matches(isDisplayed()));
+            onView(withTagValue(is((Object)nodeTag))).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+            onView(withTagValue(is((Object)nodeTag))).check(matches(isDisplayed()));
         }
-
     }
 
 
@@ -95,14 +95,15 @@ public class US5BDDTests {
         Thread.sleep(1000);
 
         int numberOfFriends = 1;
-        for (int i = 1; i <= numberOfFriends; i++) {
+        for (int i = 0; i < numberOfFriends; i++) {
+            String labelTag = "label_" + i;
             ViewInteraction friendViewInteraction = onView(
                     allOf(withId(R.id.compass_layout)));
             friendViewInteraction.check(matches(isDisplayed()));
-            onView(withTagValue(is((Object) "label_0"))).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
-            onView(withTagValue(is((Object) "label_0"))).check(matches(isDisplayed()));
+            onView(withTagValue(is((Object) labelTag))).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+            onView(withTagValue(is((Object) labelTag))).check(matches(isDisplayed()));
 
-            ViewInteraction labelInteraction = onView(withTagValue(is((Object) "label_0")));
+            ViewInteraction labelInteraction = onView(withTagValue(is((Object)labelTag)));
             CharSequence labelText = getTextFromTextView(labelInteraction);
             assertEquals("Utah\n534mi",labelText);
         }
