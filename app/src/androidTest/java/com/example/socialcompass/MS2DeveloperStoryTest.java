@@ -94,7 +94,7 @@ public class MS2DeveloperStoryTest {
         onView(withId(R.id.add_friend_btn)).perform(click());
         Thread.sleep(1000);
         onView(withId(R.id.compass_view_button)).perform(click());
-        Thread.sleep(2000);
+        Thread.sleep(10000);
         onView(withId(R.id.imageView1)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)));
         onView(withId(R.id.imageView2)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
         onView(withId(R.id.imageView3)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)));
@@ -102,12 +102,13 @@ public class MS2DeveloperStoryTest {
 
 
         int numberOfFriends = 3;
-        for (int i = 1; i <= numberOfFriends; i++) {
+        for (int i = 0; i < numberOfFriends; i++) {
+            String nodeName = "node_"+i;
             ViewInteraction friendViewInteraction = onView(
                     allOf(withId(R.id.compass_layout)));
             friendViewInteraction.check(matches(isDisplayed()));
-            onView(withTagValue(is((Object) "node_0"))).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
-            onView(withTagValue(is((Object) "node_0"))).check(matches(isDisplayed()));
+            onView(withTagValue(is((Object) nodeName))).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+            onView(withTagValue(is((Object) nodeName))).check(matches(isDisplayed()));
         }
         onView(withId(R.id.zoom_in_button)).perform(click());
         Thread.sleep(1000);
@@ -116,12 +117,13 @@ public class MS2DeveloperStoryTest {
         onView(withId(R.id.imageView3)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)));
         onView(withId(R.id.imageView4)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)));
 
-        for (int i = 1; i <= numberOfFriends; i++) {
+        for (int i = 0; i < numberOfFriends; i++) {
+            String nodeName = "node_"+i;
             ViewInteraction friendViewInteraction = onView(
                     allOf(withId(R.id.compass_layout)));
             friendViewInteraction.check(matches(isDisplayed()));
-            onView(withTagValue(is((Object) "node_0"))).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
-            onView(withTagValue(is((Object) "node_0"))).check(matches(isDisplayed()));
+            onView(withTagValue(is((Object) nodeName))).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+            onView(withTagValue(is((Object) nodeName))).check(matches(isDisplayed()));
         }
         onView(withId(R.id.zoom_out_button)).perform(click());
         Thread.sleep(1000);
@@ -138,6 +140,12 @@ public class MS2DeveloperStoryTest {
             friendViewInteraction.check(matches(isDisplayed()));
             onView(withTagValue(is((Object) "node_0"))).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
             onView(withTagValue(is((Object) "node_0"))).check(matches(isDisplayed()));
+
+
+            onView(withTagValue(is((Object) "label_1"))).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+            onView(withTagValue(is((Object) "label_1"))).check(matches(isDisplayed()));
+            onView(withTagValue(is((Object) "label_2"))).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+            onView(withTagValue(is((Object) "label_2"))).check(matches(isDisplayed()));
         }
 
         onView(withId(R.id.zoom_out_button)).perform(click());
@@ -147,6 +155,14 @@ public class MS2DeveloperStoryTest {
         onView(withId(R.id.imageView3)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)));
         onView(withId(R.id.imageView4)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
 
+        for (int i = 0; i < numberOfFriends; i++) {
+            String labelName = "label_"+i;
+            ViewInteraction friendViewInteraction = onView(
+                    allOf(withId(R.id.compass_layout)));
+            friendViewInteraction.check(matches(isDisplayed()));
+            onView(withTagValue(is((Object) labelName))).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+            onView(withTagValue(is((Object) labelName))).check(matches(isDisplayed()));
+        }
     }
     private CharSequence getTextFromTextView(ViewInteraction viewInteraction) {
         final CharSequence[] textHolder = new CharSequence[1];
