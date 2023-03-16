@@ -116,6 +116,7 @@ public class CompassActivity extends AppCompatActivity {
                     text.setMaxLines(1);
                     text.setWidth(70);
 
+
                 }
 
                 text.setText( String.format("%s",f.label));
