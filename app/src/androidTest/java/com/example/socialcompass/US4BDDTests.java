@@ -36,7 +36,7 @@ public class US4BDDTests {
     private FriendDatabase friendDb;
 
     @Before
-    public void preparetDatabase(){
+    public void prepareDatabase(){
         var context2 = ApplicationProvider.getApplicationContext();
         friendDb = Room.inMemoryDatabaseBuilder(context2, FriendDatabase.class)
                 .allowMainThreadQueries().build();
@@ -61,13 +61,7 @@ public class US4BDDTests {
 
         scenario.onActivity(activity -> {
             assertTrue(friendDao.exists("1233445"));
-            ViewInteraction viewInteraction = onView(withId(R.id.node_1));
 
-            viewInteraction.check((view, noViewFoundException) -> {
-                ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) view.getLayoutParams();
-                // Use the radius and angle values as needed
-                int radius = layoutParams.circleRadius;
-            });
         });
     }
 
