@@ -101,7 +101,7 @@ public class US7BDDTests {
 
 
     @Test
-    public void US3andDeveloperStoryTest() {
+    public void turnOffGps() {
         // Context of the app under test.
         try(ActivityScenario<CompassActivity> scenario = ActivityScenario.launch(CompassActivity.class)) {
             scenario.moveToState(Lifecycle.State.CREATED);
@@ -114,6 +114,7 @@ public class US7BDDTests {
                 assertEquals(testFriend.label, friend.label);
                 assertEquals(0,Float.compare(testFriend.longitude, friend.longitude));
                 assertEquals(0,Float.compare(testFriend.latitude, friend.latitude));
+                friendDao.upsert(friend);
 
 
                 //turn off gps service
@@ -134,7 +135,8 @@ public class US7BDDTests {
                 }
 
                 Friend afterFriend = api.getFriend(testFriend.publicCode);
-
+                friendDao.upsert(afterFriend);
+                assertTrue(friendDao.exists(afterFriend.publicCode));
                 assertEquals(testFriend.publicCode, afterFriend.publicCode);
                 assertEquals(testFriend.label, afterFriend.label);
                 assertEquals(0,Float.compare(testFriend.latitude, afterFriend.latitude));
