@@ -11,6 +11,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withTagValue;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
+import androidx.test.espresso.intent.Intents;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
@@ -24,11 +25,15 @@ import androidx.lifecycle.Lifecycle;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.matcher.ViewMatchers;
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.GrantPermissionRule;
 
+import com.example.socialcompass.activity.FriendListActivity;
 import com.example.socialcompass.activity.UserActivity;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,6 +46,16 @@ public class MS2DeveloperStoryTest {
     @Rule
     public GrantPermissionRule permissionRule = GrantPermissionRule.grant(android.Manifest.permission.ACCESS_FINE_LOCATION);
 
+    @Before
+    public void resetDatabase() {
+        Intents.init();
+    }
+
+    @After
+    public void teardown() {
+        Intents.release();
+    }
+
 
     @Test
     public void developerStoryTest() throws InterruptedException {
@@ -52,44 +67,20 @@ public class MS2DeveloperStoryTest {
 
         // Set test input name as John Doe
         String testInputName = "John Doe";
-        AtomicReference<String> actualDisplayName = new AtomicReference<>("");
-        AtomicBoolean case_allready_exist = new AtomicBoolean(false);
-        AtomicBoolean atomicFalse = new AtomicBoolean(false);
-        AtomicBoolean atomicTrue = new AtomicBoolean(true);
-        // start testing on this scenario
-        scenario.onActivity(activity -> {
-            EditText newInputName = activity.findViewById(R.id.my_input_name);
-            Button saveButton = activity.findViewById(R.id.save_user_name_btn);
-            if(newInputName.getText()==null){
-                newInputName.setText(testInputName);
-            }else{
-                case_allready_exist.set(true);
-                actualDisplayName.set(String.valueOf(newInputName.getText()));
-            }
 
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+        onView(withId(R.id.my_input_name)).perform(typeText(testInputName), closeSoftKeyboard());
+        Thread.sleep(1000);
+        onView(withId(R.id.save_user_name_btn)).perform(click());
+        Thread.sleep(1000);
+        onView(withId(R.id.save_user_name_btn)).perform(click());
+        onView(withId(R.id.my_name_from_friendlist)).check(matches(withText(testInputName)));
 
-            saveButton.performClick();
-
-
-        });
 
         onView(withId(R.id.new_friend_public_code)).perform(typeText("313757"), closeSoftKeyboard());
         Thread.sleep(1000);
         onView(withId(R.id.add_friend_btn)).perform(click());
         Thread.sleep(1000);
         onView(withId(R.id.compass_view_button)).perform(click());
-        // link to compass activity
-
-//        ActivityScenario<CompassActivity> scenario1
-//                = ActivityScenario.launch(CompassActivity.class);
-//        scenario1.moveToState(Lifecycle.State.RESUMED);
-
-        // Verify that the correct number of friends is displayed on the compass view
         Thread.sleep(5000);
         int numberOfFriends = 1;
         for (int i = 1; i <= numberOfFriends; i++) {
