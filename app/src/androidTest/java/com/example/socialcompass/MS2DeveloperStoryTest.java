@@ -75,7 +75,6 @@ public class MS2DeveloperStoryTest {
         onView(withId(R.id.save_user_name_btn)).perform(click());
         onView(withId(R.id.my_name_from_friendlist)).check(matches(withText(testInputName)));
 
-
         onView(withId(R.id.new_friend_public_code)).perform(typeText("313757"), closeSoftKeyboard());
         Thread.sleep(1000);
         onView(withId(R.id.add_friend_btn)).perform(click());
