@@ -149,25 +149,25 @@ public class CompassActivity extends AppCompatActivity {
             if (label != pairs.getFirst()){
                 //level 1
                 if(displayCompass == 1){
-                    if ((Math.abs(pairs.getSecond() - angle) <10) && (Math.abs(pairs.getThird() - radiusDist) < 450)){
+                    if ((Math.abs(pairs.getSecond() - angle) <8) && (Math.abs(pairs.getThird() - radiusDist) < 450)){
                         return true;
                     }
                 }
                 else if(displayCompass ==2){
                     //level 2
-                    if ((Math.abs(pairs.getSecond() - angle) <10) && (Math.abs(pairs.getThird() - radiusDist) < 225)){
+                    if ((Math.abs(pairs.getSecond() - angle) <8) && (Math.abs(pairs.getThird() - radiusDist) < 225)){
                         return true;
                     }
                 }
                 else if(displayCompass ==3){
                     //level 3
-                    if ((Math.abs(pairs.getSecond() - angle) <10) && (Math.abs(pairs.getThird() - radiusDist) < 150)){
+                    if ((Math.abs(pairs.getSecond() - angle) <8) && (Math.abs(pairs.getThird() - radiusDist) < 150)){
                         return true;
                     }
                 }
                 else if(displayCompass ==4){
                     //level 4
-                    if ((Math.abs(pairs.getSecond() - angle) <10) && (Math.abs(pairs.getThird() - radiusDist) < 100)){
+                    if ((Math.abs(pairs.getSecond() - angle) <8) && (Math.abs(pairs.getThird() - radiusDist) < 100)){
                         return true;
                     }
                 }
