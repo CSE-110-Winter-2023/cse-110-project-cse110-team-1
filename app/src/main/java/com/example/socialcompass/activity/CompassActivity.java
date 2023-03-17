@@ -74,10 +74,12 @@ public class CompassActivity extends AppCompatActivity {
         List<Friend> friends = friendsList.getValue();
         List<View> nodes = new ArrayList<>(friends.size());
         List<Triple<String,Float,Integer>> overlapCheckList = new ArrayList<>();
+        List<Double> dists = new ArrayList<>(friends.size());
 
         for(int i = 0; i < friends.size(); i++) {
             Friend f = friends.get(i);
             double actual_dist = Utilities.calculateDistanceInMiles(gpsLat, gpsLon, f.latitude, f.longitude);
+            dists.add(actual_dist);
             int radius_dist = Utilities.calculateRadius( displayCompass, actual_dist);
             float angle = Utilities.getAngle(gpsLat, gpsLon, f.latitude, f.longitude);
             overlapCheckList.add(new Triple<>(f.label,angle,radius_dist));
@@ -110,15 +112,28 @@ public class CompassActivity extends AppCompatActivity {
 
                 //if the current textview has similar radius and distance like other existing textview
                 //change the textview Width to 50px
-                Boolean checkOverlap = checkOverlapTextView(f.label,angle,radius_dist,overlapCheckList,displayCompass);
+                Boolean checkOverlap = checkOverlapTextView(f.label,angle,radius_dist,overlapCheckList,displayCompass, i);
 
                 if(checkOverlap){
+                    int r = checkSameRing(radius_dist, dists, i);
+                    if(r != -1) {
+                        Log.d("Dists", "match");
+
+                        text = (TextView) nodes.get(r);
+
+//                        text.setWidth(-1);
+//                        text.setMaxLines(-1);
+                        text.append(String.format("%s\n", f.label));
+                        nodes.add(null);
+                        continue;
+                    }
+
                     text.setMaxLines(1);
                     text.setWidth(70);
 
                 }
 
-                text.setText( String.format("%s",f.label));
+                text.setText( String.format("%s\n",f.label));
                 text.setTag("label_" + i);
                 layout.addView(text);
                 nodes.add(text);
@@ -131,6 +146,7 @@ public class CompassActivity extends AppCompatActivity {
         int i;
         for(i = 0; i < friends.size(); i++) {
             Friend f = friends.get(i);
+            if(nodes.get(i) == null) continue;
             float angle = Utilities.getAngle(gpsLat, gpsLon, f.latitude, f.longitude);
             double actual_dist = Utilities.calculateDistanceInMiles(gpsLat, gpsLon, f.latitude, f.longitude);
             int radius_dist = Utilities.calculateRadius(displayCompass, actual_dist);
@@ -142,9 +158,27 @@ public class CompassActivity extends AppCompatActivity {
         }
     }
 
+    private static int checkSameRing(double dist1, List<Double> dists, int prio) {
+        if(dist1 >= 450) return -1;
 
-    private Boolean checkOverlapTextView(String label,float angle, int radiusDist, List<Triple<String,Float,Integer>> overlapCheckList, int displayCompass) {
-        for(var pairs: overlapCheckList){
+        for (int i = 0; i < prio; i++) {
+            double dist2 = dists.get(i);
+            if (dist1 < 1) {
+                if (dist2 < 1) return i;
+            } else if (dist1 < 10) {
+                if (dist2 >= 1 && dist2 < 10) return i;
+            } else if (dist1 < 500) {
+                if (dist2 >= 10 && dist2 < 500) return i;
+            } else {
+                if (dist2 >= 500) return i;
+            }
+        }
+        return -1;
+    }
+
+    private static boolean checkOverlapTextView(String label,float angle, int radiusDist, List<Triple<String,Float,Integer>> overlapCheckList, int displayCompass, int prio) {
+        for(int i = 0; i < prio; i++){
+            Triple<String,Float,Integer> pairs = overlapCheckList.get(i);
             if (label != pairs.getFirst()){
                 //level 1
                 if(displayCompass == 1){
