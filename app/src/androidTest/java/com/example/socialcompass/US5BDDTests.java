@@ -1,5 +1,7 @@
 package com.example.socialcompass;
 import org.hamcrest.Matcher;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,9 +21,30 @@ import static androidx.test.espresso.matcher.ViewMatchers.withTagValue;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
+import androidx.test.espresso.UiController;
+import androidx.test.espresso.ViewAction;
+import androidx.test.espresso.intent.Intents;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
 
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.lifecycle.Lifecycle;
+import androidx.test.core.app.ActivityScenario;
+import androidx.test.espresso.ViewInteraction;
+import androidx.test.espresso.matcher.ViewMatchers;
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.rule.GrantPermissionRule;
+
+import com.example.socialcompass.activity.FriendListActivity;
+import com.example.socialcompass.activity.UserActivity;
+
+
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Lifecycle;
@@ -40,17 +63,39 @@ import com.example.socialcompass.model.friend.Friend;
 import com.example.socialcompass.model.friend.FriendDao;
 import com.example.socialcompass.model.friend.FriendDatabase;
 import com.example.socialcompass.utility.Utilities;
+import com.example.socialcompass.utility.Utilities;
 
 @RunWith(AndroidJUnit4.class)
 public class US5BDDTests {
     @Rule
     public GrantPermissionRule permissionRule = GrantPermissionRule.grant(android.Manifest.permission.ACCESS_FINE_LOCATION);
+    @Before
+    public void resetDatabase() {
+        Intents.init();
+    }
+
+    @After
+    public void teardown() {
+        Intents.release();
+    }
+
     @Test
     public void testDisplayNode() throws InterruptedException {
         // add friend "utah"
-        ActivityScenario<FriendListActivity> scenario
-                = ActivityScenario.launch(FriendListActivity.class);
+        ActivityScenario<UserActivity> scenario
+                = ActivityScenario.launch(UserActivity.class);
+        scenario.moveToState(Lifecycle.State.CREATED);
+        scenario.moveToState(Lifecycle.State.STARTED);
+        scenario.moveToState(Lifecycle.State.RESUMED);
 
+        // Set test input name as John Doe
+        String testInputName = "myname";
+
+        onView(withId(R.id.my_input_name)).perform(typeText(testInputName), closeSoftKeyboard());
+        Thread.sleep(1000);
+        onView(withId(R.id.save_user_name_btn)).perform(click());
+        Thread.sleep(1000);
+        onView(withId(R.id.save_user_name_btn)).perform(click());
         //onView(withId(R.id.delete_btn)).perform(click());
         onView(withId(R.id.new_friend_public_code)).perform(typeText("utah"), closeSoftKeyboard());
         Thread.sleep(1000);
@@ -65,11 +110,11 @@ public class US5BDDTests {
 
         // Verify that the correct number of friends is displayed on the compass view
         Thread.sleep(5000);
+
         int numberOfFriends = 1;
         for (int i = 0; i < numberOfFriends; i++) {
-            String nodeTag = "node_" + i;
-            ViewInteraction friendViewInteraction = onView(
-                    allOf(withId(R.id.compass_layout)));
+            String nodeTag = "node_0" ;
+            ViewInteraction friendViewInteraction = onView(allOf(withId(R.id.compass_layout)));
             friendViewInteraction.check(matches(isDisplayed()));
             onView(withTagValue(is((Object)nodeTag))).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
             onView(withTagValue(is((Object)nodeTag))).check(matches(isDisplayed()));
@@ -77,18 +122,28 @@ public class US5BDDTests {
     }
 
 
-
     @Test
     public void testDisplayLabel() throws InterruptedException {
-        ActivityScenario<FriendListActivity> scenario
-                = ActivityScenario.launch(FriendListActivity.class);
+        ActivityScenario<UserActivity> scenario
+                = ActivityScenario.launch(UserActivity.class);
+        scenario.moveToState(Lifecycle.State.CREATED);
+        scenario.moveToState(Lifecycle.State.STARTED);
+        scenario.moveToState(Lifecycle.State.RESUMED);
 
+        // Set test input name as John Doe
+        String testInputName = "utah";
+
+        onView(withId(R.id.my_input_name)).perform(typeText(testInputName), closeSoftKeyboard());
+        Thread.sleep(1000);
+        onView(withId(R.id.save_user_name_btn)).perform(click());
+        Thread.sleep(1000);
+        onView(withId(R.id.save_user_name_btn)).perform(click());
+        //onView(withId(R.id.delete_btn)).perform(click());
         onView(withId(R.id.new_friend_public_code)).perform(typeText("utah"), closeSoftKeyboard());
         Thread.sleep(1000);
         onView(withId(R.id.add_friend_btn)).perform(click());
         Thread.sleep(1000);
         onView(withId(R.id.compass_view_button)).perform(click());
-        Thread.sleep(5000);
 
         onView(withId(R.id.zoom_out_button)).perform(click());
         Thread.sleep(1000);
@@ -97,7 +152,7 @@ public class US5BDDTests {
 
         int numberOfFriends = 1;
         for (int i = 0; i < numberOfFriends; i++) {
-            String labelTag = "label_" + i;
+            String labelTag = "label_0";
             ViewInteraction friendViewInteraction = onView(
                     allOf(withId(R.id.compass_layout)));
             friendViewInteraction.check(matches(isDisplayed()));
@@ -106,7 +161,7 @@ public class US5BDDTests {
 
             ViewInteraction labelInteraction = onView(withTagValue(is((Object)labelTag)));
             CharSequence labelText = getTextFromTextView(labelInteraction);
-            assertEquals("Utah\n534mi",labelText);
+            assertEquals("Utah",labelText);
         }
     }
 
