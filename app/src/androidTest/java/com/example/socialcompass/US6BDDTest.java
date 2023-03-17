@@ -1,4 +1,20 @@
 package com.example.socialcompass;
+
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.typeText;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.widget.ImageView;
+
+import androidx.lifecycle.Lifecycle;
+import androidx.test.core.app.ActivityScenario;
+import androidx.test.rule.GrantPermissionRule;
 import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Before;
@@ -23,7 +39,6 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
-import androidx.test.espresso.intent.Intents;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
@@ -44,7 +59,9 @@ import androidx.test.rule.GrantPermissionRule;
 import com.example.socialcompass.activity.FriendListActivity;
 import com.example.socialcompass.activity.UserActivity;
 
+import android.graphics.ColorFilter;
 
+import java.lang.reflect.Field;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Lifecycle;
@@ -64,20 +81,13 @@ import com.example.socialcompass.model.friend.FriendDao;
 import com.example.socialcompass.model.friend.FriendDatabase;
 import com.example.socialcompass.utility.Utilities;
 import com.example.socialcompass.utility.Utilities;
+import com.example.socialcompass.activity.UserActivity;
 
+import org.junit.Rule;
 @RunWith(AndroidJUnit4.class)
-public class US5BDDTests {
+public class US6BDDTest {
     @Rule
     public GrantPermissionRule permissionRule = GrantPermissionRule.grant(android.Manifest.permission.ACCESS_FINE_LOCATION);
-    @Before
-    public void resetDatabase() {
-        Intents.init();
-    }
-
-    @After
-    public void teardown() {
-        Intents.release();
-    }
 
     @Test
     public void testDisplayNode() throws InterruptedException {
@@ -96,96 +106,62 @@ public class US5BDDTests {
         onView(withId(R.id.save_user_name_btn)).perform(click());
         Thread.sleep(1000);
         onView(withId(R.id.save_user_name_btn)).perform(click());
-        //onView(withId(R.id.delete_btn)).perform(click());
-        onView(withId(R.id.new_friend_public_code)).perform(typeText("utah"), closeSoftKeyboard());
-        Thread.sleep(1000);
-        onView(withId(R.id.add_friend_btn)).perform(click());
-        Thread.sleep(1000);
-        onView(withId(R.id.compass_view_button)).perform(click());
-        // link to compass activity
-
-//        ActivityScenario<CompassActivity> scenario1
-//                = ActivityScenario.launch(CompassActivity.class);
-//        scenario1.moveToState(Lifecycle.State.RESUMED);
-
-        // Verify that the correct number of friends is displayed on the compass view
-        Thread.sleep(5000);
-
-        int numberOfFriends = 1;
-        for (int i = 0; i < numberOfFriends; i++) {
-            String nodeTag = "node_0" ;
-            ViewInteraction friendViewInteraction = onView(allOf(withId(R.id.compass_layout)));
-            friendViewInteraction.check(matches(isDisplayed()));
-            onView(withTagValue(is((Object)nodeTag))).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
-            onView(withTagValue(is((Object)nodeTag))).check(matches(isDisplayed()));
-        }
-    }
-
-
-    @Test
-    public void testDisplayLabel() throws InterruptedException {
-        ActivityScenario<UserActivity> scenario
-                = ActivityScenario.launch(UserActivity.class);
-        scenario.moveToState(Lifecycle.State.CREATED);
-        scenario.moveToState(Lifecycle.State.STARTED);
-        scenario.moveToState(Lifecycle.State.RESUMED);
-
-        // Set test input name as John Doe
-        String testInputName = "myname";
-
-        onView(withId(R.id.my_input_name)).perform(typeText(testInputName), closeSoftKeyboard());
-        Thread.sleep(1000);
-        onView(withId(R.id.save_user_name_btn)).perform(click());
-        Thread.sleep(1000);
-        onView(withId(R.id.save_user_name_btn)).perform(click());
-        //onView(withId(R.id.delete_btn)).perform(click());
-        onView(withId(R.id.new_friend_public_code)).perform(typeText("utah"), closeSoftKeyboard());
         Thread.sleep(1000);
         onView(withId(R.id.add_friend_btn)).perform(click());
         Thread.sleep(1000);
         onView(withId(R.id.compass_view_button)).perform(click());
 
-        onView(withId(R.id.zoom_out_button)).perform(click());
-        Thread.sleep(1000);
-        onView(withId(R.id.zoom_out_button)).perform(click());
-        Thread.sleep(1000);
+        GetColorFilterAction getColorFilterAction = new GetColorFilterAction();
+        onView(withId(R.id.status_indicator)).perform(getColorFilterAction);
+        ColorFilter currentFilter = getColorFilterAction.getColorFilter();
+        Thread.sleep(2000);
+        PorterDuffColorFilter expectedFilter = new PorterDuffColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
+        boolean areFiltersEqual = areColorFiltersEqual(currentFilter, expectedFilter);
+        assertTrue(areFiltersEqual);
+    }
 
-        int numberOfFriends = 1;
-        for (int i = 0; i < numberOfFriends; i++) {
-            String labelTag = "label_0";
-            ViewInteraction friendViewInteraction = onView(
-                    allOf(withId(R.id.compass_layout)));
-            friendViewInteraction.check(matches(isDisplayed()));
-            onView(withTagValue(is((Object) labelTag))).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
-            onView(withTagValue(is((Object) labelTag))).check(matches(isDisplayed()));
+    public class GetColorFilterAction implements ViewAction {
+        private ColorFilter colorFilter;
 
-            ViewInteraction labelInteraction = onView(withTagValue(is((Object)labelTag)));
-            CharSequence labelText = getTextFromTextView(labelInteraction);
-            assertEquals("Utah",labelText);
+        @Override
+        public Matcher<View> getConstraints() {
+            return ViewMatchers.isAssignableFrom(ImageView.class);
+        }
+
+        @Override
+        public String getDescription() {
+            return "Get color filter";
+        }
+
+        @Override
+        public void perform(UiController uiController, View view) {
+            ImageView imageView = (ImageView) view;
+            colorFilter = imageView.getColorFilter();
+        }
+
+        public ColorFilter getColorFilter() {
+            return colorFilter;
         }
     }
 
-    private CharSequence getTextFromTextView(ViewInteraction viewInteraction) {
-        final CharSequence[] textHolder = new CharSequence[1];
+    public static boolean areColorFiltersEqual(ColorFilter filter1, ColorFilter filter2) {
+        if (filter1 == null || filter2 == null) {
+            return false;
+        }
 
-        viewInteraction.perform(actionWithAssertions(new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isAssignableFrom(TextView.class);
+        for (Field field : filter1.getClass().getDeclaredFields()) {
+            field.setAccessible(true);
+            try {
+                Object value1 = field.get(filter1);
+                Object value2 = field.get(filter2);
+                if (!value1.equals(value2)) {
+                    return false;
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+                return false;
             }
-
-            @Override
-            public String getDescription() {
-                return "getting text from a TextView";
-            }
-
-            @Override
-            public void perform(UiController uiController, View view) {
-                TextView textView = (TextView) view;
-                textHolder[0] = textView.getText();
-            }
-        }));
-
-        return textHolder[0];
+        }
+        return true;
     }
 }
