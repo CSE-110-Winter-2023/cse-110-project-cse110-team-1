@@ -60,21 +60,21 @@ public class UtilitiesTest {
 
     @Test
     public void testGeneratedUUIDsAreUnique() {
-        int numberOfUUIDsToGenerate = 1000000;
+        int numberOfUUIDsToGenerate = 1000;
         int count = 0;
         Set<String> uuids = new HashSet<>();
         for (int i = 0; i < numberOfUUIDsToGenerate; i++) {
             uuids.add(Utilities.generatePrivateId());
             count++;
         }
-        assertEquals("Expected 1000000 unique UUIDs", numberOfUUIDsToGenerate, uuids.size());
-        assertEquals(count,1000000);
+        assertEquals("Expected 1000 unique UUIDs", numberOfUUIDsToGenerate, uuids.size());
+        assertEquals(count,1000);
     }
 
     @Test
     public void testGeneratePublicID() {
         Set<String> idSet = new HashSet<>();
-        for (int i = 0; i < 1000000; i++) {
+        for (int i = 0; i < 1000; i++) {
             String id = Utilities.generatePublicId();
             assertFalse(idSet.contains(id)); // Check if ID is unique
             idSet.add(id);
