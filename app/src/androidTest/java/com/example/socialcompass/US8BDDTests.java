@@ -65,6 +65,7 @@ public class US8BDDTests {
         onView(withId(R.id.save_user_name_btn)).perform(click());
 
         // add a friend to the friend list
+        // ucsdclose0: "latitude": 32.8801236, "longitude": -117.2340869,
         onView(withId(R.id.new_friend_public_code)).perform(typeText("ucsdclose0"), closeSoftKeyboard());
         onView(withId(R.id.add_friend_btn)).perform(click());
         Thread.sleep(1000);
@@ -94,6 +95,7 @@ public class US8BDDTests {
         onView(withId(R.id.save_user_name_btn)).perform(click());
 
         // add a friend to the friend list
+        //ucsdsuperfar: "latitude": 132.88667,"longitude": 17.2361,
         onView(withId(R.id.new_friend_public_code)).perform(typeText("ucsdsuperfar"), closeSoftKeyboard());
         onView(withId(R.id.add_friend_btn)).perform(click());
         Thread.sleep(1000);
@@ -122,6 +124,7 @@ public class US8BDDTests {
         onView(withId(R.id.save_user_name_btn)).perform(click());
 
         // add a friend to the friend list
+        //ucsdclose2:  "latitude": 32.8811236,"longitude": -117.4310869,
         onView(withId(R.id.new_friend_public_code)).perform(typeText("ucsdclose2"), closeSoftKeyboard());
         onView(withId(R.id.add_friend_btn)).perform(click());
         Thread.sleep(1000);
