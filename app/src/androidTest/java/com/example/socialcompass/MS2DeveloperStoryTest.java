@@ -80,21 +80,23 @@ public class MS2DeveloperStoryTest {
         onView(withId(R.id.save_user_name_btn)).perform(click());
         onView(withId(R.id.my_name_from_friendlist)).check(matches(withText(testInputName)));
 
-
+        // "latitude": 40.8731, "longitude": -122.1626,
         onView(withId(R.id.new_friend_public_code)).perform(typeText("mydream"), closeSoftKeyboard());
         Thread.sleep(1000);
         onView(withId(R.id.add_friend_btn)).perform(click());
         Thread.sleep(1000);
+        // 32.73378° N, 116.97091° W
         onView(withId(R.id.new_friend_public_code)).perform(typeText("337891"), closeSoftKeyboard());
         Thread.sleep(1000);
         onView(withId(R.id.add_friend_btn)).perform(click());
         Thread.sleep(1000);
-        onView(withId(R.id.new_friend_public_code)).perform(typeText("273530"), closeSoftKeyboard());
+        // "latitude": 29.47217339862059, "longitude": -114.66430134883791,
+        onView(withId(R.id.new_friend_public_code)).perform(typeText("20238026"), closeSoftKeyboard());
         Thread.sleep(1000);
         onView(withId(R.id.add_friend_btn)).perform(click());
         Thread.sleep(1000);
         onView(withId(R.id.compass_view_button)).perform(click());
-        Thread.sleep(10000);
+        Thread.sleep(5000);
         onView(withId(R.id.imageView1)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)));
         onView(withId(R.id.imageView2)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
         onView(withId(R.id.imageView3)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)));
