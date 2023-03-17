@@ -1,11 +1,20 @@
 package com.example.socialcompass.utility;
+import static androidx.test.espresso.intent.Checks.checkNotNull;
+
 import java.security.SecureRandom;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.pm.PackageManager;
+import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.test.espresso.matcher.BoundedMatcher;
+
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 
 import java.util.UUID;
 
@@ -175,5 +184,106 @@ public class Utilities {
         double distanceInMiles = earthRadiusInMiles * c;
         return distanceInMiles;
     }
+    public static double convertToScale(double distance) {
+        if (distance < 0) {
+            return -1;
+        }
+        if (distance >= 0 && distance <= 1) {
+            return distance;
+        } else if (distance > 1 && distance <= 10) {
+            return (distance - 1) / 9;
+        } else if (distance > 10 && distance <= 500) {
+            return (distance - 10) / 490;
+        }
+        return 1;
 
+    }
+    public static double mapDistanceToLogScale(double distance) {
+        double minDistance = 500.0;
+        double maxDistance = 12450.5;
+        double minLogValue = Math.log(minDistance);
+        double maxLogValue = Math.log(maxDistance);
+
+        double logDistance = Math.log(distance);
+        double mappedValue = (logDistance - minLogValue) / (maxLogValue - minLogValue);
+
+        return mappedValue;
+    }
+    public static double zoomDistance(int zoom, double distance) {
+        if (zoom < 1 || zoom > 4 || distance < 0) {
+            return -1;
+        }
+        double scaledDistance = convertToScale(distance);
+        if (zoom == 1) {
+            if (distance <= 1) {
+                return scaledDistance / zoom;
+            } else return 1;
+        } else if (zoom == 2) {
+            if (distance <= 1) {
+                return scaledDistance / zoom;
+            } else if (distance <= 10) {
+                return scaledDistance / zoom + (1.0 / zoom);
+            } else return 1;
+        } else if (zoom == 3) {
+            if (distance <= 1) {
+                return scaledDistance / zoom;
+            } else if (distance <= 10) {
+                return scaledDistance / zoom + (1.0 / zoom);
+            } else if (distance <= 500) {
+                return scaledDistance / zoom + (2.0 / zoom);
+            } else return 1;
+        } else if (zoom == 4) {
+            if (distance <= 1) {
+                return scaledDistance / zoom;
+            } else if (distance <= 10) {
+                return scaledDistance / zoom + (1.0 / zoom);
+            } else if (distance <= 500) {
+                return scaledDistance / zoom + (2.0 / zoom);
+            } else if (distance > 500) {
+                return mapDistanceToLogScale(distance) / zoom + (3.0 / zoom);
+            } else return 1;
+        }
+        return -1;
+    }
+    /**
+     * Converts the given distance to a value of raius, based on predefined scales.
+     * @param zoom the zoom level, which must be 1, 2, 3, or 4 correspond to 0-1,1-10,10-100,100-500
+     * @param distance the distance to convert
+     * @return the converted value between 0 and 450
+     */
+    public static int calculateRadius(int zoom, double distance) {
+        int radius = (int)Math.ceil(450*zoomDistance(zoom, distance));
+        return radius;
+    }
+
+    /**
+     * Helper methods for testing with Espresso
+     * Used to get the item from a RecyclerView
+     * Source: https://stackoverflow.com/questions/31394569/how-to-assert-inside-a-recyclerview-in-espresso
+     * To see how this is used, see FriendListActivityTest
+     * @param position
+     * @param itemMatcher
+     * @return
+     */
+    public static Matcher<View> atPosition(final int position, @NonNull final Matcher<View> itemMatcher) {
+        checkNotNull(itemMatcher);
+        return new BoundedMatcher<>(RecyclerView.class) {
+
+            @Override
+            public void describeTo(Description description) {
+//                description.appendText("has item at position " + position + ": ");
+                itemMatcher.describeTo(description);
+            }
+
+            @Override
+            protected boolean matchesSafely(final RecyclerView view) {
+                RecyclerView.ViewHolder viewHolder = view.findViewHolderForAdapterPosition(position);
+                if (viewHolder == null) {
+                    // has no item on such position
+                    return false;
+                }
+                return itemMatcher.matches(viewHolder.itemView);
+            }
+        };
+    }
 }

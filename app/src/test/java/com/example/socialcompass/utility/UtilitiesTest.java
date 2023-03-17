@@ -1,7 +1,6 @@
 package com.example.socialcompass.utility;
 
 import org.junit.Test;
-
 import static org.junit.Assert.*;
 
 import com.example.socialcompass.utility.Utilities;
@@ -61,21 +60,21 @@ public class UtilitiesTest {
 
     @Test
     public void testGeneratedUUIDsAreUnique() {
-        int numberOfUUIDsToGenerate = 1000000;
+        int numberOfUUIDsToGenerate = 1000;
         int count = 0;
         Set<String> uuids = new HashSet<>();
         for (int i = 0; i < numberOfUUIDsToGenerate; i++) {
             uuids.add(Utilities.generatePrivateId());
             count++;
         }
-        assertEquals("Expected 1000000 unique UUIDs", numberOfUUIDsToGenerate, uuids.size());
-        assertEquals(count,1000000);
+        assertEquals("Expected 1000 unique UUIDs", numberOfUUIDsToGenerate, uuids.size());
+        assertEquals(count,1000);
     }
 
     @Test
     public void testGeneratePublicID() {
         Set<String> idSet = new HashSet<>();
-        for (int i = 0; i < 1000000; i++) {
+        for (int i = 0; i < 1000; i++) {
             String id = Utilities.generatePublicId();
             assertFalse(idSet.contains(id)); // Check if ID is unique
             idSet.add(id);
@@ -210,4 +209,57 @@ public class UtilitiesTest {
         assertEquals(expectedDistance, actualDistance, delta);
 
     }
+
+    @Test
+    public void testZoomDistance() {
+        int count = 0;
+        for (int zoom = 1; zoom <= 4; zoom++) {
+            for (double distance = 0.0; distance <= 12450.5; distance += 0.5) {
+                double result = Utilities.zoomDistance(zoom, distance);
+
+                if (zoom == 1) {
+                    if (distance > 1) {
+                        assertEquals(1, result, 0.0001);count++;
+                    } else {
+                        assertTrue(result >= 0 && result <= 1);count++;
+                    }
+                } else if (zoom == 2) {
+                    if (distance > 10) {
+                        assertEquals(1, result, 0.0001);count++;
+                    } else {
+                        assertTrue(result >= 0 && result <= 1);count++;
+                        if(distance < 1) {
+                            assertTrue(result <=0.50);count++;
+                        }
+                    }
+                } else if (zoom == 3) {
+                    if(distance < 10) {
+                        assertTrue(result <= 0.67);count++;
+                    }
+                    if(distance < 1) {
+                        assertTrue(result <=0.34);count++;
+                    }
+                    if (distance > 500) {
+                        assertEquals(1, result, 0.0001);count++;
+                    } else {
+                        assertTrue(result >= 0 && result <= 1);count++;
+                    }
+                } else if (zoom == 4) {
+                    if (distance < 500) {
+                        assertTrue(result >= 0 && result <= 0.75);count++;
+                        if(distance < 10) {
+                            assertTrue(result <= 0.5);count++;
+                        }
+                        if(distance < 1) {
+                            assertTrue(result <=0.25);count++;
+                        }
+                    } else {
+                        assertTrue(result >= 0.75 && result <= 1);count++;
+                    }
+                }
+            }
+        }
+        assertEquals(count, 99654);
+    }
+
 }

@@ -48,7 +48,10 @@ public class FriendListViewModel extends AndroidViewModel {
 
     public LiveData<Friend> getOrcreateFriend(String public_code) {
 
-        return repo.getSyncedFriend(public_code);
+        var friend = repo.getSyncedFriend(public_code);
+
+        Log.d("getOrcreateFriend", String.valueOf(friendListItemDao.getAll().size()));
+        return friend;
 
     }
     public void toggleDelete(Friend friendListItem) {

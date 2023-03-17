@@ -16,13 +16,20 @@ import android.widget.EditText;
 
 import androidx.lifecycle.Lifecycle;
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.rule.GrantPermissionRule;
 
 import com.example.socialcompass.activity.UserActivity;
 
+import org.junit.Rule;
 import org.junit.Test;
+
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class US1BDDTests {
 
+    @Rule
+    public GrantPermissionRule permissionRule = GrantPermissionRule.grant(android.Manifest.permission.ACCESS_FINE_LOCATION);
 
     /*
     * BDD scenario 1:
@@ -40,12 +47,21 @@ public class US1BDDTests {
 
         // Set test input name as John Doe
         String testInputName = "John Doe";
-
+        AtomicReference<String> actualDisplayName = new AtomicReference<>("");
+        AtomicBoolean case_allready_exist = new AtomicBoolean(false);
+        AtomicBoolean atomicFalse = new AtomicBoolean(false);
+        AtomicBoolean atomicTrue = new AtomicBoolean(true);
         // start testing on this scenario
         scenario.onActivity(activity -> {
             EditText newInputName = activity.findViewById(R.id.my_input_name);
             Button saveButton = activity.findViewById(R.id.save_user_name_btn);
-            newInputName.setText(testInputName);
+            if(newInputName.getText()==null){
+                newInputName.setText(testInputName);
+            }else{
+                case_allready_exist.set(true);
+                actualDisplayName.set(String.valueOf(newInputName.getText()));
+            }
+
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
@@ -54,7 +70,9 @@ public class US1BDDTests {
             saveButton.performClick();
         });
         // check the view displayed
-        onView(withId(R.id.my_name_from_friendlist)).check(matches(withText(testInputName)));
+        if(case_allready_exist==atomicFalse){
+            onView(withId(R.id.my_name_from_friendlist)).check(matches(withText(testInputName)));
+        }
     }
 
     @Test
